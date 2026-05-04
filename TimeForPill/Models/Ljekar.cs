@@ -1,4 +1,4 @@
-﻿using TimeForPill.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TimeForPill.Models
 {
@@ -6,19 +6,6 @@ namespace TimeForPill.Models
     {
         public Specijalizacija Specijalizacija { get; set; }
 
-        public void PregledZahtjeva()
-        {
-            
-        }
-
-        public bool OdaberiZahtjev(int zahtjevId)
-        {
-            
-            return true;
-        }
-
-        public int DajBrojZahtjeva() { return 0; }
-
-        public int DajBrojObradjenihZahtjeva() { return 0; }
+        public List<Pacijent> Pacijenti { get; set; }
     }
 }

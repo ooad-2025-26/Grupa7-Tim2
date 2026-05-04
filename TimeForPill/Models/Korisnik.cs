@@ -1,25 +1,17 @@
-﻿using TimeForPill.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TimeForPill.Models
 {
     public abstract class Korisnik
     {
+        [Key]
         public int Id { get; set; }
-        public string Ime { get; set; } = string.Empty;
-        public string Prezime { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Lozinka { get; set; } = string.Empty;
+
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
+        public string Email { get; set; }
+        public string Lozinka { get; set; }
         public DateTime DatumRodjenja { get; set; }
         public Spol Spol { get; set; }
-
-        public bool Prijava(string email, string lozinka)
-        {
-            return Email == email && Lozinka == lozinka;
-        }
-
-        public bool PromijeniLozinku(string staraLozinka, string novaLozinka)
-        {
-            return true;
-        }
     }
 }

@@ -1,0 +1,462 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\OOAD_App\\TimeForPill\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\data\\migrations\\20260504231002_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:data\\migrations\\20260504231002_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\notifikacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\notifikacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\zahtjev.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\zahtjev.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\terapija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\terapija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\lijek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\lijek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\kontaktosoba.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\kontaktosoba.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\ljekar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\ljekar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\pacijent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\pacijent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\lijekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\lijekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\ljekarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\ljekarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\notifikacijacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\notifikacijacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\pacijentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\pacijentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\controllers\\terapijacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:controllers\\terapijacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\statusterapije.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\statusterapije.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\statuszahtjeva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\statuszahtjeva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\specijalizacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\specijalizacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\models\\spol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:models\\spol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|c:\\ooad_app\\timeforpill\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{15191A75-03AC-4564-8206-33570546069F}|TimeForPill.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20260504231002_InitialCreate.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Data\\Migrations\\20260504231002_InitialCreate.cs",
+              "RelativeDocumentMoniker": "Data\\Migrations\\20260504231002_InitialCreate.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Data\\Migrations\\20260504231002_InitialCreate.cs",
+              "RelativeToolTip": "Data\\Migrations\\20260504231002_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T23:10:04.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:58:15.075Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:40:49.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Notifikacija.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Notifikacija.cs",
+              "RelativeDocumentMoniker": "Models\\Notifikacija.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Notifikacija.cs",
+              "RelativeToolTip": "Models\\Notifikacija.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:39:36.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Zahtjev.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Zahtjev.cs",
+              "RelativeDocumentMoniker": "Models\\Zahtjev.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Zahtjev.cs",
+              "RelativeToolTip": "Models\\Zahtjev.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAwwBMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:39:19.444Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Terapija.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Terapija.cs",
+              "RelativeDocumentMoniker": "Models\\Terapija.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Terapija.cs",
+              "RelativeToolTip": "Models\\Terapija.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAwwBwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:39:01.429Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Lijek.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Lijek.cs",
+              "RelativeDocumentMoniker": "Models\\Lijek.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Lijek.cs",
+              "RelativeToolTip": "Models\\Lijek.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:38:47.316Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "KontaktOsoba.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\KontaktOsoba.cs",
+              "RelativeDocumentMoniker": "Models\\KontaktOsoba.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\KontaktOsoba.cs",
+              "RelativeToolTip": "Models\\KontaktOsoba.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAgwBAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:38:31.603Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Administrator.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Administrator.cs",
+              "RelativeDocumentMoniker": "Models\\Administrator.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Administrator.cs",
+              "RelativeToolTip": "Models\\Administrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:38:06.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Ljekar.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Ljekar.cs",
+              "RelativeDocumentMoniker": "Models\\Ljekar.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Ljekar.cs",
+              "RelativeToolTip": "Models\\Ljekar.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:37:41.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Pacijent.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Pacijent.cs",
+              "RelativeDocumentMoniker": "Models\\Pacijent.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Pacijent.cs",
+              "RelativeToolTip": "Models\\Pacijent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowBMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:37:09.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Korisnik.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Korisnik.cs",
+              "RelativeDocumentMoniker": "Models\\Korisnik.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Korisnik.cs",
+              "RelativeToolTip": "Models\\Korisnik.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA1wBAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:35:54.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAACbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-04T22:51:12.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "KorisnikController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\KorisnikController.cs",
+              "RelativeDocumentMoniker": "Controllers\\KorisnikController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\KorisnikController.cs",
+              "RelativeToolTip": "Controllers\\KorisnikController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:43:12.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:43:43.286Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "LijekController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\LijekController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LijekController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\LijekController.cs",
+              "RelativeToolTip": "Controllers\\LijekController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:46:32.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LjekarController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\LjekarController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LjekarController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\LjekarController.cs",
+              "RelativeToolTip": "Controllers\\LjekarController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:45:50.411Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "NotifikacijaController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\NotifikacijaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NotifikacijaController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\NotifikacijaController.cs",
+              "RelativeToolTip": "Controllers\\NotifikacijaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:46:55.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "PacijentController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\PacijentController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PacijentController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\PacijentController.cs",
+              "RelativeToolTip": "Controllers\\PacijentController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:45:04.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "TerapijaController.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Controllers\\TerapijaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\TerapijaController.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Controllers\\TerapijaController.cs",
+              "RelativeToolTip": "Controllers\\TerapijaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:46:10.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "StatusTerapije.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\StatusTerapije.cs",
+              "RelativeDocumentMoniker": "Models\\StatusTerapije.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\StatusTerapije.cs",
+              "RelativeToolTip": "Models\\StatusTerapije.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:35:08.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "StatusZahtjeva.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\StatusZahtjeva.cs",
+              "RelativeDocumentMoniker": "Models\\StatusZahtjeva.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\StatusZahtjeva.cs",
+              "RelativeToolTip": "Models\\StatusZahtjeva.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:34:38.089Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Specijalizacija.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Specijalizacija.cs",
+              "RelativeDocumentMoniker": "Models\\Specijalizacija.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Specijalizacija.cs",
+              "RelativeToolTip": "Models\\Specijalizacija.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:33:27.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Spol.cs",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Models\\Spol.cs",
+              "RelativeDocumentMoniker": "Models\\Spol.cs",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Models\\Spol.cs",
+              "RelativeToolTip": "Models\\Spol.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T22:31:39.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Privacy.cshtml",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "Views\\Home\\Privacy.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-04T22:23:42.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\OOAD_App\\TimeForPill\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\OOAD_App\\TimeForPill\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-04T22:23:36.63Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

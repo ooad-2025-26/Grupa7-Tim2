@@ -1,18 +1,17 @@
-﻿namespace TimeForPill.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TimeForPill.Models
 {
     public class KontaktOsoba
     {
-        public string Ime { get; set; } = string.Empty;
-        public string Prezime { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string BrojTelefona { get; set; } = string.Empty;
+        [Key]
+        public int Id { get; set; }
 
-        public KontaktOsoba(string ime, string prezime, string email, string brojTelefona)
-        {
-            Ime = ime;
-            Prezime = prezime;
-            Email = email;
-            BrojTelefona = brojTelefona;
-        }
+        public string Ime { get; set; }
+        public string Prezime { get; set; }
+        public string Email { get; set; }
+        public string BrojTelefona { get; set; }
+
+        public List<Pacijent> Pacijenti { get; set; }
     }
 }

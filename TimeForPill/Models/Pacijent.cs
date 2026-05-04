@@ -1,42 +1,20 @@
-﻿using TimeForPill.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeForPill.Models
 {
     public class Pacijent : Korisnik
     {
+        [ForeignKey("KontaktOsoba")]
         public int KontaktOsobaId { get; set; }
+
+        public KontaktOsoba KontaktOsoba { get; set; }
+
+        [ForeignKey("Ljekar")]
         public int LjekarId { get; set; }
 
-        public bool Registracija(Korisnik korisnik)
-        {
-            return true;
-        }
+        public Ljekar Ljekar { get; set; }
 
-        public void PogledajTerapije() { }
-
-        public bool PrijaviNuspojavu(string poruka)
-        {
-            return true;
-        }
-
-        public bool PotvrdiUzimanjeLijeka(int terapijaId)
-        {
-            
-            return true;
-        }
-
-        public bool PosaljiZahtjev(int zahtjevId)
-        {
-            return true;
-        }
-
-        public int DajBrojTerapija() { return 0; }
-
-        public int DajIducuTerapiju()
-        {
-            return 0;
-        }
-
-        public int PregledHistorijeTerapije() { return 0; }
+        public List<Terapija> Terapije { get; set; }
     }
 }

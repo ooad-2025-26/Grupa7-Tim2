@@ -1,20 +1,16 @@
-﻿namespace TimeForPill.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TimeForPill.Models
 {
     public class Lijek
     {
-
+        [Key]
         public int Id { get; set; }
-        public string Naziv { get; set; } = string.Empty;
-        public string Kategorija { get; set; } = string.Empty;
-        public string Slika { get; set; } = string.Empty;
 
-        public Lijek(string naziv, string kategorija, string slika)
-        {
-            Naziv = naziv;
-            Kategorija = kategorija;
-            Slika = slika;
-        }
+        public string Naziv { get; set; }
+        public string Kategorija { get; set; }
+        public string Slika { get; set; }
 
-        public int DajId() => Id;
+        public List<Terapija> Terapije { get; set; }
     }
 }

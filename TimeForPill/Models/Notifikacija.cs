@@ -1,23 +1,18 @@
-﻿namespace TimeForPill.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TimeForPill.Models
 {
     public class Notifikacija
     {
+        [Key]
+        public int Id { get; set; }
 
-        public int NotifikacijaId { get; set; }
-        public string Naziv { get; set; } = string.Empty;
-        public string Poruka { get; set; } = string.Empty;
+        public string Naziv { get; set; }
+        public string Poruka { get; set; }
+
+        [ForeignKey("Terapija")]
         public int TerapijaId { get; set; }
-
-        public Notifikacija(string naziv, string poruka, int lijekId)
-        {
-            Naziv = naziv;
-            Poruka = poruka;
-            TerapijaId = lijekId;
-        }
-
-        public void PosaljiNotifikaciju()
-        {
-            
-        }
+        public Terapija Terapija { get; set; }
     }
 }

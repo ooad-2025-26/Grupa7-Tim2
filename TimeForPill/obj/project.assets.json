@@ -4455,11 +4455,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\OOAD_App\\TimeForPill\\TimeForPill.csproj",
+      "projectUniqueName": "C:\\Users\\User\\OneDrive\\Desktop\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj",
       "projectName": "TimeForPill",
-      "projectPath": "C:\\OOAD_App\\TimeForPill\\TimeForPill.csproj",
+      "projectPath": "C:\\Users\\User\\OneDrive\\Desktop\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\OOAD_App\\TimeForPill\\obj\\",
+      "outputPath": "C:\\Users\\User\\OneDrive\\Desktop\\Grupa7-Tim2\\TimeForPill\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -10,9 +10,6 @@ namespace TimeForPill.Models
 
         public string Naziv { get; set; }
         public string Poruka { get; set; }
-
-        [ForeignKey("Terapija")]
-        public int TerapijaId { get; set; }
-        public Terapija Terapija { get; set; }
+        public int TerapijaId { get; internal set; }
     }
 }

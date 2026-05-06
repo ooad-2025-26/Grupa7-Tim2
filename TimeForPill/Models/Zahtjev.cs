@@ -13,7 +13,6 @@ namespace TimeForPill.Models
 
         [ForeignKey("Terapija")]
         public int TerapijaId { get; set; }
-        public Terapija Terapija { get; set; }
 
         public StatusZahtjeva Status { get; set; }
     }

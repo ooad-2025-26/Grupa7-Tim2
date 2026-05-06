@@ -10,7 +10,5 @@ namespace TimeForPill.Models
         public string Naziv { get; set; }
         public string Kategorija { get; set; }
         public string Slika { get; set; }
-
-        public List<Terapija> Terapije { get; set; }
     }
 }

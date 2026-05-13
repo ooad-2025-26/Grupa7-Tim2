@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa520037f303a53543bc2609fd15568a0fc80c23")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db808b1dd0e17efc599d760c8a4f1052c2282205")]
 [assembly: System.Reflection.AssemblyProductAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

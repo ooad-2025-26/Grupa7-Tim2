@@ -9,11 +9,11 @@ using TimeForPill.Data;
 
 #nullable disable
 
-namespace TimeForPill.Data.Migrations
+namespace TimeForPill.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260518000526_AppValidationAndPersistenceFix")]
-    partial class AppValidationAndPersistenceFix
+    [Migration("20260518131826_nesto")]
+    partial class nesto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,71 +75,6 @@ namespace TimeForPill.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -227,6 +162,96 @@ namespace TimeForPill.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("TimeForPill.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatumRodjenja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Ime")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Prezime")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Spol")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("Korisnici", (string)null);
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("TimeForPill.Models.KontaktOsoba", b =>
                 {
                     b.Property<int>("Id")
@@ -257,48 +282,7 @@ namespace TimeForPill.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KontaktOsoba", (string)null);
-                });
-
-            modelBuilder.Entity("TimeForPill.Models.Korisnik", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DatumRodjenja")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<string>("Ime")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Lozinka")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Prezime")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Spol")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Korisnik", (string)null);
-
-                    b.UseTptMappingStrategy();
+                    b.ToTable("KontaktOsobe", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Lijek", b =>
@@ -320,13 +304,12 @@ namespace TimeForPill.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Slika")
-                        .IsRequired()
                         .HasMaxLength(260)
                         .HasColumnType("nvarchar(260)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lijek", (string)null);
+                    b.ToTable("Lijekovi", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Notifikacija", b =>
@@ -354,7 +337,7 @@ namespace TimeForPill.Data.Migrations
 
                     b.HasIndex("TerapijaId");
 
-                    b.ToTable("Notifikacija", (string)null);
+                    b.ToTable("Notifikacije", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Terapija", b =>
@@ -382,8 +365,8 @@ namespace TimeForPill.Data.Migrations
                     b.Property<int?>("NotifikacijaID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PacijentId")
-                        .HasColumnType("int");
+                    b.Property<string>("PacijentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Pocetak")
                         .HasColumnType("datetime2");
@@ -397,7 +380,7 @@ namespace TimeForPill.Data.Migrations
 
                     b.HasIndex("PacijentId");
 
-                    b.ToTable("Terapija", (string)null);
+                    b.ToTable("Terapije", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Zahtjev", b =>
@@ -428,38 +411,38 @@ namespace TimeForPill.Data.Migrations
 
                     b.HasIndex("TerapijaId");
 
-                    b.ToTable("Zahtjev", (string)null);
+                    b.ToTable("Zahtjevi", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Administrator", b =>
                 {
-                    b.HasBaseType("TimeForPill.Models.Korisnik");
+                    b.HasBaseType("TimeForPill.Models.ApplicationUser");
 
                     b.Property<DateTime>("datumImenovanja")
                         .HasColumnType("datetime2");
 
-                    b.ToTable("Administrator", (string)null);
+                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Ljekar", b =>
                 {
-                    b.HasBaseType("TimeForPill.Models.Korisnik");
+                    b.HasBaseType("TimeForPill.Models.ApplicationUser");
 
                     b.Property<int>("Specijalizacija")
                         .HasColumnType("int");
 
-                    b.ToTable("Ljekar", (string)null);
+                    b.HasDiscriminator().HasValue("Ljekar");
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Pacijent", b =>
                 {
-                    b.HasBaseType("TimeForPill.Models.Korisnik");
+                    b.HasBaseType("TimeForPill.Models.ApplicationUser");
 
                     b.Property<int?>("KontaktOsobaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LjekarId")
-                        .HasColumnType("int");
+                    b.Property<string>("LjekarId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("TerapijaId")
                         .HasColumnType("int");
@@ -468,7 +451,7 @@ namespace TimeForPill.Data.Migrations
 
                     b.HasIndex("LjekarId");
 
-                    b.ToTable("Pacijent", (string)null);
+                    b.HasDiscriminator().HasValue("Pacijent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -482,7 +465,7 @@ namespace TimeForPill.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TimeForPill.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -491,7 +474,7 @@ namespace TimeForPill.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TimeForPill.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -506,7 +489,7 @@ namespace TimeForPill.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TimeForPill.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,7 +498,7 @@ namespace TimeForPill.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TimeForPill.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -559,32 +542,8 @@ namespace TimeForPill.Data.Migrations
                     b.Navigation("Terapija");
                 });
 
-            modelBuilder.Entity("TimeForPill.Models.Administrator", b =>
-                {
-                    b.HasOne("TimeForPill.Models.Korisnik", null)
-                        .WithOne()
-                        .HasForeignKey("TimeForPill.Models.Administrator", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TimeForPill.Models.Ljekar", b =>
-                {
-                    b.HasOne("TimeForPill.Models.Korisnik", null)
-                        .WithOne()
-                        .HasForeignKey("TimeForPill.Models.Ljekar", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TimeForPill.Models.Pacijent", b =>
                 {
-                    b.HasOne("TimeForPill.Models.Korisnik", null)
-                        .WithOne()
-                        .HasForeignKey("TimeForPill.Models.Pacijent", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TimeForPill.Models.KontaktOsoba", "KontaktOsoba")
                         .WithMany()
                         .HasForeignKey("KontaktOsobaId")

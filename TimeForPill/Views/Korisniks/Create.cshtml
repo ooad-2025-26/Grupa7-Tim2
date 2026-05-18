@@ -1,4 +1,4 @@
-﻿@model TimeForPill.Models.Korisnik
+﻿@model TimeForPill.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Create";
@@ -8,51 +8,99 @@
 
 <h4>Korisnik</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="Ime" class="control-label"></label>
-                <input asp-for="Ime" class="form-control" />
-                <span asp-validation-for="Ime" class="text-danger"></span>
+                <label asp-for="Ime"
+                       class="control-label"></label>
+
+                <input asp-for="Ime"
+                       class="form-control" />
+
+                <span asp-validation-for="Ime"
+                      class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Prezime" class="control-label"></label>
-                <input asp-for="Prezime" class="form-control" />
-                <span asp-validation-for="Prezime" class="text-danger"></span>
+                <label asp-for="Prezime"
+                       class="control-label"></label>
+
+                <input asp-for="Prezime"
+                       class="form-control" />
+
+                <span asp-validation-for="Prezime"
+                      class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="Email"
+                       class="control-label"></label>
+
+                <input asp-for="Email"
+                       class="form-control" />
+
+                <span asp-validation-for="Email"
+                      class="text-danger"></span>
             </div>
+
+            <!-- PASSWORD -->
             <div class="form-group">
-                <label asp-for="Lozinka" class="control-label"></label>
-                <input asp-for="Lozinka" class="form-control" />
-                <span asp-validation-for="Lozinka" class="text-danger"></span>
+                <label class="control-label">
+                    Lozinka
+                </label>
+
+                <input name="password"
+                       type="password"
+                       class="form-control" />
             </div>
+
             <div class="form-group">
-                <label asp-for="DatumRodjenja" class="control-label"></label>
-                <input asp-for="DatumRodjenja" class="form-control" />
-                <span asp-validation-for="DatumRodjenja" class="text-danger"></span>
+                <label asp-for="DatumRodjenja"
+                       class="control-label"></label>
+
+                <input asp-for="DatumRodjenja"
+                       class="form-control" />
+
+                <span asp-validation-for="DatumRodjenja"
+                      class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Spol" class="control-label"></label>
-                <select asp-for="Spol" class="form-control"></select>
-                <span asp-validation-for="Spol" class="text-danger"></span>
+                <label asp-for="Spol"
+                       class="control-label"></label>
+
+                <select asp-for="Spol"
+                        class="form-control"></select>
+
+                <span asp-validation-for="Spol"
+                      class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group mt-3">
+                <input type="submit"
+                       value="Create"
+                       class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-3">
+    <a asp-action="Index">
+        Back to List
+    </a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

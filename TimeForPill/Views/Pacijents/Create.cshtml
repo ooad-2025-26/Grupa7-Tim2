@@ -9,78 +9,164 @@
         <p class="eyebrow">Korisnici</p>
         <h1>Novi pacijent</h1>
     </div>
-    <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+
+    <a class="btn btn-outline-secondary"
+           asp-action="Index">
+        Nazad
+    </a>
 </div>
 
 <div class="form-shell">
-    <form asp-action="Create" method="post">
-        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+    <form asp-action="Create"
+          method="post">
+
+        <div asp-validation-summary="ModelOnly"
+             class="mb-3"></div>
+
         <div class="form-grid">
+
             <div>
-                <label asp-for="Ime" class="form-label"></label>
-                <input asp-for="Ime" class="form-control" />
+                <label asp-for="Ime"
+                       class="form-label"></label>
+
+                <input asp-for="Ime"
+                       class="form-control" />
+
                 <span asp-validation-for="Ime"></span>
             </div>
+
             <div>
-                <label asp-for="Prezime" class="form-label"></label>
-                <input asp-for="Prezime" class="form-control" />
+                <label asp-for="Prezime"
+                       class="form-label"></label>
+
+                <input asp-for="Prezime"
+                       class="form-control" />
+
                 <span asp-validation-for="Prezime"></span>
             </div>
+
             <div>
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email"
+                       class="form-label"></label>
+
+                <input asp-for="Email"
+                       class="form-control" />
+
                 <span asp-validation-for="Email"></span>
             </div>
+
+            <!-- PASSWORD -->
             <div>
-                <label asp-for="Lozinka" class="form-label"></label>
-                <input asp-for="Lozinka" class="form-control" />
-                <span asp-validation-for="Lozinka"></span>
+                <label class="form-label">
+                    Lozinka
+                </label>
+
+                <input name="password"
+                       type="password"
+                       class="form-control" />
             </div>
+
             <div>
-                <label asp-for="DatumRodjenja" class="form-label"></label>
-                <input asp-for="DatumRodjenja" class="form-control" />
+                <label asp-for="DatumRodjenja"
+                       class="form-label"></label>
+
+                <input asp-for="DatumRodjenja"
+                       class="form-control" />
+
                 <span asp-validation-for="DatumRodjenja"></span>
             </div>
+
             <div>
-                <label asp-for="Spol" class="form-label"></label>
-                <select asp-for="Spol" asp-items="Html.GetEnumSelectList<Spol>()" class="form-select"></select>
+                <label asp-for="Spol"
+                       class="form-label"></label>
+
+                <select asp-for="Spol"
+                        asp-items="Html.GetEnumSelectList<Spol>()"
+                        class="form-select">
+                </select>
+
                 <span asp-validation-for="Spol"></span>
             </div>
+
             <div class="span-2">
-                <label asp-for="LjekarId" class="form-label"></label>
-                <select asp-for="LjekarId" class="form-select" asp-items="ViewBag.LjekarId">
-                    <option value="">Bez dodijeljenog ljekara</option>
+                <label asp-for="LjekarId"
+                       class="form-label"></label>
+
+                <select asp-for="LjekarId"
+                        class="form-select"
+                        asp-items="ViewBag.LjekarId">
+
+                    <option value="">
+                        Bez dodijeljenog ljekara
+                    </option>
+
                 </select>
+
                 <span asp-validation-for="LjekarId"></span>
             </div>
+
             <div>
-                <label asp-for="KontaktOsoba.Ime" class="form-label"></label>
-                <input asp-for="KontaktOsoba.Ime" class="form-control" />
+                <label asp-for="KontaktOsoba.Ime"
+                       class="form-label"></label>
+
+                <input asp-for="KontaktOsoba.Ime"
+                       class="form-control" />
+
                 <span asp-validation-for="KontaktOsoba.Ime"></span>
             </div>
+
             <div>
-                <label asp-for="KontaktOsoba.Prezime" class="form-label"></label>
-                <input asp-for="KontaktOsoba.Prezime" class="form-control" />
+                <label asp-for="KontaktOsoba.Prezime"
+                       class="form-label"></label>
+
+                <input asp-for="KontaktOsoba.Prezime"
+                       class="form-control" />
+
                 <span asp-validation-for="KontaktOsoba.Prezime"></span>
             </div>
+
             <div>
-                <label asp-for="KontaktOsoba.Email" class="form-label"></label>
-                <input asp-for="KontaktOsoba.Email" class="form-control" />
+                <label asp-for="KontaktOsoba.Email"
+                       class="form-label"></label>
+
+                <input asp-for="KontaktOsoba.Email"
+                       class="form-control" />
+
                 <span asp-validation-for="KontaktOsoba.Email"></span>
             </div>
+
             <div>
-                <label asp-for="KontaktOsoba.BrojTelefona" class="form-label"></label>
-                <input asp-for="KontaktOsoba.BrojTelefona" class="form-control" />
+                <label asp-for="KontaktOsoba.BrojTelefona"
+                       class="form-label"></label>
+
+                <input asp-for="KontaktOsoba.BrojTelefona"
+                       class="form-control" />
+
                 <span asp-validation-for="KontaktOsoba.BrojTelefona"></span>
             </div>
+
         </div>
+
         <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Sacuvaj</button>
-            <a class="btn btn-outline-secondary" asp-action="Index">Odustani</a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Sacuvaj
+            </button>
+
+            <a class="btn btn-outline-secondary"
+                   asp-action="Index">
+                Odustani
+            </a>
+
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
 }

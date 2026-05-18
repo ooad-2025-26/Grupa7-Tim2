@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace TimeForPill.Data.Migrations
+namespace TimeForPill.Migrations
 {
     /// <inheritdoc />
-    public partial class take2 : Migration
+    public partial class nesto : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

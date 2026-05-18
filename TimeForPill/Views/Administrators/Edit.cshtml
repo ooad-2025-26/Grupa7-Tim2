@@ -9,57 +9,112 @@
         <p class="eyebrow">Korisnici</p>
         <h1>Uredi administratora</h1>
     </div>
-    <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+
+    <a class="btn btn-outline-secondary"
+           asp-action="Index">
+        Nazad
+    </a>
 </div>
 
 <div class="form-shell">
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="Id" />
-        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+
+    <form asp-action="Edit"
+          method="post">
+
+        <input type="hidden"
+               asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="mb-3"></div>
+
         <div class="form-grid">
+
             <div>
-                <label asp-for="Ime" class="form-label"></label>
-                <input asp-for="Ime" class="form-control" />
+                <label asp-for="Ime"
+                       class="form-label"></label>
+
+                <input asp-for="Ime"
+                       class="form-control" />
+
                 <span asp-validation-for="Ime"></span>
             </div>
+
             <div>
-                <label asp-for="Prezime" class="form-label"></label>
-                <input asp-for="Prezime" class="form-control" />
+                <label asp-for="Prezime"
+                       class="form-label"></label>
+
+                <input asp-for="Prezime"
+                       class="form-control" />
+
                 <span asp-validation-for="Prezime"></span>
             </div>
+
             <div>
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <label asp-for="Email"
+                       class="form-label"></label>
+
+                <input asp-for="Email"
+                       class="form-control" />
+
                 <span asp-validation-for="Email"></span>
             </div>
+
+            <!-- OBRISANO:
+                 Lozinka vise ne postoji -->
+
             <div>
-                <label asp-for="Lozinka" class="form-label"></label>
-                <input asp-for="Lozinka" class="form-control" />
-                <span asp-validation-for="Lozinka"></span>
-            </div>
-            <div>
-                <label asp-for="DatumRodjenja" class="form-label"></label>
-                <input asp-for="DatumRodjenja" class="form-control" />
+                <label asp-for="DatumRodjenja"
+                       class="form-label"></label>
+
+                <input asp-for="DatumRodjenja"
+                       class="form-control" />
+
                 <span asp-validation-for="DatumRodjenja"></span>
             </div>
+
             <div>
-                <label asp-for="datumImenovanja" class="form-label"></label>
-                <input asp-for="datumImenovanja" class="form-control" />
+                <label asp-for="datumImenovanja"
+                       class="form-label"></label>
+
+                <input asp-for="datumImenovanja"
+                       class="form-control" />
+
                 <span asp-validation-for="datumImenovanja"></span>
             </div>
+
             <div class="span-2">
-                <label asp-for="Spol" class="form-label"></label>
-                <select asp-for="Spol" asp-items="Html.GetEnumSelectList<Spol>()" class="form-select"></select>
+                <label asp-for="Spol"
+                       class="form-label"></label>
+
+                <select asp-for="Spol"
+                        asp-items="Html.GetEnumSelectList<Spol>()"
+                        class="form-select">
+                </select>
+
                 <span asp-validation-for="Spol"></span>
             </div>
+
         </div>
+
         <div class="mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Sacuvaj izmjene</button>
-            <a class="btn btn-outline-secondary" asp-action="Index">Odustani</a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Sacuvaj izmjene
+            </button>
+
+            <a class="btn btn-outline-secondary"
+                   asp-action="Index">
+                Odustani
+            </a>
+
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
 }

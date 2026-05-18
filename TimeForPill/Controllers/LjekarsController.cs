@@ -1,19 +1,25 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
 using TimeForPill.Models;
 
-namespace TimeForPill
+namespace TimeForPill.Controllers
 {
     public class LjekarsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LjekarsController(ApplicationDbContext context)
+        public LjekarsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        // GET: Ljekars
         public async Task<IActionResult> Index()
         {
             var ljekari = await _context.Ljekari
@@ -25,9 +31,10 @@ namespace TimeForPill
             return View(ljekari);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        // GET: Ljekars/Details/5
+        public async Task<IActionResult> Details(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
@@ -36,17 +43,31 @@ namespace TimeForPill
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            return ljekar == null ? NotFound() : View(ljekar);
+            if (ljekar == null)
+            {
+                return NotFound();
+            }
+
+            return View(ljekar);
         }
 
+        // GET: Ljekars/Create
         public IActionResult Create()
         {
-            return View(new Ljekar { DatumRodjenja = DateTime.Today.AddYears(-35) });
+            return View(new Ljekar
+            {
+                DatumRodjenja = DateTime.Today.AddYears(-35)
+            });
         }
 
+        // POST: Ljekars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Specijalizacija,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
+        public async Task<IActionResult> Create(
+            [Bind("Specijalizacija,Ime,Prezime,Email,DatumRodjenja,Spol")]
+            Ljekar ljekar,
+
+            string password)
         {
             if (!ModelState.IsValid)
             {
@@ -55,31 +76,66 @@ namespace TimeForPill
 
             try
             {
-                _context.Add(ljekar);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ljekar.UserName = ljekar.Email;
+
+                var result = await _userManager.CreateAsync(
+                    ljekar,
+                    password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(
+                        ljekar,
+                        "Ljekar");
+
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        error.Description);
+                }
+
+                return View(ljekar);
             }
-            catch (DbUpdateException)
+            catch
             {
-                ModelState.AddModelError(string.Empty, "Ljekar nije sacuvan. Provjerite podatke i vezu sa bazom.");
+                ModelState.AddModelError(
+                    string.Empty,
+                    "Ljekar nije sacuvan.");
+
                 return View(ljekar);
             }
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Ljekars/Edit/5
+        public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var ljekar = await _context.Ljekari.FindAsync(id);
-            return ljekar == null ? NotFound() : View(ljekar);
+
+            if (ljekar == null)
+            {
+                return NotFound();
+            }
+
+            return View(ljekar);
         }
 
+        // POST: Ljekars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Specijalizacija,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
+        public async Task<IActionResult> Edit(
+            string id,
+
+            [Bind("Id,Specijalizacija,Ime,Prezime,Email,DatumRodjenja,Spol")]
+            Ljekar ljekar)
         {
             if (id != ljekar.Id)
             {
@@ -91,10 +147,26 @@ namespace TimeForPill
                 return View(ljekar);
             }
 
+            var postojeciLjekar =
+                await _context.Ljekari.FindAsync(id);
+
+            if (postojeciLjekar == null)
+            {
+                return NotFound();
+            }
+
+            postojeciLjekar.Ime = ljekar.Ime;
+            postojeciLjekar.Prezime = ljekar.Prezime;
+            postojeciLjekar.Email = ljekar.Email;
+            postojeciLjekar.UserName = ljekar.Email;
+            postojeciLjekar.Specijalizacija = ljekar.Specijalizacija;
+            postojeciLjekar.DatumRodjenja = ljekar.DatumRodjenja;
+            postojeciLjekar.Spol = ljekar.Spol;
+
             try
             {
-                _context.Update(ljekar);
-                await _context.SaveChangesAsync();
+                await _userManager.UpdateAsync(postojeciLjekar);
+
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
@@ -106,16 +178,12 @@ namespace TimeForPill
 
                 throw;
             }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite podatke i vezu sa bazom.");
-                return View(ljekar);
-            }
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Ljekars/Delete/5
+        public async Task<IActionResult> Delete(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
@@ -124,24 +192,30 @@ namespace TimeForPill
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            return ljekar == null ? NotFound() : View(ljekar);
+            if (ljekar == null)
+            {
+                return NotFound();
+            }
+
+            return View(ljekar);
         }
 
+        // POST: Ljekars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var ljekar = await _context.Ljekari.FindAsync(id);
+
             if (ljekar != null)
             {
-                _context.Ljekari.Remove(ljekar);
-                await _context.SaveChangesAsync();
+                await _userManager.DeleteAsync(ljekar);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LjekarExists(int id)
+        private bool LjekarExists(string id)
         {
             return _context.Ljekari.Any(e => e.Id == id);
         }

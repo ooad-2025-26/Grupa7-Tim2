@@ -33,7 +33,7 @@ namespace TimeForPill.Models
         public Lijek? Lijek { get; set; }
 
         [Display(Name = "Pacijent")]
-        public int? PacijentId { get; set; }
+        public string? PacijentId { get; set; }
 
         public Pacijent? Pacijent { get; set; }
 

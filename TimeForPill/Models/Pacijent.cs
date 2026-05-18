@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TimeForPill.Models
 {
-    public class Pacijent : Korisnik
+    public class Pacijent : ApplicationUser
     {
         [Display(Name = "Kontakt osoba")]
         public int? KontaktOsobaId { get; set; }
@@ -11,7 +11,7 @@ namespace TimeForPill.Models
         public KontaktOsoba KontaktOsoba { get; set; } = new KontaktOsoba();
 
         [Display(Name = "Ljekar")]
-        public int? LjekarId { get; set; }
+        public string? LjekarId { get; set; }
 
         public Ljekar? Ljekar { get; set; }
 

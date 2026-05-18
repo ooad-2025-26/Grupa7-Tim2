@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
@@ -8,10 +9,14 @@ namespace TimeForPill
     public class AdministratorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdministratorsController(ApplicationDbContext context)
+        public AdministratorsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -25,18 +30,20 @@ namespace TimeForPill
             return View(administratori);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var administrator = await _context.Administratori
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-            return administrator == null ? NotFound() : View(administrator);
+            return administrator == null
+                ? NotFound()
+                : View(administrator);
         }
 
         public IActionResult Create()
@@ -50,40 +57,58 @@ namespace TimeForPill
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("datumImenovanja,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Administrator administrator)
+        public async Task<IActionResult> Create(
+            [Bind("Ime,Prezime,Email,DatumRodjenja,datumImenovanja,Spol")]
+            Administrator administrator,
+            string password)
         {
             if (!ModelState.IsValid)
             {
                 return View(administrator);
             }
 
-            try
+            administrator.UserName = administrator.Email;
+
+            var result = await _userManager.CreateAsync(
+                administrator,
+                password);
+
+            if (result.Succeeded)
             {
-                _context.Add(administrator);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException)
+
+            foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, "Administrator nije sacuvan. Provjerite podatke i vezu sa bazom.");
-                return View(administrator);
+                ModelState.AddModelError(
+                    string.Empty,
+                    error.Description);
             }
+
+            return View(administrator);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var administrator = await _context.Administratori.FindAsync(id);
-            return administrator == null ? NotFound() : View(administrator);
+            var administrator = await _context.Administratori
+                .FindAsync(id);
+
+            return administrator == null
+                ? NotFound()
+                : View(administrator);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,datumImenovanja,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Administrator administrator)
+        public async Task<IActionResult> Edit(
+            string id,
+            [Bind("Id,Ime,Prezime,Email,DatumRodjenja,datumImenovanja,Spol")]
+            Administrator administrator)
         {
             if (id != administrator.Id)
             {
@@ -97,8 +122,25 @@ namespace TimeForPill
 
             try
             {
-                _context.Update(administrator);
-                await _context.SaveChangesAsync();
+                var existingAdministrator =
+                    await _context.Administratori
+                        .FirstOrDefaultAsync(a => a.Id == id);
+
+                if (existingAdministrator == null)
+                {
+                    return NotFound();
+                }
+
+                existingAdministrator.Ime = administrator.Ime;
+                existingAdministrator.Prezime = administrator.Prezime;
+                existingAdministrator.Email = administrator.Email;
+                existingAdministrator.UserName = administrator.Email;
+                existingAdministrator.DatumRodjenja = administrator.DatumRodjenja;
+                existingAdministrator.datumImenovanja = administrator.datumImenovanja;
+                existingAdministrator.Spol = administrator.Spol;
+
+                await _userManager.UpdateAsync(existingAdministrator);
+
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
@@ -110,44 +152,42 @@ namespace TimeForPill
 
                 throw;
             }
-            catch (DbUpdateException)
-            {
-                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite podatke i vezu sa bazom.");
-                return View(administrator);
-            }
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var administrator = await _context.Administratori
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-            return administrator == null ? NotFound() : View(administrator);
+            return administrator == null
+                ? NotFound()
+                : View(administrator);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var administrator = await _context.Administratori.FindAsync(id);
+            var administrator = await _userManager.FindByIdAsync(id);
+
             if (administrator != null)
             {
-                _context.Administratori.Remove(administrator);
-                await _context.SaveChangesAsync();
+                await _userManager.DeleteAsync(administrator);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AdministratorExists(int id)
+        private bool AdministratorExists(string id)
         {
-            return _context.Administratori.Any(e => e.Id == id);
+            return _context.Administratori
+                .Any(a => a.Id == id);
         }
     }
 }

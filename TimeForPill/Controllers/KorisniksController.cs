@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
 using TimeForPill.Models;
 
-namespace TimeForPill
+namespace TimeForPill.Controllers
 {
     public class KorisniksController : Controller
     {
@@ -14,9 +14,10 @@ namespace TimeForPill
             _context = context;
         }
 
+        // GET: Korisniks
         public async Task<IActionResult> Index()
         {
-            var korisnici = await _context.Korisnici
+            var korisnici = await _context.Users
                 .AsNoTracking()
                 .OrderBy(k => k.Prezime)
                 .ThenBy(k => k.Ime)
@@ -25,20 +26,27 @@ namespace TimeForPill
             return View(korisnici);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        // GET: Korisniks/Details/5
+        public async Task<IActionResult> Details(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var korisnik = await _context.Korisnici
+            var korisnik = await _context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(k => k.Id == id);
 
-            return korisnik == null ? NotFound() : View(korisnik);
+            if (korisnik == null)
+            {
+                return NotFound();
+            }
+
+            return View(korisnik);
         }
 
+        // GET: Korisniks/Create
         public IActionResult Create()
         {
             return RedirectToAction("Create", "Pacijents");
@@ -52,14 +60,16 @@ namespace TimeForPill
             return RedirectToAction("Create", "Pacijents");
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Korisniks/Edit/5
+        public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var korisnik = await _context.Korisnici.FindAsync(id);
+            var korisnik = await _context.Users.FindAsync(id);
+
             if (korisnik == null)
             {
                 return NotFound();
@@ -68,34 +78,46 @@ namespace TimeForPill
             return korisnik switch
             {
                 Pacijent => RedirectToAction("Edit", "Pacijents", new { id }),
+
                 Ljekar => RedirectToAction("Edit", "Ljekars", new { id }),
+
                 Administrator => RedirectToAction("Edit", "Administrators", new { id }),
+
                 _ => RedirectToAction(nameof(Index))
             };
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Korisniks/Delete/5
+        public async Task<IActionResult> Delete(string? id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var korisnik = await _context.Korisnici
+            var korisnik = await _context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(k => k.Id == id);
 
-            return korisnik == null ? NotFound() : View(korisnik);
+            if (korisnik == null)
+            {
+                return NotFound();
+            }
+
+            return View(korisnik);
         }
 
+        // POST: Korisniks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var korisnik = await _context.Korisnici.FindAsync(id);
+            var korisnik = await _context.Users.FindAsync(id);
+
             if (korisnik != null)
             {
-                _context.Korisnici.Remove(korisnik);
+                _context.Users.Remove(korisnik);
+
                 await _context.SaveChangesAsync();
             }
 

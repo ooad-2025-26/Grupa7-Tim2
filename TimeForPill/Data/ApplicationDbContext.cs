@@ -4,37 +4,41 @@ using TimeForPill.Models;
 
 namespace TimeForPill.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Korisnik> Korisnici { get; set; }
         public DbSet<Pacijent> Pacijenti { get; set; }
         public DbSet<Ljekar> Ljekari { get; set; }
         public DbSet<Administrator> Administratori { get; set; }
+
         public DbSet<KontaktOsoba> KontaktOsobe { get; set; }
         public DbSet<Lijek> Lijekovi { get; set; }
         public DbSet<Terapija> Terapije { get; set; }
         public DbSet<Zahtjev> Zahtjevi { get; set; }
         public DbSet<Notifikacija> Notifikacije { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Korisnik>().ToTable("Korisnik");
-            modelBuilder.Entity<Pacijent>().ToTable("Pacijent");
-            modelBuilder.Entity<Ljekar>().ToTable("Ljekar");
-            modelBuilder.Entity<Administrator>().ToTable("Administrator");
+            // TPH inheritance
+            modelBuilder.Entity<ApplicationUser>().ToTable("Korisnici");
 
-            modelBuilder.Entity<KontaktOsoba>().ToTable("KontaktOsoba");
-            modelBuilder.Entity<Lijek>().ToTable("Lijek");
-            modelBuilder.Entity<Terapija>().ToTable("Terapija");
-            modelBuilder.Entity<Zahtjev>().ToTable("Zahtjev");
-            modelBuilder.Entity<Notifikacija>().ToTable("Notifikacija");
+            modelBuilder.Entity<Pacijent>();
+            modelBuilder.Entity<Ljekar>();
+            modelBuilder.Entity<Administrator>();
+
+            modelBuilder.Entity<KontaktOsoba>().ToTable("KontaktOsobe");
+            modelBuilder.Entity<Lijek>().ToTable("Lijekovi");
+            modelBuilder.Entity<Terapija>().ToTable("Terapije");
+            modelBuilder.Entity<Zahtjev>().ToTable("Zahtjevi");
+            modelBuilder.Entity<Notifikacija>().ToTable("Notifikacije");
+            modelBuilder.Entity<Ticket>().ToTable("Tickets");
 
             modelBuilder.Entity<Pacijent>()
                 .HasOne(p => p.KontaktOsoba)
@@ -70,6 +74,12 @@ namespace TimeForPill.Data
                 .HasOne(z => z.Terapija)
                 .WithMany(t => t.Zahtjevi)
                 .HasForeignKey(z => z.TerapijaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Korisnik)
+                .WithMany()
+                .HasForeignKey(t => t.KorisnikId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

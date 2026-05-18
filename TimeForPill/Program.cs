@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
+using TimeForPill.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +15,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             maxRetryDelay: TimeSpan.FromSeconds(10),
             errorNumbersToAdd: null)));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
+
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -33,21 +41,34 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
+
         context.Database.Migrate();
 
         if (!context.Database.CanConnect())
         {
-            throw new InvalidOperationException("Aplikacija ne moze uspostaviti vezu sa bazom iz DefaultConnection.");
+            throw new InvalidOperationException(
+                "Aplikacija ne moze uspostaviti vezu sa bazom iz DefaultConnection.");
         }
 
         var conn = context.Database.GetDbConnection();
-        logger.LogInformation("Database connection OK. DataSource={DataSource}, Database={Database}", conn.DataSource, conn.Database);
-        Console.WriteLine($"Database connection OK. DataSource={conn.DataSource}, Database={conn.Database}");
+
+        logger.LogInformation(
+            "Database connection OK. DataSource={DataSource}, Database={Database}",
+            conn.DataSource,
+            conn.Database);
+
+        Console.WriteLine(
+            $"Database connection OK. DataSource={conn.DataSource}, Database={conn.Database}");
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "An error occurred while migrating or initializing the database.");
-        Console.WriteLine("An error occurred while migrating or initializing the database. See logs for details: " + ex.Message);
+        logger.LogError(ex,
+            "An error occurred while migrating or initializing the database.");
+
+        Console.WriteLine(
+            "An error occurred while migrating or initializing the database. " +
+            "See logs for details: " + ex.Message);
+
         throw;
     }
 }
@@ -63,11 +84,13 @@ else
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

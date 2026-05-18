@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TimeForPill.Models
 {
-    public class Administrator : Korisnik
+    public class Administrator : ApplicationUser
     {
         [Required(ErrorMessage = "Datum imenovanja je obavezan.")]
         [DataType(DataType.Date)]

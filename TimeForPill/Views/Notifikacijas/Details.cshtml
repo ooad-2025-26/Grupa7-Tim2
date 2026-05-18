@@ -1,36 +1,25 @@
-﻿@model TimeForPill.Models.Notifikacija
+@model Notifikacija
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji notifikacije";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Notifikacija</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Naziv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Naziv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poruka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poruka)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TerapijaId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TerapijaId)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Podsjetnici</p>
+        <h1>@Model.Naziv</h1>
+    </div>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Uredi</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="details-shell">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Poruka</dt>
+        <dd class="col-sm-9">@Model.Poruka</dd>
+        <dt class="col-sm-3">Terapija</dt>
+        <dd class="col-sm-9">@(Model.Terapija?.Naziv ?? "Nije odabrana")</dd>
+    </dl>
 </div>

@@ -1,66 +1,33 @@
-﻿@model TimeForPill.Models.Terapija
+@model Terapija
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji terapije";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Terapija</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Naziv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Naziv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Pocetak)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Pocetak)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kraj)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kraj)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DnevnaDoza)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DnevnaDoza)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LijekId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LijekId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PacijentId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PacijentId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NotifikacijaID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NotifikacijaID)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Plan terapije</p>
+        <h1>@Model.Naziv</h1>
+    </div>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Uredi</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="details-shell">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">@Model.Status</dd>
+        <dt class="col-sm-3">Pocetak</dt>
+        <dd class="col-sm-9">@Model.Pocetak.ToString("dd.MM.yyyy")</dd>
+        <dt class="col-sm-3">Kraj</dt>
+        <dd class="col-sm-9">@Model.Kraj.ToString("dd.MM.yyyy")</dd>
+        <dt class="col-sm-3">Dnevna doza</dt>
+        <dd class="col-sm-9">@Model.DnevnaDoza</dd>
+        <dt class="col-sm-3">Lijek</dt>
+        <dd class="col-sm-9">@(Model.Lijek?.Naziv ?? "Nije odabran")</dd>
+        <dt class="col-sm-3">Pacijent</dt>
+        <dd class="col-sm-9">@(Model.Pacijent == null ? "Nije odabran" : Model.Pacijent.Ime + " " + Model.Pacijent.Prezime)</dd>
+    </dl>
 </div>

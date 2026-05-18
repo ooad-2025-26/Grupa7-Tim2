@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeForPill.Models
@@ -8,23 +8,40 @@ namespace TimeForPill.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Status terapije je obavezan.")]
         public StatusTerapije Status { get; set; }
 
-        public string Naziv { get; set; }
+        [Required(ErrorMessage = "Naziv terapije je obavezan.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Naziv terapije mora imati izmedju 2 i 100 karaktera.")]
+        public string Naziv { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Datum pocetka je obavezan.")]
+        [DataType(DataType.Date)]
         public DateTime Pocetak { get; set; }
 
+        [Required(ErrorMessage = "Datum kraja je obavezan.")]
+        [DataType(DataType.Date)]
         public DateTime Kraj { get; set; }
 
+        [Display(Name = "Dnevna doza")]
+        [Range(1, 20, ErrorMessage = "Dnevna doza mora biti izmedju 1 i 20.")]
         public int DnevnaDoza { get; set; }
 
-        [ForeignKey("Lijek")]
-        public int LijekId { get; set; }
+        [Display(Name = "Lijek")]
+        public int? LijekId { get; set; }
 
-        [ForeignKey("Pacijent")]
-        public int PacijentId { get; set; }
+        public Lijek? Lijek { get; set; }
 
-        [ForeignKey("Notifikacija")]
-        public int NotifikacijaID { get; set; }
+        [Display(Name = "Pacijent")]
+        public int? PacijentId { get; set; }
+
+        public Pacijent? Pacijent { get; set; }
+
+        [Display(Name = "Notifikacija")]
+        public int? NotifikacijaID { get; set; }
+
+        public ICollection<Notifikacija> Notifikacije { get; set; } = new List<Notifikacija>();
+
+        public ICollection<Zahtjev> Zahtjevi { get; set; } = new List<Zahtjev>();
     }
 }

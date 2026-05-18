@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +15,19 @@ namespace TimeForPill
             _context = context;
         }
 
-        // GET: Pacijents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Pacijenti.ToListAsync());
+            var pacijenti = await _context.Pacijenti
+                .Include(p => p.Ljekar)
+                .Include(p => p.KontaktOsoba)
+                .AsNoTracking()
+                .OrderBy(p => p.Prezime)
+                .ThenBy(p => p.Ime)
+                .ToListAsync();
+
+            return View(pacijenti);
         }
 
-        // GET: Pacijents/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +36,51 @@ namespace TimeForPill
             }
 
             var pacijent = await _context.Pacijenti
+                .Include(p => p.Ljekar)
+                .Include(p => p.KontaktOsoba)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (pacijent == null)
-            {
-                return NotFound();
-            }
 
-            return View(pacijent);
+            return pacijent == null ? NotFound() : View(pacijent);
         }
 
-        // GET: Pacijents/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            await PopulateListsAsync();
+
+            return View(new Pacijent
+            {
+                DatumRodjenja = DateTime.Today.AddYears(-18),
+                KontaktOsoba = new KontaktOsoba()
+            });
         }
 
-        // POST: Pacijents/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LjekarId,TerapijaId,Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Pacijent pacijent)
+        public async Task<IActionResult> Create(Pacijent pacijent)
         {
-            if (ModelState.IsValid)
+            pacijent.KontaktOsoba ??= new KontaktOsoba();
+
+            if (!ModelState.IsValid)
+            {
+                await PopulateListsAsync(pacijent.LjekarId);
+                return View(pacijent);
+            }
+
+            try
             {
                 _context.Add(pacijent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pacijent);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Pacijent nije sacuvan. Provjerite podatke i vezu sa bazom.");
+                await PopulateListsAsync(pacijent.LjekarId);
+                return View(pacijent);
+            }
         }
 
-        // GET: Pacijents/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,50 +88,82 @@ namespace TimeForPill
                 return NotFound();
             }
 
-            var pacijent = await _context.Pacijenti.FindAsync(id);
+            var pacijent = await _context.Pacijenti
+                .Include(p => p.KontaktOsoba)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (pacijent == null)
             {
                 return NotFound();
             }
+
+            pacijent.KontaktOsoba ??= new KontaktOsoba();
+            await PopulateListsAsync(pacijent.LjekarId);
             return View(pacijent);
         }
 
-        // POST: Pacijents/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LjekarId,TerapijaId,Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Pacijent pacijent)
+        public async Task<IActionResult> Edit(int id, Pacijent pacijent)
         {
+            pacijent.KontaktOsoba ??= new KontaktOsoba();
+
             if (id != pacijent.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(pacijent);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PacijentExists(pacijent.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await PopulateListsAsync(pacijent.LjekarId);
+                return View(pacijent);
+            }
+
+            var postojeciPacijent = await _context.Pacijenti
+                .Include(p => p.KontaktOsoba)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (postojeciPacijent == null)
+            {
+                return NotFound();
+            }
+
+            postojeciPacijent.Ime = pacijent.Ime;
+            postojeciPacijent.Prezime = pacijent.Prezime;
+            postojeciPacijent.Email = pacijent.Email;
+            postojeciPacijent.Lozinka = pacijent.Lozinka;
+            postojeciPacijent.DatumRodjenja = pacijent.DatumRodjenja;
+            postojeciPacijent.Spol = pacijent.Spol;
+            postojeciPacijent.LjekarId = pacijent.LjekarId;
+
+            postojeciPacijent.KontaktOsoba ??= new KontaktOsoba();
+            postojeciPacijent.KontaktOsoba.Ime = pacijent.KontaktOsoba.Ime;
+            postojeciPacijent.KontaktOsoba.Prezime = pacijent.KontaktOsoba.Prezime;
+            postojeciPacijent.KontaktOsoba.Email = pacijent.KontaktOsoba.Email;
+            postojeciPacijent.KontaktOsoba.BrojTelefona = pacijent.KontaktOsoba.BrojTelefona;
+
+            try
+            {
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pacijent);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PacijentExists(pacijent.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite podatke i vezu sa bazom.");
+                await PopulateListsAsync(pacijent.LjekarId);
+                return View(pacijent);
+            }
         }
 
-        // GET: Pacijents/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,28 +172,46 @@ namespace TimeForPill
             }
 
             var pacijent = await _context.Pacijenti
+                .Include(p => p.Ljekar)
+                .Include(p => p.KontaktOsoba)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (pacijent == null)
-            {
-                return NotFound();
-            }
 
-            return View(pacijent);
+            return pacijent == null ? NotFound() : View(pacijent);
         }
 
-        // POST: Pacijents/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pacijent = await _context.Pacijenti.FindAsync(id);
+            var pacijent = await _context.Pacijenti
+                .Include(p => p.KontaktOsoba)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (pacijent != null)
             {
+                if (pacijent.KontaktOsoba != null)
+                {
+                    _context.KontaktOsobe.Remove(pacijent.KontaktOsoba);
+                }
+
                 _context.Pacijenti.Remove(pacijent);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task PopulateListsAsync(int? selectedLjekarId = null)
+        {
+            var ljekari = await _context.Ljekari
+                .AsNoTracking()
+                .OrderBy(l => l.Prezime)
+                .ThenBy(l => l.Ime)
+                .Select(l => new { l.Id, Naziv = l.Ime + " " + l.Prezime })
+                .ToListAsync();
+
+            ViewData["LjekarId"] = new SelectList(ljekari, "Id", "Naziv", selectedLjekarId);
         }
 
         private bool PacijentExists(int id)

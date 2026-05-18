@@ -1,66 +1,35 @@
-﻿@model TimeForPill.Models.Pacijent
+@model Pacijent
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji pacijenta";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Pacijent</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LjekarId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LjekarId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TerapijaId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TerapijaId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prezime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prezime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lozinka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lozinka)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumRodjenja)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumRodjenja)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Spol)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Spol)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Korisnici</p>
+        <h1>@Model.Ime @Model.Prezime</h1>
+    </div>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Uredi</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="details-shell">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Datum rodjenja</dt>
+        <dd class="col-sm-9">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</dd>
+        <dt class="col-sm-3">Spol</dt>
+        <dd class="col-sm-9">@Model.Spol</dd>
+        <dt class="col-sm-3">Ljekar</dt>
+        <dd class="col-sm-9">@(Model.Ljekar == null ? "Nije dodijeljen" : Model.Ljekar.Ime + " " + Model.Ljekar.Prezime)</dd>
+        <dt class="col-sm-3">Kontakt osoba</dt>
+        <dd class="col-sm-9">@(Model.KontaktOsoba == null ? "Nema kontakta" : Model.KontaktOsoba.Ime + " " + Model.KontaktOsoba.Prezime)</dd>
+        <dt class="col-sm-3">Kontakt email</dt>
+        <dd class="col-sm-9">@(Model.KontaktOsoba == null ? "-" : Model.KontaktOsoba.Email)</dd>
+        <dt class="col-sm-3">Kontakt telefon</dt>
+        <dd class="col-sm-9">@(Model.KontaktOsoba == null ? "-" : Model.KontaktOsoba.BrojTelefona)</dd>
+    </dl>
 </div>

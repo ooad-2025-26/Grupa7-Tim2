@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
 using TimeForPill.Models;
@@ -19,13 +14,17 @@ namespace TimeForPill
             _context = context;
         }
 
-        // GET: Korisniks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Korisnici.ToListAsync());
+            var korisnici = await _context.Korisnici
+                .AsNoTracking()
+                .OrderBy(k => k.Prezime)
+                .ThenBy(k => k.Ime)
+                .ToListAsync();
+
+            return View(korisnici);
         }
 
-        // GET: Korisniks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +33,25 @@ namespace TimeForPill
             }
 
             var korisnik = await _context.Korisnici
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (korisnik == null)
-            {
-                return NotFound();
-            }
 
-            return View(korisnik);
+            return korisnik == null ? NotFound() : View(korisnik);
         }
 
-        // GET: Korisniks/Create
         public IActionResult Create()
         {
-            return View();
+            return RedirectToAction("Create", "Pacijents");
         }
 
-        // POST: Korisniks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Korisnik korisnik)
+        public IActionResult CreatePost()
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(korisnik);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(korisnik);
+            return RedirectToAction("Create", "Pacijents");
         }
 
-        // GET: Korisniks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,45 +64,16 @@ namespace TimeForPill
             {
                 return NotFound();
             }
-            return View(korisnik);
+
+            return korisnik switch
+            {
+                Pacijent => RedirectToAction("Edit", "Pacijents", new { id }),
+                Ljekar => RedirectToAction("Edit", "Ljekars", new { id }),
+                Administrator => RedirectToAction("Edit", "Administrators", new { id }),
+                _ => RedirectToAction(nameof(Index))
+            };
         }
 
-        // POST: Korisniks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Korisnik korisnik)
-        {
-            if (id != korisnik.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(korisnik);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!KorisnikExists(korisnik.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(korisnik);
-        }
-
-        // GET: Korisniks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +82,12 @@ namespace TimeForPill
             }
 
             var korisnik = await _context.Korisnici
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (korisnik == null)
-            {
-                return NotFound();
-            }
 
-            return View(korisnik);
+            return korisnik == null ? NotFound() : View(korisnik);
         }
 
-        // POST: Korisniks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,15 +96,10 @@ namespace TimeForPill
             if (korisnik != null)
             {
                 _context.Korisnici.Remove(korisnik);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool KorisnikExists(int id)
-        {
-            return _context.Korisnici.Any(e => e.Id == id);
         }
     }
 }

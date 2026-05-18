@@ -1,6 +1,45 @@
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Pocetna";
 }
 
-<h1>Dobrodošli u TimeForPill</h1>
-<p>Počnite navigacijom kroz meni.</p>
+<section class="home-hero">
+    <div>
+        <p class="eyebrow">Pregled sistema</p>
+        <h1>TimeForPill</h1>
+        <p class="lead">Web aplikacija za evidenciju lijekova, pacijenata, terapija, notifikacija i zahtjeva.</p>
+    </div>
+    <a class="btn btn-primary btn-lg" asp-controller="Lijeks" asp-action="Create">Dodaj lijek</a>
+</section>
+
+<section class="dashboard-grid">
+    <a class="module-card" asp-controller="Lijeks" asp-action="Index">
+        <span class="module-icon">Rx</span>
+        <strong>Lijekovi</strong>
+        <small>Katalog lijekova i kategorija</small>
+    </a>
+    <a class="module-card" asp-controller="Terapijas" asp-action="Index">
+        <span class="module-icon">T</span>
+        <strong>Terapije</strong>
+        <small>Raspored i dnevne doze</small>
+    </a>
+    <a class="module-card" asp-controller="Pacijents" asp-action="Index">
+        <span class="module-icon">P</span>
+        <strong>Pacijenti</strong>
+        <small>Podaci pacijenata i kontakt osoba</small>
+    </a>
+    <a class="module-card" asp-controller="Ljekars" asp-action="Index">
+        <span class="module-icon">L</span>
+        <strong>Ljekari</strong>
+        <small>Specijalizacije i dodjele pacijentima</small>
+    </a>
+    <a class="module-card" asp-controller="Notifikacijas" asp-action="Index">
+        <span class="module-icon">N</span>
+        <strong>Notifikacije</strong>
+        <small>Podsjetnici vezani za terapije</small>
+    </a>
+    <a class="module-card" asp-controller="Zahtjevs" asp-action="Index">
+        <span class="module-icon">Z</span>
+        <strong>Zahtjevi</strong>
+        <small>Obrada zahtjeva za terapije</small>
+    </a>
+</section>

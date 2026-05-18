@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
 using TimeForPill.Models;
@@ -12,20 +7,34 @@ namespace TimeForPill
 {
     public class LijeksController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private static readonly HashSet<string> DozvoljeneEkstenzije = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".gif",
+            ".webp"
+        };
 
-        public LijeksController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
+
+        public LijeksController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
-        // GET: Lijeks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Lijekovi.ToListAsync());
+            var lijekovi = await _context.Lijekovi
+                .AsNoTracking()
+                .OrderBy(l => l.Naziv)
+                .ToListAsync();
+
+            return View(lijekovi);
         }
 
-        // GET: Lijeks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +43,41 @@ namespace TimeForPill
             }
 
             var lijek = await _context.Lijekovi
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (lijek == null)
-            {
-                return NotFound();
-            }
 
-            return View(lijek);
+            return lijek == null ? NotFound() : View(lijek);
         }
 
-        // GET: Lijeks/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Lijek());
         }
 
-        // POST: Lijeks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek)
+        public async Task<IActionResult> Create([Bind("Naziv,Kategorija,Slika")] Lijek lijek, IFormFile? SlikaFile)
         {
-            if (ModelState.IsValid)
+            await TryAttachImageAsync(lijek, SlikaFile);
+
+            if (!ModelState.IsValid)
+            {
+                return View(lijek);
+            }
+
+            try
             {
                 _context.Add(lijek);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(lijek);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Lijek nije sacuvan. Provjerite vezu sa bazom i pokusajte ponovo.");
+                return View(lijek);
+            }
         }
 
-        // GET: Lijeks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,49 +86,60 @@ namespace TimeForPill
             }
 
             var lijek = await _context.Lijekovi.FindAsync(id);
-            if (lijek == null)
-            {
-                return NotFound();
-            }
-            return View(lijek);
+            return lijek == null ? NotFound() : View(lijek);
         }
 
-        // POST: Lijeks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek, IFormFile? SlikaFile)
         {
             if (id != lijek.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var postojeciLijek = await _context.Lijekovi.FindAsync(id);
+            if (postojeciLijek == null)
             {
-                try
-                {
-                    _context.Update(lijek);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LijekExists(lijek.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                return NotFound();
+            }
+
+            await TryAttachImageAsync(lijek, SlikaFile);
+            if (string.IsNullOrWhiteSpace(lijek.Slika))
+            {
+                lijek.Slika = postojeciLijek.Slika;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(lijek);
+            }
+
+            postojeciLijek.Naziv = lijek.Naziv;
+            postojeciLijek.Kategorija = lijek.Kategorija;
+            postojeciLijek.Slika = lijek.Slika;
+
+            try
+            {
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(lijek);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LijekExists(lijek.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite vezu sa bazom i pokusajte ponovo.");
+                return View(lijek);
+            }
         }
 
-        // GET: Lijeks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +148,12 @@ namespace TimeForPill
             }
 
             var lijek = await _context.Lijekovi
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (lijek == null)
-            {
-                return NotFound();
-            }
 
-            return View(lijek);
+            return lijek == null ? NotFound() : View(lijek);
         }
 
-        // POST: Lijeks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,10 +162,43 @@ namespace TimeForPill
             if (lijek != null)
             {
                 _context.Lijekovi.Remove(lijek);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task TryAttachImageAsync(Lijek lijek, IFormFile? slikaFile)
+        {
+            if (slikaFile == null || slikaFile.Length == 0)
+            {
+                lijek.Slika ??= string.Empty;
+                return;
+            }
+
+            var extension = Path.GetExtension(slikaFile.FileName);
+            if (!DozvoljeneEkstenzije.Contains(extension))
+            {
+                ModelState.AddModelError(nameof(Lijek.Slika), "Dozvoljene su samo JPG, PNG, GIF i WEBP slike.");
+                return;
+            }
+
+            if (slikaFile.Length > 2 * 1024 * 1024)
+            {
+                ModelState.AddModelError(nameof(Lijek.Slika), "Slika moze biti velika najvise 2 MB.");
+                return;
+            }
+
+            var uploads = Path.Combine(_env.WebRootPath, "images");
+            Directory.CreateDirectory(uploads);
+
+            var fileName = $"{Guid.NewGuid():N}{extension}";
+            var filePath = Path.Combine(uploads, fileName);
+
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await slikaFile.CopyToAsync(stream);
+
+            lijek.Slika = $"/images/{fileName}";
         }
 
         private bool LijekExists(int id)

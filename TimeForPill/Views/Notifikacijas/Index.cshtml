@@ -1,47 +1,43 @@
-﻿@model IEnumerable<TimeForPill.Models.Notifikacija>
+@model IEnumerable<Notifikacija>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notifikacije";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Podsjetnici</p>
+        <h1>Notifikacije</h1>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Dodaj notifikaciju</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Naziv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Poruka)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TerapijaId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naziv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Poruka)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TerapijaId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-shell table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Poruka</th>
+                <th>Terapija</th>
+                <th class="text-end">Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><strong>@item.Naziv</strong></td>
+                <td>@item.Poruka</td>
+                <td>@(item.Terapija?.Naziv ?? "Nije odabrana")</td>
+                <td>
+                    <div class="actions">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Uredi</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Detalji</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Obrisi</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

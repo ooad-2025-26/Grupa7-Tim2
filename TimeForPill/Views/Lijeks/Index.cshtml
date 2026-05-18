@@ -1,47 +1,52 @@
-﻿@model IEnumerable<TimeForPill.Models.Lijek>
+@model IEnumerable<Lijek>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lijekovi";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Katalog</p>
+        <h1>Lijekovi</h1>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Dodaj lijek</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Naziv)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Kategorija)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Slika)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naziv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Kategorija)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slika)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-shell table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Slika</th>
+                <th>Naziv</th>
+                <th>Kategorija</th>
+                <th class="text-end">Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(item.Slika))
+                    {
+                        <img class="pill-img" src="@item.Slika" alt="@item.Naziv" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Nema slike</span>
+                    }
+                </td>
+                <td><strong>@item.Naziv</strong></td>
+                <td>@item.Kategorija</td>
+                <td>
+                    <div class="actions">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Uredi</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Detalji</a>
+                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Obrisi</a>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

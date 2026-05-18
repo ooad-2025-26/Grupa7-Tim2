@@ -1,36 +1,31 @@
-﻿@model TimeForPill.Models.Lijek
+@model Lijek
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji lijeka";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Lijek</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Naziv)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Naziv)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kategorija)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kategorija)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slika)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slika)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Katalog</p>
+        <h1>@Model.Naziv</h1>
+    </div>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Uredi</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="details-shell">
+    @if (!string.IsNullOrWhiteSpace(Model.Slika))
+    {
+        <img class="pill-img mb-3" src="@Model.Slika" alt="@Model.Naziv" />
+    }
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Naziv</dt>
+        <dd class="col-sm-9">@Model.Naziv</dd>
+        <dt class="col-sm-3">Kategorija</dt>
+        <dd class="col-sm-9">@Model.Kategorija</dd>
+        <dt class="col-sm-3">Slika</dt>
+        <dd class="col-sm-9">@(string.IsNullOrWhiteSpace(Model.Slika) ? "Nema slike" : Model.Slika)</dd>
+    </dl>
 </div>

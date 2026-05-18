@@ -1,0 +1,170 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using TimeForPill.Data;
+using TimeForPill.Models;
+
+namespace TimeForPill
+{
+    public class LijeksController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly Microsoft.Extensions.Logging.ILogger<LijeksController> _logger;
+
+        public LijeksController(ApplicationDbContext context, Microsoft.Extensions.Logging.ILogger<LijeksController> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
+
+        // GET: Lijeks
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Lijekovi.ToListAsync());
+        }
+
+        // GET: Lijeks/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lijek = await _context.Lijekovi
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (lijek == null)
+            {
+                return NotFound();
+            }
+
+            return View(lijek);
+        }
+
+        // GET: Lijeks/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Lijeks/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Add(lijek);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Saved Lijek: {Naziv}", lijek.Naziv);
+                    Console.WriteLine($"Saved Lijek: {lijek.Naziv}");
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error saving Lijek");
+                    Console.WriteLine("Error saving Lijek: " + ex.Message);
+                    ModelState.AddModelError(string.Empty, "Došlo je do greške pri spremanju u bazu. Provjeri logove.");
+                }
+            }
+            return View(lijek);
+        }
+
+        // GET: Lijeks/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lijek = await _context.Lijekovi.FindAsync(id);
+            if (lijek == null)
+            {
+                return NotFound();
+            }
+            return View(lijek);
+        }
+
+        // POST: Lijeks/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek)
+        {
+            if (id != lijek.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(lijek);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LijekExists(lijek.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(lijek);
+        }
+
+        // GET: Lijeks/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lijek = await _context.Lijekovi
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (lijek == null)
+            {
+                return NotFound();
+            }
+
+            return View(lijek);
+        }
+
+        // POST: Lijeks/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var lijek = await _context.Lijekovi.FindAsync(id);
+            if (lijek != null)
+            {
+                _context.Lijekovi.Remove(lijek);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool LijekExists(int id)
+        {
+            return _context.Lijekovi.Any(e => e.Id == id);
+        }
+    }
+}

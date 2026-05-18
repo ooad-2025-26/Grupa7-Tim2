@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeForPill.Models
 {
@@ -7,8 +7,17 @@ namespace TimeForPill.Models
         [Key]
         public int Id { get; set; }
 
-        public string Naziv { get; set; }
-        public string Kategorija { get; set; }
-        public string Slika { get; set; }
+        [Required(ErrorMessage = "Naziv lijeka je obavezan.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Naziv mora imati izmedju 2 i 100 karaktera.")]
+        public string Naziv { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Kategorija je obavezna.")]
+        [StringLength(80, MinimumLength = 2, ErrorMessage = "Kategorija mora imati izmedju 2 i 80 karaktera.")]
+        public string Kategorija { get; set; } = string.Empty;
+
+        [StringLength(260, ErrorMessage = "Putanja slike moze imati najvise 260 karaktera.")]
+        public string? Slika { get; set; }
+
+        public ICollection<Terapija> Terapije { get; set; } = new List<Terapija>();
     }
 }

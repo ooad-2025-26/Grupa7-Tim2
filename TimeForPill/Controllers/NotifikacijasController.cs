@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +15,17 @@ namespace TimeForPill
             _context = context;
         }
 
-        // GET: Notifikacijas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Notifikacije.ToListAsync());
+            var notifikacije = await _context.Notifikacije
+                .Include(n => n.Terapija)
+                .AsNoTracking()
+                .OrderBy(n => n.Naziv)
+                .ToListAsync();
+
+            return View(notifikacije);
         }
 
-        // GET: Notifikacijas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +34,45 @@ namespace TimeForPill
             }
 
             var notifikacija = await _context.Notifikacije
+                .Include(n => n.Terapija)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (notifikacija == null)
-            {
-                return NotFound();
-            }
 
-            return View(notifikacija);
+            return notifikacija == null ? NotFound() : View(notifikacija);
         }
 
-        // GET: Notifikacijas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            await PopulateListsAsync();
+            return View(new Notifikacija());
         }
 
-        // POST: Notifikacijas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naziv,Poruka,TerapijaId")] Notifikacija notifikacija)
+        public async Task<IActionResult> Create([Bind("Naziv,Poruka,TerapijaId")] Notifikacija notifikacija)
         {
-            if (ModelState.IsValid)
+            ValidateTerapija(notifikacija);
+
+            if (!ModelState.IsValid)
+            {
+                await PopulateListsAsync(notifikacija.TerapijaId);
+                return View(notifikacija);
+            }
+
+            try
             {
                 _context.Add(notifikacija);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(notifikacija);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Notifikacija nije sacuvana. Provjerite terapiju i vezu sa bazom.");
+                await PopulateListsAsync(notifikacija.TerapijaId);
+                return View(notifikacija);
+            }
         }
 
-        // GET: Notifikacijas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,12 +85,11 @@ namespace TimeForPill
             {
                 return NotFound();
             }
+
+            await PopulateListsAsync(notifikacija.TerapijaId);
             return View(notifikacija);
         }
 
-        // POST: Notifikacijas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Poruka,TerapijaId")] Notifikacija notifikacija)
@@ -93,30 +99,37 @@ namespace TimeForPill
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            ValidateTerapija(notifikacija);
+
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(notifikacija);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!NotifikacijaExists(notifikacija.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await PopulateListsAsync(notifikacija.TerapijaId);
+                return View(notifikacija);
+            }
+
+            try
+            {
+                _context.Update(notifikacija);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(notifikacija);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!NotifikacijaExists(notifikacija.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite terapiju i vezu sa bazom.");
+                await PopulateListsAsync(notifikacija.TerapijaId);
+                return View(notifikacija);
+            }
         }
 
-        // GET: Notifikacijas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +138,13 @@ namespace TimeForPill
             }
 
             var notifikacija = await _context.Notifikacije
+                .Include(n => n.Terapija)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (notifikacija == null)
-            {
-                return NotFound();
-            }
 
-            return View(notifikacija);
+            return notifikacija == null ? NotFound() : View(notifikacija);
         }
 
-        // POST: Notifikacijas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,10 +153,29 @@ namespace TimeForPill
             if (notifikacija != null)
             {
                 _context.Notifikacije.Remove(notifikacija);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task PopulateListsAsync(int? selectedTerapijaId = null)
+        {
+            var terapije = await _context.Terapije
+                .AsNoTracking()
+                .OrderBy(t => t.Naziv)
+                .Select(t => new { t.Id, t.Naziv })
+                .ToListAsync();
+
+            ViewData["TerapijaId"] = new SelectList(terapije, "Id", "Naziv", selectedTerapijaId);
+        }
+
+        private void ValidateTerapija(Notifikacija notifikacija)
+        {
+            if (!notifikacija.TerapijaId.HasValue)
+            {
+                ModelState.AddModelError(nameof(Notifikacija.TerapijaId), "Odaberite terapiju.");
+            }
         }
 
         private bool NotifikacijaExists(int id)

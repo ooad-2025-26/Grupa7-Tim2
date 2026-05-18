@@ -1,64 +1,65 @@
-﻿@model TimeForPill.Models.Administrator
+@model Administrator
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Uredi administratora";
 }
 
-<h1>Edit</h1>
-
-<h4>Administrator</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="datumImenovanja" class="control-label"></label>
-                <input asp-for="datumImenovanja" class="form-control" />
-                <span asp-validation-for="datumImenovanja" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Ime" class="control-label"></label>
-                <input asp-for="Ime" class="form-control" />
-                <span asp-validation-for="Ime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Prezime" class="control-label"></label>
-                <input asp-for="Prezime" class="form-control" />
-                <span asp-validation-for="Prezime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Lozinka" class="control-label"></label>
-                <input asp-for="Lozinka" class="form-control" />
-                <span asp-validation-for="Lozinka" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DatumRodjenja" class="control-label"></label>
-                <input asp-for="DatumRodjenja" class="form-control" />
-                <span asp-validation-for="DatumRodjenja" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Spol" class="control-label"></label>
-                <select asp-for="Spol" class="form-control"></select>
-                <span asp-validation-for="Spol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Korisnici</p>
+        <h1>Uredi administratora</h1>
     </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="form-shell">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+        <div class="form-grid">
+            <div>
+                <label asp-for="Ime" class="form-label"></label>
+                <input asp-for="Ime" class="form-control" />
+                <span asp-validation-for="Ime"></span>
+            </div>
+            <div>
+                <label asp-for="Prezime" class="form-label"></label>
+                <input asp-for="Prezime" class="form-control" />
+                <span asp-validation-for="Prezime"></span>
+            </div>
+            <div>
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div>
+                <label asp-for="Lozinka" class="form-label"></label>
+                <input asp-for="Lozinka" class="form-control" />
+                <span asp-validation-for="Lozinka"></span>
+            </div>
+            <div>
+                <label asp-for="DatumRodjenja" class="form-label"></label>
+                <input asp-for="DatumRodjenja" class="form-control" />
+                <span asp-validation-for="DatumRodjenja"></span>
+            </div>
+            <div>
+                <label asp-for="datumImenovanja" class="form-label"></label>
+                <input asp-for="datumImenovanja" class="form-control" />
+                <span asp-validation-for="datumImenovanja"></span>
+            </div>
+            <div class="span-2">
+                <label asp-for="Spol" class="form-label"></label>
+                <select asp-for="Spol" asp-items="Html.GetEnumSelectList<Spol>()" class="form-select"></select>
+                <span asp-validation-for="Spol"></span>
+            </div>
+        </div>
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Sacuvaj izmjene</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Odustani</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

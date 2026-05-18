@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
 using TimeForPill.Models;
@@ -19,13 +14,17 @@ namespace TimeForPill
             _context = context;
         }
 
-        // GET: Ljekars
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ljekari.ToListAsync());
+            var ljekari = await _context.Ljekari
+                .AsNoTracking()
+                .OrderBy(l => l.Prezime)
+                .ThenBy(l => l.Ime)
+                .ToListAsync();
+
+            return View(ljekari);
         }
 
-        // GET: Ljekars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +33,39 @@ namespace TimeForPill
             }
 
             var ljekar = await _context.Ljekari
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ljekar == null)
-            {
-                return NotFound();
-            }
 
-            return View(ljekar);
+            return ljekar == null ? NotFound() : View(ljekar);
         }
 
-        // GET: Ljekars/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Ljekar { DatumRodjenja = DateTime.Today.AddYears(-35) });
         }
 
-        // POST: Ljekars/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Specijalizacija,Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
+        public async Task<IActionResult> Create([Bind("Specijalizacija,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                return View(ljekar);
+            }
+
+            try
             {
                 _context.Add(ljekar);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(ljekar);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Ljekar nije sacuvan. Provjerite podatke i vezu sa bazom.");
+                return View(ljekar);
+            }
         }
 
-        // GET: Ljekars/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,49 +74,45 @@ namespace TimeForPill
             }
 
             var ljekar = await _context.Ljekari.FindAsync(id);
-            if (ljekar == null)
-            {
-                return NotFound();
-            }
-            return View(ljekar);
+            return ljekar == null ? NotFound() : View(ljekar);
         }
 
-        // POST: Ljekars/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Specijalizacija,Id,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Specijalizacija,Ime,Prezime,Email,Lozinka,DatumRodjenja,Spol")] Ljekar ljekar)
         {
             if (id != ljekar.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(ljekar);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LjekarExists(ljekar.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                return View(ljekar);
+            }
+
+            try
+            {
+                _context.Update(ljekar);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(ljekar);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LjekarExists(ljekar.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite podatke i vezu sa bazom.");
+                return View(ljekar);
+            }
         }
 
-        // GET: Ljekars/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +121,12 @@ namespace TimeForPill
             }
 
             var ljekar = await _context.Ljekari
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (ljekar == null)
-            {
-                return NotFound();
-            }
 
-            return View(ljekar);
+            return ljekar == null ? NotFound() : View(ljekar);
         }
 
-        // POST: Ljekars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,9 +135,9 @@ namespace TimeForPill
             if (ljekar != null)
             {
                 _context.Ljekari.Remove(ljekar);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

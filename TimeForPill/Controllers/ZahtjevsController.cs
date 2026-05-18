@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +15,18 @@ namespace TimeForPill
             _context = context;
         }
 
-        // GET: Zahtjevs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Zahtjevi.ToListAsync());
+            var zahtjevi = await _context.Zahtjevi
+                .Include(z => z.Terapija)
+                .AsNoTracking()
+                .OrderBy(z => z.Status)
+                .ThenBy(z => z.Naziv)
+                .ToListAsync();
+
+            return View(zahtjevi);
         }
 
-        // GET: Zahtjevs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,38 +35,45 @@ namespace TimeForPill
             }
 
             var zahtjev = await _context.Zahtjevi
+                .Include(z => z.Terapija)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (zahtjev == null)
-            {
-                return NotFound();
-            }
 
-            return View(zahtjev);
+            return zahtjev == null ? NotFound() : View(zahtjev);
         }
 
-        // GET: Zahtjevs/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            await PopulateListsAsync();
+            return View(new Zahtjev { Status = StatusZahtjeva.Neobraden });
         }
 
-        // POST: Zahtjevs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Naziv,Sadrzaj,TerapijaId,Status")] Zahtjev zahtjev)
+        public async Task<IActionResult> Create([Bind("Naziv,Sadrzaj,TerapijaId,Status")] Zahtjev zahtjev)
         {
-            if (ModelState.IsValid)
+            ValidateTerapija(zahtjev);
+
+            if (!ModelState.IsValid)
+            {
+                await PopulateListsAsync(zahtjev.TerapijaId);
+                return View(zahtjev);
+            }
+
+            try
             {
                 _context.Add(zahtjev);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(zahtjev);
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Zahtjev nije sacuvan. Provjerite terapiju i vezu sa bazom.");
+                await PopulateListsAsync(zahtjev.TerapijaId);
+                return View(zahtjev);
+            }
         }
 
-        // GET: Zahtjevs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,12 +86,11 @@ namespace TimeForPill
             {
                 return NotFound();
             }
+
+            await PopulateListsAsync(zahtjev.TerapijaId);
             return View(zahtjev);
         }
 
-        // POST: Zahtjevs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Sadrzaj,TerapijaId,Status")] Zahtjev zahtjev)
@@ -93,30 +100,37 @@ namespace TimeForPill
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            ValidateTerapija(zahtjev);
+
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(zahtjev);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ZahtjevExists(zahtjev.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await PopulateListsAsync(zahtjev.TerapijaId);
+                return View(zahtjev);
+            }
+
+            try
+            {
+                _context.Update(zahtjev);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(zahtjev);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ZahtjevExists(zahtjev.Id))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError(string.Empty, "Izmjene nisu sacuvane. Provjerite terapiju i vezu sa bazom.");
+                await PopulateListsAsync(zahtjev.TerapijaId);
+                return View(zahtjev);
+            }
         }
 
-        // GET: Zahtjevs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,16 +139,13 @@ namespace TimeForPill
             }
 
             var zahtjev = await _context.Zahtjevi
+                .Include(z => z.Terapija)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (zahtjev == null)
-            {
-                return NotFound();
-            }
 
-            return View(zahtjev);
+            return zahtjev == null ? NotFound() : View(zahtjev);
         }
 
-        // POST: Zahtjevs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -143,10 +154,29 @@ namespace TimeForPill
             if (zahtjev != null)
             {
                 _context.Zahtjevi.Remove(zahtjev);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task PopulateListsAsync(int? selectedTerapijaId = null)
+        {
+            var terapije = await _context.Terapije
+                .AsNoTracking()
+                .OrderBy(t => t.Naziv)
+                .Select(t => new { t.Id, t.Naziv })
+                .ToListAsync();
+
+            ViewData["TerapijaId"] = new SelectList(terapije, "Id", "Naziv", selectedTerapijaId);
+        }
+
+        private void ValidateTerapija(Zahtjev zahtjev)
+        {
+            if (!zahtjev.TerapijaId.HasValue)
+            {
+                ModelState.AddModelError(nameof(Zahtjev.TerapijaId), "Odaberite terapiju.");
+            }
         }
 
         private bool ZahtjevExists(int id)

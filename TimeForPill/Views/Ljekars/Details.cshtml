@@ -1,60 +1,29 @@
-﻿@model TimeForPill.Models.Ljekar
+@model Ljekar
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalji ljekara";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Ljekar</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Specijalizacija)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Specijalizacija)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Prezime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Prezime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lozinka)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lozinka)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatumRodjenja)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatumRodjenja)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Spol)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Spol)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Korisnici</p>
+        <h1>@Model.Ime @Model.Prezime</h1>
+    </div>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Uredi</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="details-shell">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Datum rodjenja</dt>
+        <dd class="col-sm-9">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</dd>
+        <dt class="col-sm-3">Spol</dt>
+        <dd class="col-sm-9">@Model.Spol</dd>
+        <dt class="col-sm-3">Specijalizacija</dt>
+        <dd class="col-sm-9">@Model.Specijalizacija</dd>
+    </dl>
 </div>

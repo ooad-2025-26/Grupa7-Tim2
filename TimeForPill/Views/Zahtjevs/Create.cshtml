@@ -1,48 +1,51 @@
-﻿@model TimeForPill.Models.Zahtjev
+@model Zahtjev
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novi zahtjev";
 }
 
-<h1>Create</h1>
-
-<h4>Zahtjev</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Naziv" class="control-label"></label>
-                <input asp-for="Naziv" class="form-control" />
-                <span asp-validation-for="Naziv" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sadrzaj" class="control-label"></label>
-                <input asp-for="Sadrzaj" class="form-control" />
-                <span asp-validation-for="Sadrzaj" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TerapijaId" class="control-label"></label>
-                <input asp-for="TerapijaId" class="form-control" />
-                <span asp-validation-for="TerapijaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Obrada</p>
+        <h1>Novi zahtjev</h1>
     </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">Nazad</a>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="form-shell">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="mb-3"></div>
+        <div class="form-grid">
+            <div>
+                <label asp-for="Naziv" class="form-label"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv"></span>
+            </div>
+            <div>
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<StatusZahtjeva>()" class="form-select"></select>
+                <span asp-validation-for="Status"></span>
+            </div>
+            <div class="span-2">
+                <label asp-for="TerapijaId" class="form-label"></label>
+                <select asp-for="TerapijaId" asp-items="ViewBag.TerapijaId" class="form-select">
+                    <option value="">Odaberite terapiju</option>
+                </select>
+                <span asp-validation-for="TerapijaId"></span>
+            </div>
+            <div class="span-2">
+                <label asp-for="Sadrzaj" class="form-label"></label>
+                <textarea asp-for="Sadrzaj" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Sadrzaj"></span>
+            </div>
+        </div>
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Sacuvaj</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Odustani</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

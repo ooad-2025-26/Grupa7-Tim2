@@ -517,10 +517,10 @@ C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.development.json
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\swae.build.ex.cache
-C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForP.77E3E428.Up2Date
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForPill.dll
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\refint\TimeForPill.dll
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForPill.pdb
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForPill.genruntimeconfig.cache
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\ref\TimeForPill.dll
+C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

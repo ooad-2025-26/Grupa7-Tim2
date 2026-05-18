@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj": {}
+    "C:\\Users\\User\\OneDrive\\Desktop\\TimeForPill\\TimeForPill.csproj": {}
   },
   "projects": {
-    "C:\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj": {
+    "C:\\Users\\User\\OneDrive\\Desktop\\TimeForPill\\TimeForPill.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj",
+        "projectUniqueName": "C:\\Users\\User\\OneDrive\\Desktop\\TimeForPill\\TimeForPill.csproj",
         "projectName": "TimeForPill",
-        "projectPath": "C:\\Grupa7-Tim2\\TimeForPill\\TimeForPill.csproj",
+        "projectPath": "C:\\Users\\User\\OneDrive\\Desktop\\TimeForPill\\TimeForPill.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Grupa7-Tim2\\TimeForPill\\obj\\",
+        "outputPath": "C:\\Users\\User\\OneDrive\\Desktop\\TimeForPill\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

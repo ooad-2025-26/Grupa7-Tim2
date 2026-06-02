@@ -523,7 +523,6 @@ C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\refint\TimeForPill.dll
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForPill.pdb
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\TimeForPill.genruntimeconfig.cache
 C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\ref\TimeForPill.dll
-C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\User\OneDrive\Desktop\TimeForPill\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\User\OneDrive\Desktop\TimeForPill\bin\Debug\net8.0\appsettings.json
 C:\Users\User\OneDrive\Desktop\TimeForPill\bin\Debug\net8.0\TimeForPill.staticwebassets.runtime.json

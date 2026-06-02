@@ -6,7 +6,5 @@ namespace TimeForPill.Models
     {
         [Required(ErrorMessage = "Specijalizacija je obavezna.")]
         public Specijalizacija Specijalizacija { get; set; }
-
-        public ICollection<Pacijent> Pacijenti { get; set; } = new List<Pacijent>();
     }
 }

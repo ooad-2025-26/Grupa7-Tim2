@@ -17,7 +17,5 @@ namespace TimeForPill.Models
 
         [Display(Name = "Legacy terapija")]
         public int? TerapijaId { get; set; }
-
-        public ICollection<Terapija> Terapije { get; set; } = new List<Terapija>();
     }
 }

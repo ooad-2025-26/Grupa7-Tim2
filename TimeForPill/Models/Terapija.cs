@@ -39,9 +39,5 @@ namespace TimeForPill.Models
 
         [Display(Name = "Notifikacija")]
         public int? NotifikacijaID { get; set; }
-
-        public ICollection<Notifikacija> Notifikacije { get; set; } = new List<Notifikacija>();
-
-        public ICollection<Zahtjev> Zahtjevi { get; set; } = new List<Zahtjev>();
     }
 }

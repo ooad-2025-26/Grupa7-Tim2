@@ -20,7 +20,5 @@ namespace TimeForPill.Models
         [StringLength(260,
             ErrorMessage = "Putanja slike moze imati najvise 260 karaktera.")]
         public string? Slika { get; set; }
-
-        public ICollection<Terapija> Terapije { get; set; } = new List<Terapija>();
     }
 }

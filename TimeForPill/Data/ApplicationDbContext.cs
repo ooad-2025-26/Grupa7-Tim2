@@ -48,31 +48,31 @@ namespace TimeForPill.Data
 
             modelBuilder.Entity<Pacijent>()
                 .HasOne(p => p.Ljekar)
-                .WithMany(l => l.Pacijenti)
+                .WithMany()
                 .HasForeignKey(p => p.LjekarId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Terapija>()
                 .HasOne(t => t.Lijek)
-                .WithMany(l => l.Terapije)
+                .WithMany()
                 .HasForeignKey(t => t.LijekId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Terapija>()
                 .HasOne(t => t.Pacijent)
-                .WithMany(p => p.Terapije)
+                .WithMany()
                 .HasForeignKey(t => t.PacijentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notifikacija>()
                 .HasOne(n => n.Terapija)
-                .WithMany(t => t.Notifikacije)
+                .WithMany()
                 .HasForeignKey(n => n.TerapijaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Zahtjev>()
                 .HasOne(z => z.Terapija)
-                .WithMany(t => t.Zahtjevi)
+                .WithMany()
                 .HasForeignKey(z => z.TerapijaId)
                 .OnDelete(DeleteBehavior.Restrict);
 

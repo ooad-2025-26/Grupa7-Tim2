@@ -9,11 +9,11 @@ namespace TimeForPill.Models
 
         [Required(ErrorMessage = "Naslov je obavezan.")]
         [StringLength(100)]
-        public string Naslov { get; set; }
+        public string Naslov { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Opis je obavezan.")]
         [StringLength(1000)]
-        public string Opis { get; set; }
+        public string Opis { get; set; } = string.Empty;
 
         public DateTime DatumKreiranja { get; set; }
             = DateTime.Now;
@@ -26,9 +26,9 @@ namespace TimeForPill.Models
             = PrioritetTicketa.Srednji;
 
         // FK PREMA KORISNIKU
+        [ForeignKey(nameof(Korisnik))]
         public string? KorisnikId { get; set; }
 
-        [ForeignKey(nameof(KorisnikId))]
         public ApplicationUser? Korisnik { get; set; }
     }
 }

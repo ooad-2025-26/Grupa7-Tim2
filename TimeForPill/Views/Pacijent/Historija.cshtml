@@ -1,0 +1,43 @@
+@model HistoryViewModel
+@{
+    ViewData["Title"] = "Pregled historije";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Historija uzimanja</p>
+        <h1>Pregled historije</h1>
+    </div>
+</section>
+
+<section class="app-card">
+    <div class="segmented-control">
+        <a class="@(Model.Period == "dnevna" ? "active" : "")" asp-action="Historija" asp-route-period="dnevna">Dnevna</a>
+        <a class="@(Model.Period == "mjesecna" ? "active" : "")" asp-action="Historija" asp-route-period="mjesecna">Mjesecna</a>
+        <a class="@(Model.Period == "godisnja" ? "active" : "")" asp-action="Historija" asp-route-period="godisnja">Godisnja</a>
+    </div>
+
+    <div class="history-layout">
+        <div class="pie-chart" style="--taken:@Model.ProcenatUzeto%">
+            <span>@Model.ProcenatUzeto%</span>
+        </div>
+        <div class="history-summary">
+            <h2>Uzimanje lijekova</h2>
+            <p class="muted-text">Period: @Model.Period</p>
+            <dl class="info-list compact">
+                <div>
+                    <dt>Uzeto</dt>
+                    <dd>@Model.Uzeto (@Model.ProcenatUzeto%)</dd>
+                </div>
+                <div>
+                    <dt>Nije uzeto</dt>
+                    <dd>@Model.NijeUzeto (@Model.ProcenatNijeUzeto%)</dd>
+                </div>
+                <div>
+                    <dt>Ukupno</dt>
+                    <dd>@Model.Ukupno</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+</section>

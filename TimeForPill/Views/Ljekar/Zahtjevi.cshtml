@@ -1,0 +1,39 @@
+@model IReadOnlyList<RequestListItemViewModel>
+@{
+    ViewData["Title"] = "Zahtjevi";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Ljekar</p>
+        <h1>Zahtjevi</h1>
+    </div>
+</section>
+
+<section class="table-shell">
+    <table class="table responsive-table">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Pacijent</th>
+                <th>Lijek</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zahtjev in Model)
+            {
+                <tr>
+                    <td>@zahtjev.Naziv</td>
+                    <td>@zahtjev.Pacijent</td>
+                    <td>@zahtjev.Lijek</td>
+                    <td><span class="status-badge status-@zahtjev.Status.ToString().ToLower()">@zahtjev.Status</span></td>
+                    <td class="actions">
+                        <a class="btn btn-outline-secondary btn-sm" asp-action="ZahtjevDetalji" asp-route-id="@zahtjev.Id">Pregled</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

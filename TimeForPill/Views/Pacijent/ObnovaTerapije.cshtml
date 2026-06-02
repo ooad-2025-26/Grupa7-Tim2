@@ -1,0 +1,65 @@
+@model RenewTherapyViewModel
+@{
+    ViewData["Title"] = "Obnova terapije";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Zahtjev ljekaru</p>
+        <h1>Obnova terapije</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Moji lijekovi</a>
+</section>
+
+<section class="form-shell">
+    <form asp-action="ObnovaTerapije" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="form-grid">
+            <div class="span-2">
+                <label asp-for="TerapijaId" class="form-label"></label>
+                <select asp-for="TerapijaId" class="form-select" id="therapySelect">
+                    @foreach (var terapija in Model.Terapije)
+                    {
+                        <option value="@terapija.TerapijaId" data-remaining="@terapija.PreostaloDoza">
+                            @terapija.Naziv
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="TerapijaId" class="text-danger"></span>
+            </div>
+
+            <div class="span-2">
+                <label asp-for="PreostaloDoza" class="form-label"></label>
+                <input asp-for="PreostaloDoza" class="form-control" id="remainingDoses" />
+                <span asp-validation-for="PreostaloDoza" class="text-danger"></span>
+            </div>
+
+            <div class="span-2">
+                <label asp-for="Napomena" class="form-label"></label>
+                <textarea asp-for="Napomena" class="form-control" rows="5" placeholder="Unesite napomenu za ljekara"></textarea>
+                <span asp-validation-for="Napomena" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg mt-4">Posaljite zahtjev Ljekaru</button>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const therapySelect = document.getElementById('therapySelect');
+        const remainingDoses = document.getElementById('remainingDoses');
+
+        function syncRemainingDoses() {
+            const selected = therapySelect?.selectedOptions[0];
+            if (selected && remainingDoses) {
+                remainingDoses.value = selected.dataset.remaining ?? remainingDoses.value;
+            }
+        }
+
+        therapySelect?.addEventListener('change', syncRemainingDoses);
+        syncRemainingDoses();
+    </script>
+}

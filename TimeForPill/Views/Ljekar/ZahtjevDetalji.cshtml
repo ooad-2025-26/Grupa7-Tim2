@@ -1,0 +1,42 @@
+@model RequestDetailsViewModel
+@{
+    ViewData["Title"] = "Pregled zahtjeva";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Zahtjev</p>
+        <h1>@Model.Naziv</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Zahtjevi">Nazad</a>
+</section>
+
+<section class="details-shell request-details">
+    <div class="section-row">
+        <div>
+            <small>Pacijent</small>
+            <strong>@Model.Pacijent</strong>
+        </div>
+        <div>
+            <small>Lijek</small>
+            <strong>@Model.Lijek</strong>
+        </div>
+        <span class="status-badge status-@Model.Status.ToString().ToLower()">@Model.Status</span>
+    </div>
+
+    <pre class="request-body">@Model.Sadrzaj</pre>
+
+    @if (Model.Status == StatusZahtjeva.Neobraden)
+    {
+        <div class="button-row">
+            <form asp-action="Potvrdi" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary">Potvrdi zahtjev</button>
+            </form>
+            <form asp-action="Odbij" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button type="submit" class="btn btn-outline-danger">Odbij zahtjev</button>
+            </form>
+        </div>
+    }
+</section>

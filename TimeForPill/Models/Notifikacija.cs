@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeForPill.Models
 {
@@ -16,6 +17,7 @@ namespace TimeForPill.Models
         public string Poruka { get; set; } = string.Empty;
 
         [Display(Name = "Terapija")]
+        [ForeignKey(nameof(Terapija))]
         public int? TerapijaId { get; set; }
 
         public Terapija? Terapija { get; set; }

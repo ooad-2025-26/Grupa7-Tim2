@@ -84,10 +84,6 @@ namespace TimeForPill.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(
-                        ljekar,
-                        "Ljekar");
-
                     return RedirectToAction(nameof(Index));
                 }
 

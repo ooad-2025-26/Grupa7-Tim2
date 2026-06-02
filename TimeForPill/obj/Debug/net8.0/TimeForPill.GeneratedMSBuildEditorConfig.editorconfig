@@ -34,6 +34,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Grupa7-Tim2/TimeForPill/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -52,6 +60,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/PregledLjekara.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJlZ2xlZExqZWthcmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/PregledPacijenata.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJlZ2xlZFBhY2lqZW5hdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Grupa7-Tim2/TimeForPill/Views/Home/Error.cshtml]
@@ -126,6 +146,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXEhvbWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Profil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFByb2ZpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/ZahtjevDetalji.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFphaHRqZXZEZXRhbGppLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Zahtjevi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFphaHRqZXZpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -164,6 +200,34 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Historija.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcSGlzdG9yaWphLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/LijekForma.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcTGlqZWtGb3JtYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/MojiLijekovi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcTW9qaUxpamVrb3ZpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/ObnovaTerapije.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcT2Jub3ZhVGVyYXBpamUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Profil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcUHJvZmlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Raspored.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcUmFzcG9yZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Grupa7-Tim2/TimeForPill/Views/Shared/_Layout.cshtml]

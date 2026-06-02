@@ -1,0 +1,72 @@
+@model MedicineFormViewModel
+@{
+    ViewData["Title"] = Model.TerapijaId.HasValue ? "Azuriraj lijek" : "Dodaj lijek";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Moji lijekovi</p>
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Nazad</a>
+</section>
+
+<section class="form-shell">
+    <form asp-action="LijekForma" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="TerapijaId" />
+        <input type="hidden" asp-for="LijekId" />
+        <input type="hidden" asp-for="PostojecaSlika" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="form-grid">
+            <div>
+                <label asp-for="Naziv" class="form-label"></label>
+                <input asp-for="Naziv" class="form-control" />
+                <span asp-validation-for="Naziv" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Kategorija" class="form-label"></label>
+                <input asp-for="Kategorija" class="form-control" />
+                <span asp-validation-for="Kategorija" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="DnevnaDoza" class="form-label"></label>
+                <input asp-for="DnevnaDoza" class="form-control" />
+                <span asp-validation-for="DnevnaDoza" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Pocetak" class="form-label"></label>
+                <input asp-for="Pocetak" class="form-control" />
+                <span asp-validation-for="Pocetak" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Kraj" class="form-label"></label>
+                <input asp-for="Kraj" class="form-control" />
+                <span asp-validation-for="Kraj" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="SlikaFile" class="form-label"></label>
+                <input asp-for="SlikaFile" class="form-control" type="file" accept="image/*" />
+                <span asp-validation-for="SlikaFile" class="text-danger"></span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.PostojecaSlika))
+        {
+            <div class="image-preview mt-4">
+                <img src="@Model.PostojecaSlika" alt="@Model.Naziv" />
+                <span>Trenutna fotografija</span>
+            </div>
+        }
+
+        <div class="button-row mt-4">
+            <button type="submit" class="btn btn-primary">Dodaj/Azuriraj lijek</button>
+            <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Odustani</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

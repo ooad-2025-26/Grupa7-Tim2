@@ -1,0 +1,52 @@
+@model IReadOnlyList<ScheduleDayViewModel>
+@{
+    ViewData["Title"] = "Raspored terapija";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Sedmicni pregled</p>
+        <h1>Raspored terapija</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Home">Home</a>
+</section>
+
+<section class="schedule-grid">
+    @foreach (var dan in Model)
+    {
+        <article class="schedule-day">
+            <div class="schedule-day-head">
+                <strong>@dan.NazivDana</strong>
+                <span>@dan.Datum.ToString("dd.MM.")</span>
+            </div>
+
+            @if (!dan.Terapije.Any())
+            {
+                <p class="muted-text mb-0">Nema terapija.</p>
+            }
+            else
+            {
+                @foreach (var terapija in dan.Terapije)
+                {
+                    <div class="schedule-item">
+                        <div class="medicine-thumb small">
+                            @if (!string.IsNullOrWhiteSpace(terapija.Slika))
+                            {
+                                <img src="@terapija.Slika" alt="@terapija.NazivLijeka" />
+                            }
+                            else
+                            {
+                                <span>Rx</span>
+                            }
+                        </div>
+                        <div>
+                            <strong>@terapija.NazivLijeka</strong>
+                            <small>@terapija.Vrijeme</small>
+                        </div>
+                        <span class="status-badge status-@terapija.Status.ToString().ToLower()">@terapija.Status</span>
+                    </div>
+                }
+            }
+        </article>
+    }
+</section>

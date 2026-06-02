@@ -1,0 +1,117 @@
+@model PatientDashboardViewModel
+@{
+    ViewData["Title"] = "Pacijent Home";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Pacijent</p>
+        <h1>Dobro dosli, @Model.Ime</h1>
+    </div>
+    <a class="btn btn-primary" asp-action="LijekForma">Dodaj lijek</a>
+</section>
+
+<section class="stat-grid">
+    <article class="stat-card">
+        <span class="stat-icon">Rx</span>
+        <small>Broj lijekova danas</small>
+        <strong>@Model.BrojLijekovaDanas</strong>
+    </article>
+    <article class="stat-card">
+        <span class="stat-icon ok">OK</span>
+        <small>Broj uzetih lijekova danas</small>
+        <strong>@Model.BrojUzetihDanas</strong>
+    </article>
+    <article class="stat-card">
+        <span class="stat-icon warn">!</span>
+        <small>Broj propustenih lijekova danas</small>
+        <strong>@Model.BrojPropustenihDanas</strong>
+    </article>
+</section>
+
+<section class="dashboard-two">
+    <article class="app-card">
+        <div class="section-row">
+            <div>
+                <p class="eyebrow">Progres</p>
+                <h2>Do sljedeceg lijeka</h2>
+            </div>
+            <strong>@Model.PreostaloDoSljedeceg</strong>
+        </div>
+        <div class="progress-track" style="--progress:@Model.ProgresDoSljedecegLijeka%">
+            <span></span>
+        </div>
+        <p class="muted-text mb-0">Napredak: @Model.ProgresDoSljedecegLijeka%</p>
+    </article>
+
+    <article class="app-card next-dose-card">
+        <div class="medicine-thumb large">
+            @if (!string.IsNullOrWhiteSpace(Model.SljedeciLijekSlika))
+            {
+                <img src="@Model.SljedeciLijekSlika" alt="@Model.SljedeciLijekNaziv" />
+            }
+            else
+            {
+                <span>Rx</span>
+            }
+        </div>
+        <div>
+            <p class="eyebrow">Sljedeci lijek</p>
+            <h2>@Model.SljedeciLijekNaziv</h2>
+            <p class="next-time">@Model.SljedeciLijekVrijeme</p>
+            @if (Model.SljedecaTerapijaId.HasValue)
+            {
+                <div class="button-row">
+                    <form asp-action="Uzmi" method="post">
+                        <input type="hidden" name="id" value="@Model.SljedecaTerapijaId" />
+                        <button type="submit" class="btn btn-primary">Uzmi</button>
+                    </form>
+                    <form asp-action="Odgodi" method="post">
+                        <input type="hidden" name="id" value="@Model.SljedecaTerapijaId" />
+                        <button type="submit" class="btn btn-outline-secondary">Odgodi za 30 min</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </article>
+</section>
+
+<section class="app-card mt-4">
+    <div class="section-row">
+        <div>
+            <p class="eyebrow">Danas</p>
+            <h2>Danasnje terapije</h2>
+        </div>
+        <a class="btn btn-outline-secondary" asp-action="Raspored">Cijeli raspored</a>
+    </div>
+
+    @if (!Model.DanasnjeTerapije.Any())
+    {
+        <p class="muted-text mb-0">Nema aktivnih terapija za danas.</p>
+    }
+    else
+    {
+        <div class="therapy-list">
+            @foreach (var lijek in Model.DanasnjeTerapije)
+            {
+                <div class="therapy-row">
+                    <div class="medicine-thumb">
+                        @if (!string.IsNullOrWhiteSpace(lijek.Slika))
+                        {
+                            <img src="@lijek.Slika" alt="@lijek.Naziv" />
+                        }
+                        else
+                        {
+                            <span>Rx</span>
+                        }
+                    </div>
+                    <div>
+                        <strong>@lijek.Naziv</strong>
+                        <small>@lijek.DnevnaDoza x dnevno, sljedeca doza @lijek.SljedecaDoza</small>
+                    </div>
+                    <span class="status-badge status-@lijek.Status.ToString().ToLower()">@lijek.Status</span>
+                </div>
+            }
+        </div>
+    }
+</section>

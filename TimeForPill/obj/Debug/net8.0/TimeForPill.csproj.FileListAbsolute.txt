@@ -785,3 +785,4 @@ C:\Users\User\OneDrive\Desktop\TimeForPill\obj\Debug\net8.0\refint\TimeForPill.d
 C:\Users\User\OneDrive\Desktop\TimeForPill\obj\Debug\net8.0\TimeForPill.pdb
 C:\Users\User\OneDrive\Desktop\TimeForPill\obj\Debug\net8.0\TimeForPill.genruntimeconfig.cache
 C:\Users\User\OneDrive\Desktop\TimeForPill\obj\Debug\net8.0\ref\TimeForPill.dll
+C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

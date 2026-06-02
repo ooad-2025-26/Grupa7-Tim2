@@ -3,6 +3,7 @@
     public enum StatusZahtjeva
     {
         Obraden,
-        Neobraden
+        Neobraden,
+        Odbijen
     }
 }

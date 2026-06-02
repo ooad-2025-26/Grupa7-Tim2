@@ -28,11 +28,13 @@ namespace TimeForPill.Models
         public int DnevnaDoza { get; set; }
 
         [Display(Name = "Lijek")]
+        [ForeignKey(nameof(Lijek))]
         public int? LijekId { get; set; }
 
         public Lijek? Lijek { get; set; }
 
         [Display(Name = "Pacijent")]
+        [ForeignKey(nameof(Pacijent))]
         public string? PacijentId { get; set; }
 
         public Pacijent? Pacijent { get; set; }

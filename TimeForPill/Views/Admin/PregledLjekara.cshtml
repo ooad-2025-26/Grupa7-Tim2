@@ -1,0 +1,41 @@
+@model IReadOnlyList<Ljekar>
+@{
+    ViewData["Title"] = "Pregled ljekara";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Administrator</p>
+        <h1>Pregled ljekara</h1>
+    </div>
+    <a class="btn btn-primary" asp-controller="Ljekars" asp-action="Create">Dodaj ljekara</a>
+</section>
+
+<section class="table-shell">
+    <table class="table responsive-table">
+        <thead>
+            <tr>
+                <th>Ljekar</th>
+                <th>Email</th>
+                <th>Specijalizacija</th>
+                <th>Datum rodjenja</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ljekar in Model)
+            {
+                <tr>
+                    <td>@ljekar.Ime @ljekar.Prezime</td>
+                    <td>@ljekar.Email</td>
+                    <td>@ljekar.Specijalizacija</td>
+                    <td>@ljekar.DatumRodjenja.ToString("dd.MM.yyyy")</td>
+                    <td class="actions">
+                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Ljekars" asp-action="Edit" asp-route-id="@ljekar.Id">Uredi</a>
+                        <a class="btn btn-outline-danger btn-sm" asp-controller="Ljekars" asp-action="Delete" asp-route-id="@ljekar.Id">Obrisi</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

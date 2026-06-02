@@ -1,0 +1,66 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Administrator Home";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Administrator</p>
+        <h1>Home</h1>
+    </div>
+</section>
+
+<section class="stat-grid">
+    <article class="stat-card">
+        <span class="stat-icon">P</span>
+        <small>Broj pacijenata</small>
+        <strong>@Model.BrojPacijenata</strong>
+    </article>
+    <article class="stat-card">
+        <span class="stat-icon ok">L</span>
+        <small>Broj ljekara</small>
+        <strong>@Model.BrojLjekara</strong>
+    </article>
+    <article class="stat-card">
+        <span class="stat-icon warn">A</span>
+        <small>Broj izvrsenih akcija</small>
+        <strong>@Model.BrojIzvrsenihAkcija</strong>
+    </article>
+</section>
+
+<section class="dashboard-two mt-4">
+    <article class="app-card">
+        <div class="section-row">
+            <div>
+                <p class="eyebrow">Korisnici</p>
+                <h2>Upravljanje nalogom</h2>
+            </div>
+        </div>
+        <div class="button-stack">
+            <a class="btn btn-primary" asp-action="PregledPacijenata">Pregled pacijenata</a>
+            <a class="btn btn-outline-secondary" asp-action="PregledLjekara">Pregled ljekara</a>
+        </div>
+    </article>
+
+    <article class="app-card">
+        <div class="section-row">
+            <div>
+                <p class="eyebrow">Zadnje akcije</p>
+                <h2>Aktivnosti</h2>
+            </div>
+        </div>
+        @if (!Model.ZadnjeAkcije.Any())
+        {
+            <p class="muted-text mb-0">Nema evidentiranih akcija.</p>
+        }
+        else
+        {
+            <div class="action-list">
+                @foreach (var akcija in Model.ZadnjeAkcije)
+                {
+                    <span>@akcija</span>
+                }
+            </div>
+        }
+    </article>
+</section>

@@ -18,6 +18,7 @@ namespace TimeForPill.Models
         public string Sadrzaj { get; set; } = string.Empty;
 
         [Display(Name = "Terapija")]
+        [ForeignKey(nameof(Terapija))]
         public int? TerapijaId { get; set; }
 
         public Terapija? Terapija { get; set; }

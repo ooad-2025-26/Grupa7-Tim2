@@ -1,0 +1,50 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    ViewData["AuthPage"] = true;
+}
+
+<section class="auth-panel">
+    <div class="auth-brand">
+        <span class="brand-mark">+</span>
+        <strong>TimeForPill</strong>
+    </div>
+
+    <form asp-action="Login" method="post" class="auth-form">
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="text-center mb-4">
+            <p class="eyebrow">Dobro dosli nazad</p>
+            <h1>Prijava</h1>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+        <label asp-for="Uloga" class="form-label"></label>
+        <select asp-for="Uloga" asp-items="Html.GetEnumSelectList<KorisnickaUloga>()" class="form-select mb-3"></select>
+        <span asp-validation-for="Uloga" class="text-danger"></span>
+
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control mb-3" placeholder="ime@primjer.ba" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+
+        <label asp-for="Password" class="form-label">Lozinka</label>
+        <input asp-for="Password" class="form-control mb-2" placeholder="Unesite lozinku" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+        <label class="checkbox-row mb-4">
+            <input asp-for="RememberMe" />
+            <span>Zapamti me</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">Prijavi se</button>
+    </form>
+
+    <p class="auth-switch">
+        Nemate korisnicki racun?
+        <a asp-controller="Account" asp-action="Register">registrirajte se</a>
+    </p>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

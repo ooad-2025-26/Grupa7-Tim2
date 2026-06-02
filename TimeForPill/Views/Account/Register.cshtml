@@ -1,0 +1,133 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Registracija";
+    ViewData["AuthPage"] = true;
+}
+
+<section class="auth-panel auth-panel-wide">
+    <div class="auth-brand">
+        <span class="brand-mark">+</span>
+        <strong>TimeForPill</strong>
+    </div>
+
+    <form asp-action="Register" method="post" class="auth-form">
+        <div class="text-center mb-4">
+            <p class="eyebrow">Novi korisnik</p>
+            <h1>Registracija</h1>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger text-center mb-3"></div>
+
+        <div class="form-grid">
+            <div class="span-2">
+                <label asp-for="Uloga" class="form-label"></label>
+                <select asp-for="Uloga" asp-items="Html.GetEnumSelectList<KorisnickaUloga>()" class="form-select" id="roleSelect"></select>
+            </div>
+
+            <div>
+                <label asp-for="Ime" class="form-label"></label>
+                <input asp-for="Ime" class="form-control" />
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Prezime" class="form-label"></label>
+                <input asp-for="Prezime" class="form-control" />
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="DatumRodjenja" class="form-label"></label>
+                <input asp-for="DatumRodjenja" class="form-control" />
+                <span asp-validation-for="DatumRodjenja" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Spol" class="form-label"></label>
+                <select asp-for="Spol" asp-items="Html.GetEnumSelectList<Spol>()" class="form-select"></select>
+                <span asp-validation-for="Spol" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div id="doctorFields">
+                <label asp-for="Specijalizacija" class="form-label"></label>
+                <select asp-for="Specijalizacija" asp-items="Html.GetEnumSelectList<Specijalizacija>()" class="form-select">
+                    <option value="">Samo za ljekara</option>
+                </select>
+                <span asp-validation-for="Specijalizacija" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Password" class="form-label">Lozinka</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div id="patientFields">
+            <div class="subsection-title mt-4">Kontakt osoba za pacijenta</div>
+            <div class="form-grid">
+                <div>
+                    <label asp-for="KontaktIme" class="form-label"></label>
+                    <input asp-for="KontaktIme" class="form-control" />
+                    <span asp-validation-for="KontaktIme" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="KontaktPrezime" class="form-label"></label>
+                    <input asp-for="KontaktPrezime" class="form-control" />
+                    <span asp-validation-for="KontaktPrezime" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="KontaktEmail" class="form-label"></label>
+                    <input asp-for="KontaktEmail" class="form-control" />
+                    <span asp-validation-for="KontaktEmail" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="KontaktTelefon" class="form-label"></label>
+                    <input asp-for="KontaktTelefon" class="form-control" />
+                    <span asp-validation-for="KontaktTelefon" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Registriraj se</button>
+    </form>
+
+    <p class="auth-switch">
+        Vec imate korisnicki racun?
+        <a asp-controller="Account" asp-action="Login">prijavite se</a>
+    </p>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const roleSelect = document.getElementById('roleSelect');
+        const patientFields = document.getElementById('patientFields');
+        const doctorFields = document.getElementById('doctorFields');
+
+        function syncRoleFields() {
+            const role = roleSelect?.value;
+            if (patientFields) {
+                patientFields.hidden = role !== '0';
+            }
+            if (doctorFields) {
+                doctorFields.hidden = role !== '1';
+            }
+        }
+
+        roleSelect?.addEventListener('change', syncRoleFields);
+        syncRoleFields();
+    </script>
+}

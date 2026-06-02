@@ -1,0 +1,41 @@
+@model IReadOnlyList<Pacijent>
+@{
+    ViewData["Title"] = "Pregled pacijenata";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Administrator</p>
+        <h1>Pregled pacijenata</h1>
+    </div>
+    <a class="btn btn-primary" asp-controller="Pacijents" asp-action="Create">Dodaj pacijenta</a>
+</section>
+
+<section class="table-shell">
+    <table class="table responsive-table">
+        <thead>
+            <tr>
+                <th>Pacijent</th>
+                <th>Email</th>
+                <th>Ljekar</th>
+                <th>Kontakt osoba</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pacijent in Model)
+            {
+                <tr>
+                    <td>@pacijent.Ime @pacijent.Prezime</td>
+                    <td>@pacijent.Email</td>
+                    <td>@(pacijent.Ljekar == null ? "-" : $"{pacijent.Ljekar.Ime} {pacijent.Ljekar.Prezime}")</td>
+                    <td>@(pacijent.KontaktOsoba == null ? "-" : $"{pacijent.KontaktOsoba.Ime} {pacijent.KontaktOsoba.Prezime}")</td>
+                    <td class="actions">
+                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Pacijents" asp-action="Edit" asp-route-id="@pacijent.Id">Uredi</a>
+                        <a class="btn btn-outline-danger btn-sm" asp-controller="Pacijents" asp-action="Delete" asp-route-id="@pacijent.Id">Obrisi</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

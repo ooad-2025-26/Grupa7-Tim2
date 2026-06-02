@@ -375,6 +375,37 @@ a {
   line-height: 1;
 }
 
+.patient-stat-blue,
+.patient-stat-green,
+.patient-stat-red {
+  border: 0;
+  color: #fff;
+}
+
+.patient-stat-blue {
+  background: #2563eb;
+}
+
+.patient-stat-green {
+  background: #15803d;
+}
+
+.patient-stat-red {
+  background: #b42318;
+}
+
+.patient-stat-blue small,
+.patient-stat-green small,
+.patient-stat-red small {
+  color: rgba(255, 255, 255, .9);
+}
+
+.patient-stat-blue strong,
+.patient-stat-green strong,
+.patient-stat-red strong {
+  color: #fff;
+}
+
 .stat-icon {
   align-items: center;
   background: rgba(37, 99, 235, .12);

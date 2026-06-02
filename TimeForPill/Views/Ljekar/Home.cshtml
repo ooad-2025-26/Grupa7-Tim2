@@ -12,19 +12,18 @@
 </section>
 
 <section class="stat-grid">
-    <article class="stat-card">
-        <span class="stat-icon">Z</span>
-        <small>Broj zahtjeva</small>
+    <article class="stat-card patient-stat-blue">
+        <small>Ukupno zahtjeva</small>
         <strong>@Model.BrojZahtjeva</strong>
     </article>
-    <article class="stat-card">
-        <span class="stat-icon ok">OK</span>
-        <small>Broj obradjenih zahtjeva</small>
+
+    <article class="stat-card patient-stat-green">
+        <small>Obrađeni zahtjevi</small>
         <strong>@Model.BrojObradjenihZahtjeva</strong>
     </article>
-    <article class="stat-card">
-        <span class="stat-icon warn">!</span>
-        <small>Broj neobradjenih zahtjeva</small>
+
+    <article class="stat-card patient-stat-red">
+        <small>Čekaju obradu</small>
         <strong>@Model.BrojNeobradjenihZahtjeva</strong>
     </article>
 </section>
@@ -32,8 +31,8 @@
 <section class="app-card mt-4">
     <div class="section-row">
         <div>
-            <p class="eyebrow">Zadnje potvrdjeno</p>
-            <h2>Zadnja 4 potvrdjena zahtjeva</h2>
+            <p class="eyebrow">Pregled aktivnosti</p>
+            <h2>Nedavno obrađeni zahtjevi</h2>
         </div>
     </div>
 

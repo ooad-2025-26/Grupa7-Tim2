@@ -375,6 +375,37 @@ a {
   line-height: 1;
 }
 
+.patient-stat-blue,
+.patient-stat-green,
+.patient-stat-red {
+  border: 0;
+  color: #fff;
+}
+
+.patient-stat-blue {
+  background: #2563eb;
+}
+
+.patient-stat-green {
+  background: #15803d;
+}
+
+.patient-stat-red {
+  background: #b42318;
+}
+
+.patient-stat-blue small,
+.patient-stat-green small,
+.patient-stat-red small {
+  color: rgba(255, 255, 255, .9);
+}
+
+.patient-stat-blue strong,
+.patient-stat-green strong,
+.patient-stat-red strong {
+  color: #fff;
+}
+
 .stat-icon {
   align-items: center;
   background: rgba(37, 99, 235, .12);
@@ -399,16 +430,18 @@ a {
 }
 
 .dashboard-two {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
 }
 
 .section-row {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
 }
 
 .muted-text {
@@ -521,13 +554,14 @@ a {
 }
 
 .status-badge {
-  border-radius: 999px;
-  display: inline-flex;
-  font-size: .78rem;
-  font-weight: 850;
-  justify-content: center;
-  min-width: 86px;
-  padding: .35rem .65rem;
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: .78rem;
+    font-weight: 850;
+    justify-content: center;
+    min-width: 120px;
+    padding: .35rem .65rem;
+    justify-self: end;
 }
 
 .status-uzeto,
@@ -794,9 +828,17 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .therapy-row {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
+    .therapy-row {
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding: .75rem;
+        text-decoration: none;
+    }
 
   .therapy-row .status-badge {
     grid-column: 1 / -1;

@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Grupa7-Tim2\\TimeForPill\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Grupa7-Tim2\\TimeForPill\\Migrations\\20260602102622_Spajanje nanovu bazu MonsertAsp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260602102622_Spajanje nanovu bazu MonsertAsp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\migrations\\20260602102622_spajanje nanovu bazu monsertasp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:migrations\\20260602102622_spajanje nanovu bazu monsertasp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -382,8 +382,7 @@
               "RelativeToolTip": "Models\\PrioritetTicketa.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T13:36:00.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T13:36:00.185Z"
             },
             {
               "$type": "Document",
@@ -395,8 +394,7 @@
               "RelativeToolTip": "Models\\StatusTicketa.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T13:35:09.308Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T13:35:09.308Z"
             },
             {
               "$type": "Document",
@@ -408,8 +406,7 @@
               "RelativeToolTip": "Models\\Tickets.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T13:34:28.551Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T13:34:28.551Z"
             },
             {
               "$type": "Document",
@@ -853,8 +850,7 @@
               "RelativeToolTip": "Controllers\\TerapijasController.cs",
               "ViewState": "AgIAABUBAAAAAAAAAAAuwCYBAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T10:55:49.223Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T10:55:49.223Z"
             },
             {
               "$type": "Document",
@@ -890,8 +886,7 @@
               "RelativeToolTip": "Models\\Zahtjev.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-18T09:17:13.205Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-18T09:17:13.205Z"
             },
             {
               "$type": "Document",
@@ -939,8 +934,7 @@
               "RelativeToolTip": "appsettings.Development.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-17T21:29:03.189Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-17T21:29:03.189Z"
             },
             {
               "$type": "Document",
@@ -1036,8 +1030,7 @@
               "RelativeToolTip": "Models\\KontaktOsoba.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T13:14:20.427Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T13:14:20.427Z"
             },
             {
               "$type": "Document",
@@ -1049,8 +1042,7 @@
               "RelativeToolTip": "Models\\ErrorViewModel.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T13:14:17.757Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T13:14:17.757Z"
             },
             {
               "$type": "Document",
@@ -1098,8 +1090,7 @@
               "RelativeToolTip": "Models\\Administrator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T17:34:02.196Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-12T17:34:02.196Z"
             },
             {
               "$type": "Document",
@@ -1217,8 +1208,7 @@
               "RelativeToolTip": "Data\\ApplicationDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T14:03:38.811Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T14:03:38.811Z"
             },
             {
               "$type": "Document",
@@ -1230,8 +1220,7 @@
               "RelativeToolTip": "Models\\Terapija.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T13:57:32.127Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T13:57:32.127Z"
             },
             {
               "$type": "Document",
@@ -1243,8 +1232,7 @@
               "RelativeToolTip": "Models\\Notifikacija.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T13:57:12.878Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T13:57:12.878Z"
             },
             {
               "$type": "Document",
@@ -1256,8 +1244,7 @@
               "RelativeToolTip": "Models\\Lijek.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T13:56:54.943Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T13:56:54.943Z"
             },
             {
               "$type": "Document",
@@ -1269,8 +1256,7 @@
               "RelativeToolTip": "Models\\ApplicationUser.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T13:56:47.542Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T13:56:47.542Z"
             },
             {
               "$type": "Document",
@@ -1282,8 +1268,7 @@
               "RelativeToolTip": "Models\\Pacijent.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:37:09.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:37:09.163Z"
             },
             {
               "$type": "Document",
@@ -1295,8 +1280,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-05-04T22:51:12.593Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:51:12.593Z"
             },
             {
               "$type": "Document",
@@ -1308,8 +1292,7 @@
               "RelativeToolTip": "Models\\Ljekar.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:37:41.409Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:37:41.409Z"
             },
             {
               "$type": "Document",
@@ -1321,8 +1304,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:58:15.075Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:58:15.075Z"
             },
             {
               "$type": "Document",
@@ -1334,8 +1316,7 @@
               "RelativeToolTip": "Models\\StatusTerapije.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:35:08.832Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:35:08.832Z"
             },
             {
               "$type": "Document",
@@ -1347,8 +1328,7 @@
               "RelativeToolTip": "Models\\StatusZahtjeva.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:34:38.089Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:34:38.089Z"
             },
             {
               "$type": "Document",
@@ -1360,8 +1340,7 @@
               "RelativeToolTip": "Models\\Specijalizacija.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:33:27.732Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:33:27.732Z"
             },
             {
               "$type": "Document",
@@ -1373,8 +1352,7 @@
               "RelativeToolTip": "Models\\Spol.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T22:31:39.035Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T22:31:39.035Z"
             },
             {
               "$type": "Document",

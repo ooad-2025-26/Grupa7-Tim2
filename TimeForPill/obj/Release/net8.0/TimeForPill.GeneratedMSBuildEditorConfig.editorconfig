@@ -1,0 +1,287 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.RootNamespace = TimeForPill
+build_property.RootNamespace = TimeForPill
+build_property.ProjectDir = C:\Grupa7-Tim2\TimeForPill\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Grupa7-Tim2\TimeForPill
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Grupa7-Tim2/TimeForPill/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Administrators/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5pc3RyYXRvcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/PregledLjekara.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJlZ2xlZExqZWthcmEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Admin/PregledPacijenata.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJlZ2xlZFBhY2lqZW5hdGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Korisniks/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS29yaXNuaWtzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Korisniks/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS29yaXNuaWtzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Korisniks/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS29yaXNuaWtzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Korisniks/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS29yaXNuaWtzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Korisniks/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS29yaXNuaWtzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Lijeks/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlqZWtzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Lijeks/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlqZWtzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Lijeks/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlqZWtzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Lijeks/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlqZWtzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Lijeks/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlqZWtzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekars/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekars/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekars/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekars/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekars/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2Fyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXEhvbWUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Profil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFByb2ZpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/ZahtjevDetalji.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFphaHRqZXZEZXRhbGppLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Zahtjevi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFphaHRqZXZpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Notifikacijas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpa2FjaWphc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijents/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Historija.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcSGlzdG9yaWphLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/LijekForma.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcTGlqZWtGb3JtYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/MojiLijekovi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcTW9qaUxpamVrb3ZpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/ObnovaTerapije.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcT2Jub3ZhVGVyYXBpamUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Profil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcUHJvZmlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Pacijent/Raspored.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFjaWplbnRcUmFzcG9yZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Terapijas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVyYXBpamFzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Terapijas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVyYXBpamFzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Terapijas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVyYXBpamFzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Terapijas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVyYXBpamFzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Terapijas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVyYXBpamFzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Zahtjevs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFodGpldnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Zahtjevs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFodGpldnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Zahtjevs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFodGpldnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Zahtjevs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFodGpldnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Zahtjevs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWmFodGpldnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

@@ -78,7 +78,7 @@
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 402,
+      "VerticalTabListWidth": 162,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
@@ -92,7 +92,7 @@
               "RelativeDocumentMoniker": "Controllers\\PacijentController.cs",
               "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\PacijentController.cs",
               "RelativeToolTip": "Controllers\\PacijentController.cs",
-              "ViewState": "AgIAAJsAAAAAAAAAAAAnwK0AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAKkAAAAAAAAAAIA8wK0AAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-02T21:21:32.17Z",
               "EditorCaption": ""
@@ -107,8 +107,7 @@
               "RelativeToolTip": "Views\\Pacijents\\Create.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:15:36.264Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:15:36.264Z"
             },
             {
               "$type": "Document",
@@ -120,8 +119,7 @@
               "RelativeToolTip": "Views\\Pacijent\\LijekForma.cshtml",
               "ViewState": "AgIAABkAAAAAAAAAAAAhwCsAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:14:32.87Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:14:32.87Z"
             },
             {
               "$type": "Document",
@@ -133,8 +131,7 @@
               "RelativeToolTip": "Views\\Pacijent\\MojiLijekovi.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:14:21.653Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:14:21.653Z"
             },
             {
               "$type": "Document",
@@ -146,8 +143,7 @@
               "RelativeToolTip": "Controllers\\KorisniksController.cs",
               "ViewState": "AgIAAGcAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:14:01.217Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:14:01.217Z"
             },
             {
               "$type": "Document",
@@ -159,8 +155,7 @@
               "RelativeToolTip": "Services\\IEmailService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:13:23.853Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:13:23.853Z"
             },
             {
               "$type": "Document",
@@ -172,8 +167,7 @@
               "RelativeToolTip": "Services\\EmailSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:13:04.926Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:13:04.926Z"
             },
             {
               "$type": "Document",
@@ -185,8 +179,7 @@
               "RelativeToolTip": "Services\\EmailService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:12:58.189Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:12:58.189Z"
             },
             {
               "$type": "Document",
@@ -198,8 +191,7 @@
               "RelativeToolTip": "Controllers\\LijeksController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAMQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:12:17.318Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:12:17.318Z"
             },
             {
               "$type": "Document",
@@ -211,8 +203,7 @@
               "RelativeToolTip": "Views\\Ljekar\\ZahtjevDetalji.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:11:49.042Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:11:49.042Z"
             },
             {
               "$type": "Document",
@@ -224,8 +215,7 @@
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:11:30.454Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:11:30.454Z"
             },
             {
               "$type": "Document",
@@ -237,8 +227,7 @@
               "RelativeToolTip": "Views\\Home\\Error.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:11:28.668Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:11:28.668Z"
             },
             {
               "$type": "Document",
@@ -250,8 +239,7 @@
               "RelativeToolTip": "Models\\Terapija.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAAAACEAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:11:07.59Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:11:07.59Z"
             },
             {
               "$type": "Document",
@@ -263,8 +251,7 @@
               "RelativeToolTip": "Models\\Lijek.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:10:40.402Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T21:10:40.402Z"
             },
             {
               "$type": "Document",
@@ -276,8 +263,7 @@
               "RelativeToolTip": "Views\\Pacijent\\Home.cshtml",
               "ViewState": "AgIAAE8AAAAAAAAAAAAAAHIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T20:59:14.184Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T20:59:14.184Z"
             },
             {
               "$type": "Document",
@@ -289,8 +275,7 @@
               "RelativeToolTip": "Views\\Ljekar\\Home.cshtml",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T19:24:08.908Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T19:24:08.908Z"
             },
             {
               "$type": "Document",
@@ -302,8 +287,7 @@
               "RelativeToolTip": "wwwroot\\css\\site.css",
               "ViewState": "AgIAAJ0BAAAAAAAAAAASwLQBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-06-02T18:55:06.731Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T18:55:06.731Z"
             },
             {
               "$type": "Document",
@@ -315,8 +299,7 @@
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAABkAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T18:52:44.427Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-02T18:52:44.427Z"
             }
           ]
         }

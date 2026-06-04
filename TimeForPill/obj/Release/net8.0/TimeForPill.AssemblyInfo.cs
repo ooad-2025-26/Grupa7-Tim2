@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eff36ea93d80f2bb7e0b7570bb6297c8f0d1b329")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d68b18acedc8431bf2c5a53dcfb49d72df48f8fa")]
 [assembly: System.Reflection.AssemblyProductAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TimeForPill")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

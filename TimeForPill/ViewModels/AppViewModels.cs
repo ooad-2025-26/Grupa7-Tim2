@@ -13,11 +13,22 @@ namespace TimeForPill.ViewModels
         public int ProgresDoSljedecegLijeka { get; set; }
         public string SljedeciLijekNaziv { get; set; } = "Nema aktivne terapije";
         public string SljedeciLijekVrijeme { get; set; } = "-";
+        public string? SljedeciLijekVrijemeIso { get; set; }
         public string PreostaloDoSljedeceg { get; set; } = "-";
         public string? SljedeciLijekSlika { get; set; }
-        public int? SljedecaTerapijaId { get; set; }
+        public int? SljedecaDozaId { get; set; }
+        public DosePopupViewModel? TrenutnaDoza { get; set; }
         public IReadOnlyList<MedicineListItemViewModel> DanasnjeTerapije { get; set; } =
             Array.Empty<MedicineListItemViewModel>();
+    }
+
+    public class DosePopupViewModel
+    {
+        public int DozaId { get; set; }
+        public string NazivLijeka { get; set; } = string.Empty;
+        public string VrijemeUzimanja { get; set; } = string.Empty;
+        public string? VrijemeUzimanjaIso { get; set; }
+        public string? Slika { get; set; }
     }
 
     public class MedicineListItemViewModel
@@ -27,45 +38,58 @@ namespace TimeForPill.ViewModels
         public string Naziv { get; set; } = string.Empty;
         public string Kategorija { get; set; } = string.Empty;
         public int DnevnaDoza { get; set; }
+        public int UkupanBrojDoza { get; set; }
+        public int IntervalSati { get; set; }
+        public int UzeteDoze { get; set; }
+        public int PropusteneDoze { get; set; }
+        public int CekajuceDoze { get; set; }
         public DateTime Pocetak { get; set; }
         public DateTime Kraj { get; set; }
-        public StatusTerapije Status { get; set; }
+        public StatusDoze Status { get; set; }
         public string? Slika { get; set; }
         public string SljedecaDoza { get; set; } = "-";
+    }
+
+    public class MedicineCatalogOptionViewModel
+    {
+        public int Id { get; set; }
+        public string Naziv { get; set; } = string.Empty;
+        public string Kategorija { get; set; } = string.Empty;
+        public string? Slika { get; set; }
     }
 
     public class MedicineFormViewModel
     {
         public int? TerapijaId { get; set; }
+
+        [Required(ErrorMessage = "Odaberite lijek iz kataloga.")]
+        [Display(Name = "Lijek")]
         public int? LijekId { get; set; }
 
-        [Required(ErrorMessage = "Naziv lijeka je obavezan.")]
-        [StringLength(100, MinimumLength = 2)]
         [Display(Name = "Naziv lijeka")]
         public string Naziv { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Kategorija je obavezna.")]
-        [StringLength(80, MinimumLength = 2)]
         public string Kategorija { get; set; } = "Terapija";
 
-        [Range(1, 20, ErrorMessage = "Dnevna doza mora biti izmedju 1 i 20.")]
-        [Display(Name = "Doziranje")]
-        public int DnevnaDoza { get; set; } = 1;
+        [Range(1, 10000, ErrorMessage = "Ukupan broj doza mora biti izmedju 1 i 10000.")]
+        [Display(Name = "Ukupan broj doza")]
+        public int UkupanBrojDoza { get; set; } = 21;
 
-        [Required(ErrorMessage = "Datum pocetka je obavezan.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Pocetak terapije")]
-        public DateTime Pocetak { get; set; } = DateTime.Today;
+        [Range(1, 168, ErrorMessage = "Interval mora biti izmedju 1 i 168 sati.")]
+        [Display(Name = "Uzimati svakih sati")]
+        public int IntervalSati { get; set; } = 8;
 
-        [Required(ErrorMessage = "Datum kraja je obavezan.")]
-        [DataType(DataType.Date)]
-        [Display(Name = "Kraj terapije")]
-        public DateTime Kraj { get; set; } = DateTime.Today.AddDays(7);
+        public DateTime Pocetak { get; set; } = DateTime.Now;
+
+        public DateTime Kraj { get; set; } = DateTime.Now.AddDays(7);
 
         [Display(Name = "Fotografija lijeka")]
         public IFormFile? SlikaFile { get; set; }
 
         public string? PostojecaSlika { get; set; }
+
+        public IReadOnlyList<MedicineCatalogOptionViewModel> DostupniLijekovi { get; set; } =
+            Array.Empty<MedicineCatalogOptionViewModel>();
     }
 
     public class TherapyOptionViewModel
@@ -146,7 +170,7 @@ namespace TimeForPill.ViewModels
     {
         public string Vrijeme { get; set; } = string.Empty;
         public string NazivLijeka { get; set; } = string.Empty;
-        public StatusTerapije Status { get; set; }
+        public StatusDoze Status { get; set; }
         public string? Slika { get; set; }
     }
 
@@ -189,5 +213,34 @@ namespace TimeForPill.ViewModels
         public int BrojLjekara { get; set; }
         public int BrojIzvrsenihAkcija { get; set; }
         public IReadOnlyList<string> ZadnjeAkcije { get; set; } = Array.Empty<string>();
+    }
+
+    public class DoctorPatientListItemViewModel
+    {
+        public string PacijentId { get; set; } = string.Empty;
+        public string ImePrezime { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public int BrojAktivnihLijekova { get; set; }
+        public int BrojCekajucihDoza { get; set; }
+    }
+
+    public class DoctorPatientMedicationViewModel
+    {
+        public string Pacijent { get; set; } = string.Empty;
+        public IReadOnlyList<DoctorMedicationItemViewModel> Lijekovi { get; set; } =
+            Array.Empty<DoctorMedicationItemViewModel>();
+    }
+
+    public class DoctorMedicationItemViewModel
+    {
+        public string Naziv { get; set; } = string.Empty;
+        public string Kategorija { get; set; } = string.Empty;
+        public int UkupanBrojDoza { get; set; }
+        public int IntervalSati { get; set; }
+        public int UzeteDoze { get; set; }
+        public int PropusteneDoze { get; set; }
+        public int CekajuceDoze { get; set; }
+        public string SljedecaDoza { get; set; } = "-";
+        public string Period { get; set; } = string.Empty;
     }
 }

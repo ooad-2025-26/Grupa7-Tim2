@@ -74,6 +74,17 @@ a {
   width: 38px;
 }
 
+.brand-logo {
+  border-radius: 8px;
+  display: block;
+  flex: 0 0 auto;
+  height: 42px;
+  max-height: 42px;
+  max-width: 42px;
+  object-fit: contain;
+  width: 42px;
+}
+
 .nav-link {
   border-radius: 8px;
   color: #334155;
@@ -247,10 +258,20 @@ a {
 .auth-brand {
   align-items: center;
   display: flex;
+  flex-direction: column;
   font-size: 1.1rem;
-  gap: .7rem;
+  gap: .45rem;
   justify-content: center;
   margin-bottom: 1.25rem;
+}
+
+.auth-logo {
+  display: block;
+  height: 76px;
+  max-height: 76px;
+  max-width: 76px;
+  object-fit: contain;
+  width: 76px;
 }
 
 .auth-form h1 {
@@ -430,16 +451,18 @@ a {
 }
 
 .dashboard-two {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
 }
 
 .section-row {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
 }
 
 .muted-text {
@@ -473,6 +496,33 @@ a {
   font-size: 1.8rem;
   font-weight: 850;
   margin: .35rem 0 1rem;
+}
+
+.next-dose-meta {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: .75rem 0 1rem;
+}
+
+.next-dose-meta div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .75rem;
+}
+
+.next-dose-meta small {
+  color: var(--muted);
+  display: block;
+  font-weight: 750;
+  margin-bottom: .25rem;
+}
+
+.next-dose-meta strong {
+  color: var(--primary-dark);
+  display: block;
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
 .button-row,
@@ -518,7 +568,7 @@ a {
 .medicine-thumb,
 .medicine-image {
   align-items: center;
-  background: var(--surface-soft);
+  background: #fff;
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--primary-dark);
@@ -546,19 +596,23 @@ a {
 .medicine-thumb img,
 .medicine-image img,
 .image-preview img {
+  display: block;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  padding: .35rem;
   width: 100%;
 }
 
 .status-badge {
-  border-radius: 999px;
-  display: inline-flex;
-  font-size: .78rem;
-  font-weight: 850;
-  justify-content: center;
-  min-width: 86px;
-  padding: .35rem .65rem;
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: .78rem;
+    font-weight: 850;
+    justify-content: center;
+    min-width: 120px;
+    padding: .35rem .65rem;
+    justify-self: end;
 }
 
 .status-uzeto,
@@ -582,7 +636,7 @@ a {
 .medicine-grid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .medicine-card {
@@ -598,6 +652,10 @@ a {
   border-bottom: 1px solid var(--line);
   border-radius: 0;
   font-size: 1.3rem;
+}
+
+.medicine-image img {
+  padding: .75rem;
 }
 
 .medicine-body {
@@ -633,6 +691,16 @@ a {
 .empty-state {
   padding: 2rem;
   text-align: center;
+}
+
+.catalog-preview {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 104px minmax(0, 1fr);
+  padding: 1rem;
 }
 
 .image-preview {
@@ -805,6 +873,12 @@ a {
   font-weight: 650;
 }
 
+@media (max-width: 1100px) {
+  .medicine-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .home-hero,
   .page-header,
@@ -821,13 +895,23 @@ a {
   .stat-grid,
   .dashboard-two,
   .history-layout,
+  .medicine-grid,
+  .next-dose-meta,
   .next-dose-card {
     grid-template-columns: 1fr;
   }
 
-  .therapy-row {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
+    .therapy-row {
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding: .75rem;
+        text-decoration: none;
+    }
 
   .therapy-row .status-badge {
     grid-column: 1 / -1;

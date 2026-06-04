@@ -8,7 +8,6 @@ using TimeForPill.ViewModels;
 
 namespace TimeForPill.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private const string LoginError =
@@ -29,6 +28,7 @@ namespace TimeForPill.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string? returnUrl = null)
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -45,6 +45,7 @@ namespace TimeForPill.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -84,6 +85,7 @@ namespace TimeForPill.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             ViewData["AuthPage"] = true;
@@ -91,6 +93,7 @@ namespace TimeForPill.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -173,7 +176,8 @@ namespace TimeForPill.Controllers
                     Prezime = model.Prezime,
                     DatumRodjenja = model.DatumRodjenja,
                     Spol = model.Spol,
-                    LjekarId = await FindDefaultDoctorIdAsync(),
+                    LjekarId = await FindDoctorForNextPatientAsync(),
+                    DatumDodjeleLjekara = DateTime.Now,
                     KontaktOsoba = new KontaktOsoba
                     {
                         Ime = model.KontaktIme,
@@ -185,14 +189,26 @@ namespace TimeForPill.Controllers
             };
         }
 
-        private async Task<string?> FindDefaultDoctorIdAsync()
+        private async Task<string?> FindDoctorForNextPatientAsync()
         {
-            return await _context.Ljekari
+            var ljekari = await _context.Ljekari
                 .AsNoTracking()
                 .OrderBy(l => l.Prezime)
                 .ThenBy(l => l.Ime)
+                .Select(l => new
+                {
+                    l.Id,
+                    LastAssignedAt = _context.Pacijenti
+                        .Where(p => p.LjekarId == l.Id)
+                        .Max(p => p.DatumDodjeleLjekara)
+                })
+                .ToListAsync();
+
+            return ljekari
+                .OrderBy(l => l.LastAssignedAt ?? DateTime.MinValue)
+                .ThenBy(l => l.Id)
                 .Select(l => l.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
         }
 
         private void ValidatePatientContact(RegisterViewModel model)

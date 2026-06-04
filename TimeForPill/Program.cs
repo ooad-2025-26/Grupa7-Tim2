@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
@@ -28,11 +29,26 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/Login";
+});
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IDoseWorkflowService, DoseWorkflowService>();
+builder.Services.AddHostedService<DoseReminderWorker>();
 
 builder.Services.AddControllersWithViews();
 
@@ -54,6 +70,8 @@ using (var scope = app.Services.CreateScope())
             throw new InvalidOperationException(
                 "Aplikacija ne moze uspostaviti vezu sa bazom iz DefaultConnection.");
         }
+
+        BackfillMissingDoses(context);
 
         var conn = context.Database.GetDbConnection();
 
@@ -105,3 +123,46 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+static void BackfillMissingDoses(ApplicationDbContext context)
+{
+    var terapijeBezDoza = context.Terapije
+        .Where(t => !context.TerapijskeDoze.Any(d => d.TerapijaId == t.Id))
+        .ToList();
+
+    foreach (var terapija in terapijeBezDoza)
+    {
+        var totalDoses = terapija.UkupanBrojDoza <= 0
+            ? 1
+            : terapija.UkupanBrojDoza;
+        var intervalHours = terapija.IntervalSati <= 0
+            ? 24
+            : terapija.IntervalSati;
+        var start = terapija.Pocetak == default
+            ? DateTime.Now
+            : terapija.Pocetak;
+
+        for (var index = 0; index < totalDoses; index++)
+        {
+            var scheduledAt = start.AddHours(intervalHours * index);
+            context.TerapijskeDoze.Add(new TerapijskaDoza
+            {
+                TerapijaId = terapija.Id,
+                RedniBroj = index + 1,
+                VrijemeUzimanja = scheduledAt,
+                OriginalnoVrijemeUzimanja = scheduledAt,
+                VrijemePodsjetnika = scheduledAt.AddMinutes(-5),
+                Status = StatusDoze.Cekanje
+            });
+        }
+
+        terapija.UkupanBrojDoza = totalDoses;
+        terapija.IntervalSati = intervalHours;
+        terapija.Kraj = start.AddHours(intervalHours * Math.Max(0, totalDoses - 1));
+    }
+
+    if (terapijeBezDoza.Count > 0)
+    {
+        context.SaveChanges();
+    }
+}

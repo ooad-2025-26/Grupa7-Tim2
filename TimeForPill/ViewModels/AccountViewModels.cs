@@ -53,7 +53,7 @@ namespace TimeForPill.ViewModels
 
         [Required(ErrorMessage = "Email je obavezan.")]
         [EmailAddress(ErrorMessage = "Unesite ispravnu email adresu.")]
-        public string Email { get; set; } = "ehamidovic1@etf.unsa.ba";
+        public string Email { get; set; } = "pacijent@gmail.com";
 
         [Required(ErrorMessage = "Lozinka je obavezna.")]
         [DataType(DataType.Password)]

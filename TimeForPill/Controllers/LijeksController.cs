@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimeForPill.Data;
@@ -5,6 +7,7 @@ using TimeForPill.Models;
 
 namespace TimeForPill
 {
+    [Authorize]
     public class LijeksController : Controller
     {
         private static readonly HashSet<string> DozvoljeneEkstenzije = new(StringComparer.OrdinalIgnoreCase)
@@ -18,15 +21,26 @@ namespace TimeForPill
 
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LijeksController(ApplicationDbContext context, IWebHostEnvironment env)
+        public LijeksController(
+            ApplicationDbContext context,
+            IWebHostEnvironment env,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             var lijekovi = await _context.Lijekovi
                 .AsNoTracking()
                 .OrderBy(l => l.Naziv)
@@ -37,6 +51,12 @@ namespace TimeForPill
 
         public async Task<IActionResult> Details(int? id)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -49,8 +69,14 @@ namespace TimeForPill
             return lijek == null ? NotFound() : View(lijek);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             return View(new Lijek());
         }
 
@@ -58,6 +84,12 @@ namespace TimeForPill
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Naziv,Kategorija,Slika")] Lijek lijek, IFormFile? SlikaFile)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             await TryAttachImageAsync(lijek, SlikaFile);
 
             if (!ModelState.IsValid)
@@ -80,6 +112,12 @@ namespace TimeForPill
 
         public async Task<IActionResult> Edit(int? id)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -93,6 +131,12 @@ namespace TimeForPill
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Kategorija,Slika")] Lijek lijek, IFormFile? SlikaFile)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             if (id != lijek.Id)
             {
                 return NotFound();
@@ -142,6 +186,12 @@ namespace TimeForPill
 
         public async Task<IActionResult> Delete(int? id)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -158,9 +208,27 @@ namespace TimeForPill
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var access = await RequireCatalogAccessAsync();
+            if (access != null)
+            {
+                return access;
+            }
+
             var lijek = await _context.Lijekovi.FindAsync(id);
             if (lijek != null)
             {
+                var koristiSe = await _context.Terapije
+                    .AnyAsync(t => t.LijekId == id);
+
+                if (koristiSe)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "Lijek se ne moze obrisati jer se koristi u terapijama pacijenata.");
+
+                    return View("Delete", lijek);
+                }
+
                 _context.Lijekovi.Remove(lijek);
                 await _context.SaveChangesAsync();
             }
@@ -172,7 +240,11 @@ namespace TimeForPill
         {
             if (slikaFile == null || slikaFile.Length == 0)
             {
-                lijek.Slika ??= string.Empty;
+                if (string.IsNullOrWhiteSpace(lijek.Slika))
+                {
+                    lijek.Slika = BuildAutomaticImageUrl(lijek.Naziv);
+                }
+
                 return;
             }
 
@@ -199,6 +271,27 @@ namespace TimeForPill
             await slikaFile.CopyToAsync(stream);
 
             lijek.Slika = $"/images/{fileName}";
+        }
+
+        private async Task<IActionResult?> RequireCatalogAccessAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is Ljekar || user is Administrator)
+            {
+                return null;
+            }
+
+            return User.Identity?.IsAuthenticated == true
+                ? Forbid()
+                : Challenge();
+        }
+
+        private static string BuildAutomaticImageUrl(string naziv)
+        {
+            var text = Uri.EscapeDataString(
+                string.IsNullOrWhiteSpace(naziv) ? "Lijek" : naziv.Trim());
+
+            return $"https://placehold.co/600x400/e8f4ef/0f766e/png?text={text}";
         }
 
         private bool LijekExists(int id)

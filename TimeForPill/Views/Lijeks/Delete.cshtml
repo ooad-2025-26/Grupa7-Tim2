@@ -13,6 +13,7 @@
 </div>
 
 <div class="details-shell">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
     <p class="lead mb-4">Da li zelite obrisati lijek <strong>@Model.Naziv</strong>?</p>
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="Id" />

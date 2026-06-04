@@ -87,6 +87,8 @@ namespace TimeForPill.Controllers
             try
             {
                 pacijent.UserName = pacijent.Email;
+                pacijent.LjekarId = await FindDoctorForNextPatientAsync();
+                pacijent.DatumDodjeleLjekara = DateTime.Now;
 
                 var result = await _userManager.CreateAsync(
                     pacijent,
@@ -181,6 +183,11 @@ namespace TimeForPill.Controllers
             postojeciPacijent.UserName = pacijent.Email;
             postojeciPacijent.DatumRodjenja = pacijent.DatumRodjenja;
             postojeciPacijent.Spol = pacijent.Spol;
+            if (postojeciPacijent.LjekarId != pacijent.LjekarId)
+            {
+                postojeciPacijent.DatumDodjeleLjekara = DateTime.Now;
+            }
+
             postojeciPacijent.LjekarId = pacijent.LjekarId;
 
             postojeciPacijent.KontaktOsoba ??= new KontaktOsoba();
@@ -200,6 +207,12 @@ namespace TimeForPill.Controllers
             try
             {
                 await _userManager.UpdateAsync(postojeciPacijent);
+
+                await LogAdminActionAsync(
+                    "Uredjen",
+                    "Pacijent",
+                    postojeciPacijent.Id,
+                    $"{postojeciPacijent.Ime} {postojeciPacijent.Prezime}");
 
                 await _context.SaveChangesAsync();
 
@@ -249,18 +262,107 @@ namespace TimeForPill.Controllers
 
             if (pacijent != null)
             {
-                if (pacijent.KontaktOsoba != null)
+                try
                 {
-                    _context.KontaktOsobe.Remove(
-                        pacijent.KontaktOsoba);
+                    await DeletePatientDependenciesAsync(id);
+
+                    if (pacijent.KontaktOsoba != null)
+                    {
+                        _context.KontaktOsobe.Remove(
+                            pacijent.KontaktOsoba);
+                    }
+
+                    _context.Pacijenti.Remove(pacijent);
+
+                    await LogAdminActionAsync(
+                        "Obrisan",
+                        "Pacijent",
+                        pacijent.Id,
+                        $"{pacijent.Ime} {pacijent.Prezime}");
+
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "Pacijent je obrisan iz sistema.";
                 }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "Pacijent nije obrisan jer postoje povezani podaci koje baza ne dozvoljava obrisati.");
 
-                await _userManager.DeleteAsync(pacijent);
+                    await PopulateListsAsync(pacijent.LjekarId);
 
-                await _context.SaveChangesAsync();
+                    return View("Delete", pacijent);
+                }
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task DeletePatientDependenciesAsync(string pacijentId)
+        {
+            var terapije = await _context.Terapije
+                .Where(t => t.PacijentId == pacijentId)
+                .ToListAsync();
+
+            var terapijaIds = terapije
+                .Select(t => t.Id)
+                .ToList();
+
+            if (terapijaIds.Count > 0)
+            {
+                var doze = await _context.TerapijskeDoze
+                    .Where(d => terapijaIds.Contains(d.TerapijaId))
+                    .ToListAsync();
+
+                var notifikacije = await _context.Notifikacije
+                    .Where(n =>
+                        n.TerapijaId.HasValue &&
+                        terapijaIds.Contains(n.TerapijaId.Value))
+                    .ToListAsync();
+
+                var zahtjevi = await _context.Zahtjevi
+                    .Where(z =>
+                        z.TerapijaId.HasValue &&
+                        terapijaIds.Contains(z.TerapijaId.Value))
+                    .ToListAsync();
+
+                _context.TerapijskeDoze.RemoveRange(doze);
+                _context.Notifikacije.RemoveRange(notifikacije);
+                _context.Zahtjevi.RemoveRange(zahtjevi);
+                _context.Terapije.RemoveRange(terapije);
+            }
+
+            var tickets = await _context.Tickets
+                .Where(t => t.KorisnikId == pacijentId)
+                .ToListAsync();
+
+            _context.Tickets.RemoveRange(tickets);
+        }
+
+        private async Task LogAdminActionAsync(
+            string vrstaAkcije,
+            string tipRacuna,
+            string racunId,
+            string racunNaziv)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is not Administrator administrator)
+            {
+                return;
+            }
+
+            _context.AdminAkcije.Add(new AdminAkcija
+            {
+                AdministratorId = administrator.Id,
+                AdministratorNaziv =
+                    $"{administrator.Ime} {administrator.Prezime}",
+                VrstaAkcije = vrstaAkcije,
+                TipRacuna = tipRacuna,
+                RacunId = racunId,
+                RacunNaziv = racunNaziv,
+                DatumAkcije = DateTime.Now
+            });
         }
 
         private async Task PopulateListsAsync(
@@ -283,6 +385,28 @@ namespace TimeForPill.Controllers
                     "Id",
                     "Naziv",
                     selectedLjekarId);
+        }
+
+        private async Task<string?> FindDoctorForNextPatientAsync()
+        {
+            var ljekari = await _context.Ljekari
+                .AsNoTracking()
+                .OrderBy(l => l.Prezime)
+                .ThenBy(l => l.Ime)
+                .Select(l => new
+                {
+                    l.Id,
+                    LastAssignedAt = _context.Pacijenti
+                        .Where(p => p.LjekarId == l.Id)
+                        .Max(p => p.DatumDodjeleLjekara)
+                })
+                .ToListAsync();
+
+            return ljekari
+                .OrderBy(l => l.LastAssignedAt ?? DateTime.MinValue)
+                .ThenBy(l => l.Id)
+                .Select(l => l.Id)
+                .FirstOrDefault();
         }
 
         private bool PacijentExists(string id)

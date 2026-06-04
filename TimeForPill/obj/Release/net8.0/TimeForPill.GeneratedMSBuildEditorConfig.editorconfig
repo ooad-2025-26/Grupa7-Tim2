@@ -150,6 +150,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXEhvbWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/MojiPacijenti.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXE1vamlQYWNpamVudGkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/PacijentLijekovi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFBhY2lqZW50TGlqZWtvdmkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Grupa7-Tim2/TimeForPill/Views/Ljekar/Profil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGpla2FyXFByb2ZpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

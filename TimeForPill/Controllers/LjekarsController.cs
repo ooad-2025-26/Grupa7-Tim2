@@ -163,6 +163,14 @@ namespace TimeForPill.Controllers
             {
                 await _userManager.UpdateAsync(postojeciLjekar);
 
+                await LogAdminActionAsync(
+                    "Uredjen",
+                    "Ljekar",
+                    postojeciLjekar.Id,
+                    $"{postojeciLjekar.Ime} {postojeciLjekar.Prezime}");
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
@@ -205,10 +213,76 @@ namespace TimeForPill.Controllers
 
             if (ljekar != null)
             {
-                await _userManager.DeleteAsync(ljekar);
+                try
+                {
+                    await ClearDoctorDependenciesAsync(id);
+
+                    _context.Ljekari.Remove(ljekar);
+
+                    await LogAdminActionAsync(
+                        "Obrisan",
+                        "Ljekar",
+                        ljekar.Id,
+                        $"{ljekar.Ime} {ljekar.Prezime}");
+
+                    await _context.SaveChangesAsync();
+
+                    TempData["Success"] = "Ljekar je obrisan iz sistema.";
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError(
+                        string.Empty,
+                        "Ljekar nije obrisan jer postoje povezani podaci koje baza ne dozvoljava obrisati.");
+
+                    return View("Delete", ljekar);
+                }
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task ClearDoctorDependenciesAsync(string ljekarId)
+        {
+            var pacijenti = await _context.Pacijenti
+                .Where(p => p.LjekarId == ljekarId)
+                .ToListAsync();
+
+            foreach (var pacijent in pacijenti)
+            {
+                pacijent.LjekarId = null;
+            }
+
+            var tickets = await _context.Tickets
+                .Where(t => t.KorisnikId == ljekarId)
+                .ToListAsync();
+
+            _context.Tickets.RemoveRange(tickets);
+        }
+
+        private async Task LogAdminActionAsync(
+            string vrstaAkcije,
+            string tipRacuna,
+            string racunId,
+            string racunNaziv)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is not Administrator administrator)
+            {
+                return;
+            }
+
+            _context.AdminAkcije.Add(new AdminAkcija
+            {
+                AdministratorId = administrator.Id,
+                AdministratorNaziv =
+                    $"{administrator.Ime} {administrator.Prezime}",
+                VrstaAkcije = vrstaAkcije,
+                TipRacuna = tipRacuna,
+                RacunId = racunId,
+                RacunNaziv = racunNaziv,
+                DatumAkcije = DateTime.Now
+            });
         }
 
         private bool LjekarExists(string id)

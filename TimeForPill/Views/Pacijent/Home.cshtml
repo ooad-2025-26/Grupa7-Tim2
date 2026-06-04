@@ -8,21 +8,21 @@
         <p class="eyebrow">Pacijent</p>
         <h1>Dobro dosli, @Model.Ime</h1>
     </div>
-    <a class="btn btn-primary" asp-action="LijekForma">Dodaj lijek</a>
+    <a class="btn btn-primary" asp-action="LijekForma">Dodaj terapiju</a>
 </section>
 
 <section class="stat-grid">
     <article class="stat-card patient-stat-blue">
         <small>Broj lijekova danas</small>
-        <strong>@Model.BrojLijekovaDanas</strong>
+        <strong id="brojLijekovaDanas">@Model.BrojLijekovaDanas</strong>
     </article>
     <article class="stat-card patient-stat-green">
         <small>Broj uzetih lijekova danas</small>
-        <strong>@Model.BrojUzetihDanas</strong>
+        <strong id="brojUzetihDanas">@Model.BrojUzetihDanas</strong>
     </article>
     <article class="stat-card patient-stat-red">
         <small>Broj propustenih lijekova danas</small>
-        <strong>@Model.BrojPropustenihDanas</strong>
+        <strong id="brojPropustenihDanas">@Model.BrojPropustenihDanas</strong>
     </article>
 </section>
 
@@ -31,44 +31,49 @@
         <div class="section-row">
             <div>
                 <p class="eyebrow">Progres</p>
-                <h2>Do sljedeceg lijeka</h2>
+                <h2>Uzimanje doza danas</h2>
             </div>
-            <strong>@Model.PreostaloDoSljedeceg</strong>
         </div>
-        <div class="progress-track" style="--progress:@Model.ProgresDoSljedecegLijeka%">
+        <div class="progress-track" id="progressTrack" style="--progress:@Model.ProgresDoSljedecegLijeka%">
             <span></span>
         </div>
-        <p class="muted-text mb-0">Napredak: @Model.ProgresDoSljedecegLijeka%</p>
+        <p class="muted-text mb-0">Napredak: <span id="progressPercent">@Model.ProgresDoSljedecegLijeka</span>%</p>
     </article>
 
     <article class="app-card next-dose-card">
-        <div class="medicine-thumb large">
+        <div class="medicine-thumb large" id="nextDoseThumb">
             @if (!string.IsNullOrWhiteSpace(Model.SljedeciLijekSlika))
             {
                 <img src="@Model.SljedeciLijekSlika" alt="@Model.SljedeciLijekNaziv" />
             }
             else
             {
-                <span>Rx</span>
+                <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
             }
         </div>
         <div>
-            <p class="eyebrow">Sljedeci lijek</p>
-            <h2>@Model.SljedeciLijekNaziv</h2>
-            <p class="next-time">@Model.SljedeciLijekVrijeme</p>
-            @if (Model.SljedecaTerapijaId.HasValue)
-            {
-                <div class="button-row">
-                    <form asp-action="Uzmi" method="post">
-                        <input type="hidden" name="id" value="@Model.SljedecaTerapijaId" />
-                        <button type="submit" class="btn btn-primary">Uzmi</button>
-                    </form>
-                    <form asp-action="Odgodi" method="post">
-                        <input type="hidden" name="id" value="@Model.SljedecaTerapijaId" />
-                        <button type="submit" class="btn btn-outline-secondary">Odgodi za 30 min</button>
-                    </form>
+            <p class="eyebrow">Sljedeca terapija</p>
+            <h2 id="nextDoseName">@Model.SljedeciLijekNaziv</h2>
+            <div class="next-dose-meta">
+                <div>
+                    <small>Vrijeme uzimanja</small>
+                    <strong id="nextDoseTime">@Model.SljedeciLijekVrijeme</strong>
                 </div>
-            }
+                <div>
+                    <small>Do sljedece terapije</small>
+                    <strong id="nextDoseCountdown" data-next-dose-at="@Model.SljedeciLijekVrijemeIso">@Model.PreostaloDoSljedeceg</strong>
+                </div>
+            </div>
+            <div class="button-row" id="nextDoseActions" hidden="@(!Model.SljedecaDozaId.HasValue)">
+                <form asp-action="Uzmi" method="post" class="take-dose-form next-take-dose-form" data-dose-at="@Model.SljedeciLijekVrijemeIso">
+                    <input type="hidden" name="id" value="@Model.SljedecaDozaId" class="next-dose-id" />
+                    <button type="submit" class="btn btn-primary">Uzmi</button>
+                </form>
+                <form asp-action="Odgodi" method="post">
+                    <input type="hidden" name="id" value="@Model.SljedecaDozaId" class="next-dose-id" />
+                    <button type="submit" class="btn btn-outline-secondary">Odgodi za 30 min</button>
+                </form>
+            </div>
         </div>
     </article>
 </section>
@@ -99,12 +104,12 @@
                         }
                         else
                         {
-                            <span>Rx</span>
+                            <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
                         }
                     </div>
                     <div>
                         <strong>@lijek.Naziv</strong>
-                        <small>@lijek.DnevnaDoza x dnevno, sljedeca doza @lijek.SljedecaDoza</small>
+                        <small>@lijek.UzeteDoze/@lijek.UkupanBrojDoza uzeto, svakih @lijek.IntervalSati h, sljedeca doza @lijek.SljedecaDoza</small>
                     </div>
                     <span class="status-badge status-@lijek.Status.ToString().ToLower()">@lijek.Status</span>
                 </div>
@@ -112,3 +117,228 @@
         </div>
     }
 </section>
+
+@if (Model.TrenutnaDoza != null)
+{
+    <div class="modal fade dose-modal" id="doseReminderModal" tabindex="-1" aria-labelledby="doseReminderTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="next-dose-card">
+                        <div class="medicine-thumb large">
+                            @if (!string.IsNullOrWhiteSpace(Model.TrenutnaDoza.Slika))
+                            {
+                                <img src="@Model.TrenutnaDoza.Slika" alt="@Model.TrenutnaDoza.NazivLijeka" />
+                            }
+                            else
+                            {
+                                <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
+                            }
+                        </div>
+                        <div>
+                            <p class="eyebrow">Vrijeme je za lijek</p>
+                            <h2 id="doseReminderTitle">@Model.TrenutnaDoza.NazivLijeka</h2>
+                            <p class="next-time">@Model.TrenutnaDoza.VrijemeUzimanja</p>
+                            <div class="button-row">
+                                <form asp-action="Uzmi" method="post" class="take-dose-form" data-dose-at="@Model.TrenutnaDoza.VrijemeUzimanjaIso">
+                                    <input type="hidden" name="id" value="@Model.TrenutnaDoza.DozaId" />
+                                    <button type="submit" class="btn btn-primary">Uzmi</button>
+                                </form>
+                                <form asp-action="Odgodi" method="post">
+                                    <input type="hidden" name="id" value="@Model.TrenutnaDoza.DozaId" />
+                                    <button type="submit" class="btn btn-outline-secondary">Odgodi za 30 min</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        const countdownEl = document.getElementById('nextDoseCountdown');
+        const progressTrack = document.getElementById('progressTrack');
+        const nextDoseName = document.getElementById('nextDoseName');
+        const nextDoseTime = document.getElementById('nextDoseTime');
+        const nextDoseThumb = document.getElementById('nextDoseThumb');
+
+        function formatRemaining(target) {
+            if (!target) {
+                return '-';
+            }
+
+            const diffMs = target.getTime() - Date.now();
+            if (diffMs <= 0) {
+                return 'sada';
+            }
+
+            const totalSeconds = Math.floor(diffMs / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            if (hours > 0) {
+                return `${hours}h ${minutes}min ${seconds}s`;
+            }
+
+            if (minutes > 0) {
+                return `${minutes}min ${seconds}s`;
+            }
+
+            return `${seconds}s`;
+        }
+
+        function tickCountdown() {
+            if (!countdownEl) {
+                return;
+            }
+
+            const nextDoseAt = countdownEl.dataset.nextDoseAt;
+            countdownEl.textContent = nextDoseAt
+                ? formatRemaining(new Date(nextDoseAt))
+                : '-';
+        }
+
+        function setText(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+
+        function syncDoseActions(nextDoseId, nextDoseAt) {
+            const actions = document.getElementById('nextDoseActions');
+            if (actions) {
+                actions.hidden = !nextDoseId;
+            }
+
+            document.querySelectorAll('.next-dose-id').forEach(input => {
+                input.value = nextDoseId || '';
+            });
+            document.querySelectorAll('.next-take-dose-form').forEach(form => {
+                form.dataset.doseAt = nextDoseAt || '';
+            });
+        }
+
+        function syncNextDoseImage(src, alt) {
+            if (!nextDoseThumb) {
+                return;
+            }
+
+            nextDoseThumb.replaceChildren();
+            if (src) {
+                const image = document.createElement('img');
+                image.src = src;
+                image.alt = alt || 'Sljedeca terapija';
+                nextDoseThumb.appendChild(image);
+                return;
+            }
+
+            const fallback = document.createElement('img');
+            fallback.src = '@Url.Content("~/images/generic-medicine.jpg")';
+            fallback.alt = 'Genericki lijek';
+            nextDoseThumb.appendChild(fallback);
+        }
+
+        async function refreshHomeStatus() {
+            try {
+                const response = await fetch('@Url.Action("HomeStatus", "Pacijent")', {
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+                setText('brojLijekovaDanas', data.brojLijekovaDanas);
+                setText('brojUzetihDanas', data.brojUzetihDanas);
+                setText('brojPropustenihDanas', data.brojPropustenihDanas);
+                setText('progressPercent', data.progresDoSljedecegLijeka);
+
+                if (progressTrack) {
+                    progressTrack.style.setProperty('--progress', `${data.progresDoSljedecegLijeka}%`);
+                }
+                if (nextDoseName) {
+                    nextDoseName.textContent = data.sljedeciLijekNaziv;
+                }
+                if (nextDoseTime) {
+                    nextDoseTime.textContent = data.sljedeciLijekVrijeme;
+                }
+                if (countdownEl) {
+                    countdownEl.dataset.nextDoseAt = data.sljedeciLijekVrijemeIso || '';
+                    countdownEl.textContent = data.preostaloDoSljedeceg || '-';
+                }
+
+                syncNextDoseImage(data.sljedeciLijekSlika, data.sljedeciLijekNaziv);
+                syncDoseActions(data.sljedecaDozaId, data.sljedeciLijekVrijemeIso);
+                tickCountdown();
+            } catch {
+                return;
+            }
+        }
+
+        function attachTakeDoseGuards() {
+            document.querySelectorAll('.take-dose-form').forEach(form => {
+                form.addEventListener('submit', event => {
+                    const doseAtRaw = form.dataset.doseAt;
+                    if (!doseAtRaw) {
+                        return;
+                    }
+
+                    const doseAt = new Date(doseAtRaw);
+                    if (Number.isNaN(doseAt.getTime())) {
+                        return;
+                    }
+
+                    const now = new Date();
+                    const earliestAllowed = new Date(doseAt.getTime() - 15 * 60 * 1000);
+                    if (now < earliestAllowed) {
+                        event.preventDefault();
+                        alert('Dozu mozete oznaciti kao uzetu tek 15 minuta prije zakazanog termina.');
+                        return;
+                    }
+
+                    if (now < doseAt) {
+                        const confirmed = confirm('Do termina doze ima manje od 15 minuta. Da li stvarno zelite oznaciti dozu kao uzetu?');
+                        if (!confirmed) {
+                            event.preventDefault();
+                        }
+                    }
+                });
+            });
+        }
+
+        attachTakeDoseGuards();
+        tickCountdown();
+        window.setInterval(tickCountdown, 1000);
+        window.setInterval(refreshHomeStatus, 30000);
+
+        @if (Model.TrenutnaDoza != null)
+        {
+            <text>
+                const doseModal = new bootstrap.Modal(document.getElementById('doseReminderModal'));
+                doseModal.show();
+
+                if ('Notification' in window) {
+                    const showNotification = () => new Notification('TimeForPill', {
+                        body: 'Vrijeme je za lijek: ' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.TrenutnaDoza.NazivLijeka)),
+                    });
+
+                    if (Notification.permission === 'granted') {
+                        showNotification();
+                    } else if (Notification.permission !== 'denied') {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === 'granted') {
+                                showNotification();
+                            }
+                        });
+                    }
+                }
+            </text>
+        }
+    </script>
+}

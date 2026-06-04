@@ -19,15 +19,15 @@ namespace TimeForPill.Services
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
-            if (string.IsNullOrWhiteSpace(_settings.Host))
+            if (!IsConfigured())
             {
-                _logger.LogInformation(
-                    "Email nije poslan jer SMTP host nije konfigurisan. To={To}, Subject={Subject}, Body={Body}",
+                _logger.LogWarning(
+                    "Email nije poslan jer SMTP servis nije kompletno konfigurisan. To={To}, Subject={Subject}",
                     to,
-                    subject,
-                    body);
+                    subject);
 
-                return;
+                throw new InvalidOperationException(
+                    "SMTP servis nije kompletno konfigurisan.");
             }
 
             using var message = new MailMessage
@@ -53,6 +53,15 @@ namespace TimeForPill.Services
             }
 
             await client.SendMailAsync(message);
+        }
+
+        private bool IsConfigured()
+        {
+            return !string.IsNullOrWhiteSpace(_settings.Host) &&
+                _settings.Port > 0 &&
+                !string.IsNullOrWhiteSpace(_settings.From) &&
+                !string.IsNullOrWhiteSpace(_settings.UserName) &&
+                !string.IsNullOrWhiteSpace(_settings.Password);
         }
     }
 }

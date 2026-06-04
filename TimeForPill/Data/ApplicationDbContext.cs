@@ -21,6 +21,8 @@ namespace TimeForPill.Data
         public DbSet<Zahtjev> Zahtjevi { get; set; }
         public DbSet<Notifikacija> Notifikacije { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<AdminAkcija> AdminAkcije { get; set; }
+        public DbSet<TerapijskaDoza> TerapijskeDoze { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +41,8 @@ namespace TimeForPill.Data
             modelBuilder.Entity<Zahtjev>().ToTable("Zahtjevi");
             modelBuilder.Entity<Notifikacija>().ToTable("Notifikacije");
             modelBuilder.Entity<Ticket>().ToTable("Tickets");
+            modelBuilder.Entity<AdminAkcija>().ToTable("AdminAkcije");
+            modelBuilder.Entity<TerapijskaDoza>().ToTable("TerapijskeDoze");
 
             modelBuilder.Entity<Pacijent>()
                 .HasOne(p => p.KontaktOsoba)
@@ -75,6 +79,12 @@ namespace TimeForPill.Data
                 .WithMany()
                 .HasForeignKey(z => z.TerapijaId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TerapijskaDoza>()
+                .HasOne(d => d.Terapija)
+                .WithMany()
+                .HasForeignKey(d => d.TerapijaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Korisnik)

@@ -6,7 +6,7 @@
 
 <section class="auth-panel auth-panel-wide">
     <div class="auth-brand">
-        <span class="brand-mark">+</span>
+        <img class="auth-logo" src="~/images/timeforpill-logo.png" asp-append-version="true" alt="TimeForPill logo" />
         <strong>TimeForPill</strong>
     </div>
 
@@ -116,6 +116,12 @@
         const roleSelect = document.getElementById('roleSelect');
         const patientFields = document.getElementById('patientFields');
         const doctorFields = document.getElementById('doctorFields');
+        const emailInput = document.getElementById('Email');
+        const roleEmailDefaults = {
+            '0': 'pacijent@gmail.com',
+            '1': 'ljekar@gmail.com',
+            '2': 'administrator@gmail.com'
+        };
 
         function syncRoleFields() {
             const role = roleSelect?.value;
@@ -124,6 +130,15 @@
             }
             if (doctorFields) {
                 doctorFields.hidden = role !== '1';
+            }
+            if (emailInput) {
+                const defaultEmails = Object.values(roleEmailDefaults);
+                const nextDefault = roleEmailDefaults[role] || roleEmailDefaults['0'];
+                emailInput.placeholder = nextDefault;
+
+                if (!emailInput.value || defaultEmails.includes(emailInput.value)) {
+                    emailInput.value = nextDefault;
+                }
             }
         }
 

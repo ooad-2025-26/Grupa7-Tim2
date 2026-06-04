@@ -24,15 +24,17 @@ namespace TimeForPill.Controllers
 
         public async Task<IActionResult> Home()
         {
-            if (!await IsCurrentAdminAsync())
+            var administrator = await GetCurrentAdminAsync();
+            if (administrator == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var processedRequests = await _context.Zahtjevi
+            var zadnjeAkcije = await _context.AdminAkcije
                 .AsNoTracking()
-                .Where(z => z.Status != StatusZahtjeva.Neobraden)
-                .OrderByDescending(z => z.Id)
+                .Where(a => a.AdministratorId == administrator.Id)
+                .OrderByDescending(a => a.DatumAkcije)
+                .ThenByDescending(a => a.Id)
                 .Take(5)
                 .ToListAsync();
 
@@ -40,10 +42,11 @@ namespace TimeForPill.Controllers
             {
                 BrojPacijenata = await _context.Pacijenti.CountAsync(),
                 BrojLjekara = await _context.Ljekari.CountAsync(),
-                BrojIzvrsenihAkcija = await _context.Zahtjevi
-                    .CountAsync(z => z.Status != StatusZahtjeva.Neobraden),
-                ZadnjeAkcije = processedRequests
-                    .Select(z => $"{z.Status}: {z.Naziv}")
+                BrojIzvrsenihAkcija = await _context.AdminAkcije
+                    .CountAsync(a => a.AdministratorId == administrator.Id),
+                ZadnjeAkcije = zadnjeAkcije
+                    .Select(a =>
+                        $"{a.DatumAkcije:dd.MM.yyyy HH:mm} - {a.VrstaAkcije} {a.TipRacuna}: {a.RacunNaziv}")
                     .ToList()
             };
 
@@ -86,8 +89,13 @@ namespace TimeForPill.Controllers
 
         private async Task<bool> IsCurrentAdminAsync()
         {
+            return await GetCurrentAdminAsync() != null;
+        }
+
+        private async Task<Administrator?> GetCurrentAdminAsync()
+        {
             var user = await _userManager.GetUserAsync(User);
-            return user is Administrator;
+            return user as Administrator;
         }
     }
 }

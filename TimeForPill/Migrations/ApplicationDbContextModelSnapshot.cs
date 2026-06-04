@@ -159,6 +159,52 @@ namespace TimeForPill.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("TimeForPill.Models.AdminAkcija", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdministratorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AdministratorNaziv")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime>("DatumAkcije")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RacunId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RacunNaziv")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("TipRacuna")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("VrstaAkcije")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminAkcije", (string)null);
+                });
+
             modelBuilder.Entity("TimeForPill.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -348,6 +394,9 @@ namespace TimeForPill.Migrations
                     b.Property<int>("DnevnaDoza")
                         .HasColumnType("int");
 
+                    b.Property<int>("IntervalSati")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Kraj")
                         .HasColumnType("datetime2");
 
@@ -371,6 +420,9 @@ namespace TimeForPill.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("UkupanBrojDoza")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LijekId");
@@ -378,6 +430,51 @@ namespace TimeForPill.Migrations
                     b.HasIndex("PacijentId");
 
                     b.ToTable("Terapije", (string)null);
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.TerapijskaDoza", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrojOdgoda")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("EmailPodsjetnikPoslan")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("KontaktObavijestPoslana")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OriginalnoVrijemeUzimanja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RedniBroj")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TerapijaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("VrijemeEvidentiranja")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("VrijemePodsjetnika")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("VrijemeUzimanja")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TerapijaId");
+
+                    b.ToTable("TerapijskeDoze", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Ticket", b =>
@@ -472,6 +569,9 @@ namespace TimeForPill.Migrations
                 {
                     b.HasBaseType("TimeForPill.Models.ApplicationUser");
 
+                    b.Property<DateTime?>("DatumDodjeleLjekara")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("KontaktOsobaId")
                         .HasColumnType("int");
 
@@ -564,6 +664,17 @@ namespace TimeForPill.Migrations
                     b.Navigation("Lijek");
 
                     b.Navigation("Pacijent");
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.TerapijskaDoza", b =>
+                {
+                    b.HasOne("TimeForPill.Models.Terapija", "Terapija")
+                        .WithMany()
+                        .HasForeignKey("TerapijaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Terapija");
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Ticket", b =>

@@ -18,6 +18,9 @@ namespace TimeForPill.Models
 
         public Ljekar? Ljekar { get; set; }
 
+        [Display(Name = "Datum dodjele ljekara")]
+        public DateTime? DatumDodjeleLjekara { get; set; }
+
         [Display(Name = "Legacy terapija")]
         public int? TerapijaId { get; set; }
     }

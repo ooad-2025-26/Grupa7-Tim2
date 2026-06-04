@@ -8,15 +8,15 @@
         <p class="eyebrow">Pacijent</p>
         <h1>Moji lijekovi</h1>
     </div>
-    <a class="btn btn-primary" asp-action="LijekForma">Dodaj lijek</a>
+    <a class="btn btn-primary" asp-action="LijekForma">Dodaj terapiju</a>
 </section>
 
 @if (!Model.Any())
 {
     <section class="empty-state">
-        <h2>Jos nema sacuvanih lijekova</h2>
-        <p class="muted-text">Dodajte prvi lijek da bi se pojavio u rasporedu i historiji terapije.</p>
-        <a class="btn btn-primary" asp-action="LijekForma">Dodaj lijek</a>
+        <h2>Jos nema sacuvanih terapija</h2>
+        <p class="muted-text">Dodajte prvu terapiju da bi se pojavila u rasporedu i historiji uzimanja.</p>
+        <a class="btn btn-primary" asp-action="LijekForma">Dodaj terapiju</a>
     </section>
 }
 else
@@ -32,7 +32,7 @@ else
                     }
                     else
                     {
-                        <span>Rx</span>
+                        <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
                     }
                 </div>
                 <div class="medicine-body">
@@ -46,7 +46,7 @@ else
                     <dl class="info-list">
                         <div>
                             <dt>Doziranje</dt>
-                            <dd>@lijek.DnevnaDoza x dnevno</dd>
+                            <dd>@lijek.UkupanBrojDoza doza, svakih @lijek.IntervalSati h</dd>
                         </div>
                         <div>
                             <dt>Trajanje</dt>
@@ -56,8 +56,18 @@ else
                             <dt>Sljedeca doza</dt>
                             <dd>@lijek.SljedecaDoza</dd>
                         </div>
+                        <div>
+                            <dt>Evidencija</dt>
+                            <dd>@lijek.UzeteDoze uzeto, @lijek.PropusteneDoze propusteno, @lijek.CekajuceDoze ceka</dd>
+                        </div>
                     </dl>
-                    <a class="btn btn-outline-secondary w-100" asp-action="LijekForma" asp-route-id="@lijek.TerapijaId">Azuriraj lijek</a>
+                    <div class="button-row">
+                        <a class="btn btn-outline-secondary" asp-action="LijekForma" asp-route-id="@lijek.TerapijaId">Azuriraj terapiju</a>
+                        <form asp-action="ObrisiLijek" method="post">
+                            <input type="hidden" name="id" value="@lijek.TerapijaId" />
+                            <button type="submit" class="btn btn-outline-danger">Obrisi terapiju</button>
+                        </form>
+                    </div>
                 </div>
             </article>
         }

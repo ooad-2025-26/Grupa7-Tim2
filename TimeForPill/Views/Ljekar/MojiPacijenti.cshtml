@@ -1,0 +1,39 @@
+@model IReadOnlyList<DoctorPatientListItemViewModel>
+@{
+    ViewData["Title"] = "Moji pacijenti";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Ljekar</p>
+        <h1>Moji pacijenti</h1>
+    </div>
+</section>
+
+<section class="table-shell">
+    <table class="table responsive-table">
+        <thead>
+            <tr>
+                <th>Pacijent</th>
+                <th>Email</th>
+                <th>Aktivnih lijekova</th>
+                <th>Pending doza</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pacijent in Model)
+            {
+                <tr>
+                    <td>@pacijent.ImePrezime</td>
+                    <td>@pacijent.Email</td>
+                    <td>@pacijent.BrojAktivnihLijekova</td>
+                    <td>@pacijent.BrojCekajucihDoza</td>
+                    <td class="actions">
+                        <a class="btn btn-outline-secondary btn-sm" asp-action="PacijentLijekovi" asp-route-id="@pacijent.PacijentId">Pregled lijekova</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Grupa7-Tim2\\TimeForPill\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\controllers\\pacijentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:controllers\\pacijentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\admin\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\admin\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\ljekar\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\ljekar\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\pacijent\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\pacijent\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\controllers\\lijekscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -53,53 +77,48 @@
     {
       "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\pacijent\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\pacijent\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\ljekar\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\ljekar\\home.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|c:\\grupa7-tim2\\timeforpill\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D715866D-E5F7-2D1E-D918-47C134F20D9C}|TimeForPill.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
-      "VerticalTabListWidth": 162,
+      "VerticalTabListWidth": 100,
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 13,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PacijentController.cs",
-              "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\PacijentController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PacijentController.cs",
-              "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\PacijentController.cs",
-              "RelativeToolTip": "Controllers\\PacijentController.cs",
-              "ViewState": "AgIAAKkAAAAAAAAAAIA8wK0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T21:21:32.17Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwDEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-03T11:55:09.536Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Home.cshtml",
+              "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Admin\\Home.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admin\\Home.cshtml",
+              "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Admin\\Home.cshtml",
+              "RelativeToolTip": "Views\\Admin\\Home.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-03T11:42:31.409Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Pacijents\\Create.cshtml",
               "RelativeDocumentMoniker": "Views\\Pacijents\\Create.cshtml",
@@ -111,7 +130,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "LijekForma.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Pacijent\\LijekForma.cshtml",
               "RelativeDocumentMoniker": "Views\\Pacijent\\LijekForma.cshtml",
@@ -123,7 +142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "MojiLijekovi.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Pacijent\\MojiLijekovi.cshtml",
               "RelativeDocumentMoniker": "Views\\Pacijent\\MojiLijekovi.cshtml",
@@ -135,7 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "KorisniksController.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\KorisniksController.cs",
               "RelativeDocumentMoniker": "Controllers\\KorisniksController.cs",
@@ -147,7 +166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "IEmailService.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Services\\IEmailService.cs",
               "RelativeDocumentMoniker": "Services\\IEmailService.cs",
@@ -159,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "EmailSettings.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Services\\EmailSettings.cs",
               "RelativeDocumentMoniker": "Services\\EmailSettings.cs",
@@ -171,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "Services\\EmailService.cs",
@@ -183,7 +202,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "LijeksController.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Controllers\\LijeksController.cs",
               "RelativeDocumentMoniker": "Controllers\\LijeksController.cs",
@@ -195,7 +214,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "ZahtjevDetalji.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Ljekar\\ZahtjevDetalji.cshtml",
               "RelativeDocumentMoniker": "Views\\Ljekar\\ZahtjevDetalji.cshtml",
@@ -207,7 +226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 18,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
@@ -219,19 +238,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 0,
               "Title": "Error.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Home\\Error.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Error.cshtml",
               "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Home\\Error.cshtml",
               "RelativeToolTip": "Views\\Home\\Error.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-02T21:11:28.668Z"
+              "WhenOpened": "2026-06-02T21:11:28.668Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "Terapija.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Models\\Terapija.cs",
               "RelativeDocumentMoniker": "Models\\Terapija.cs",
@@ -243,7 +263,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "Lijek.cs",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Models\\Lijek.cs",
               "RelativeDocumentMoniker": "Models\\Lijek.cs",
@@ -255,31 +275,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 4,
               "Title": "Home.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Pacijent\\Home.cshtml",
               "RelativeDocumentMoniker": "Views\\Pacijent\\Home.cshtml",
               "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Pacijent\\Home.cshtml",
               "RelativeToolTip": "Views\\Pacijent\\Home.cshtml",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAAAHIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAALAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-02T20:59:14.184Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 3,
               "Title": "Home.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Ljekar\\Home.cshtml",
               "RelativeDocumentMoniker": "Views\\Ljekar\\Home.cshtml",
               "ToolTip": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Ljekar\\Home.cshtml",
               "RelativeToolTip": "Views\\Ljekar\\Home.cshtml",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACoAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-06-02T19:24:08.908Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 5,
               "Title": "site.css",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
@@ -291,7 +311,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 6,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Grupa7-Tim2\\TimeForPill\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",

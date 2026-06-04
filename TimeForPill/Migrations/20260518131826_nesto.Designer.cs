@@ -13,7 +13,7 @@ namespace TimeForPill.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260518131826_nesto")]
-    partial class nesto
+    partial class Nesto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

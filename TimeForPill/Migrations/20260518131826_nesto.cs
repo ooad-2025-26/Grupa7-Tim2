@@ -5,7 +5,7 @@
 namespace TimeForPill.Migrations
 {
     /// <inheritdoc />
-    public partial class nesto : Migration
+    public partial class Nesto : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

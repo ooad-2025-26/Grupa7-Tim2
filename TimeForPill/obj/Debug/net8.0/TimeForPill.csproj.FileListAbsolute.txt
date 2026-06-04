@@ -1257,3 +1257,4 @@ C:\Grupa7-Tim2\TimeForPill\bin\VerifyAdminActions\runtimes\win-arm64\native\Micr
 C:\Grupa7-Tim2\TimeForPill\bin\VerifyAdminActions\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Grupa7-Tim2\TimeForPill\bin\VerifyAdminActions\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Grupa7-Tim2\TimeForPill\bin\VerifyAdminActions\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Grupa7-Tim2\TimeForPill\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

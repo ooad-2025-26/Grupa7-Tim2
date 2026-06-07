@@ -21,6 +21,10 @@
             <small>Lijek</small>
             <strong>@Model.Lijek</strong>
         </div>
+        <div>
+            <small>Datum</small>
+            <strong>@Model.DatumKreiranja.ToString("dd.MM.yyyy HH:mm")</strong>
+        </div>
         <span class="status-badge status-@Model.Status.ToString().ToLower()">@Model.Status</span>
     </div>
 

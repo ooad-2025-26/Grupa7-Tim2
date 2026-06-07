@@ -78,6 +78,8 @@ namespace TimeForPill.Controllers
         {
             pacijent.KontaktOsoba ??= new KontaktOsoba();
 
+            ValidateDifferentPatientAndContactEmails(pacijent);
+
             if (!ModelState.IsValid)
             {
                 await PopulateListsAsync(pacijent.LjekarId);
@@ -161,6 +163,8 @@ namespace TimeForPill.Controllers
             {
                 return NotFound();
             }
+
+            ValidateDifferentPatientAndContactEmails(pacijent);
 
             if (!ModelState.IsValid)
             {
@@ -412,6 +416,27 @@ namespace TimeForPill.Controllers
         private bool PacijentExists(string id)
         {
             return _context.Pacijenti.Any(e => e.Id == id);
+        }
+
+        private void ValidateDifferentPatientAndContactEmails(
+            Pacijent pacijent)
+        {
+            if (IsSameEmail(
+                pacijent.Email,
+                pacijent.KontaktOsoba?.Email))
+            {
+                ModelState.AddModelError(
+                    "KontaktOsoba.Email",
+                    "Email kontakt osobe ne moze biti isti kao email pacijenta.");
+            }
+        }
+
+        private static bool IsSameEmail(string? email, string? contactEmail)
+        {
+            return string.Equals(
+                email?.Trim(),
+                contactEmail?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
         }
     }
 }

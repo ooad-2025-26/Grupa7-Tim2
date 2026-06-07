@@ -49,6 +49,17 @@
                 <input asp-for="IntervalSati" class="form-control" />
                 <span asp-validation-for="IntervalSati" class="text-danger"></span>
             </div>
+            <div>
+                <div class="form-check therapy-start-toggle">
+                    <input asp-for="AutomatskiPocetak" class="form-check-input" id="autoStartCheck" />
+                    <label asp-for="AutomatskiPocetak" class="form-check-label"></label>
+                </div>
+            </div>
+            <div>
+                <label asp-for="Pocetak" class="form-label"></label>
+                <input asp-for="Pocetak" asp-format="{0:yyyy-MM-ddTHH:mm}" type="datetime-local" class="form-control" id="firstDoseInput" />
+                <span asp-validation-for="Pocetak" class="text-danger"></span>
+            </div>
         </div>
 
         <div class="catalog-preview mt-4" id="medicinePreview" hidden>
@@ -84,6 +95,8 @@
         const medicinePreviewImage = document.getElementById('medicinePreviewImage');
         const medicinePreviewName = document.getElementById('medicinePreviewName');
         const medicinePreviewCategory = document.getElementById('medicinePreviewCategory');
+        const autoStartCheck = document.getElementById('autoStartCheck');
+        const firstDoseInput = document.getElementById('firstDoseInput');
 
         function syncMedicinePreview() {
             const selected = medicineSelect?.selectedOptions?.[0];
@@ -111,5 +124,16 @@
 
         medicineSelect?.addEventListener('change', syncMedicinePreview);
         syncMedicinePreview();
+
+        function syncFirstDoseInput() {
+            if (!firstDoseInput || !autoStartCheck) {
+                return;
+            }
+
+            firstDoseInput.disabled = autoStartCheck.checked;
+        }
+
+        autoStartCheck?.addEventListener('change', syncFirstDoseInput);
+        syncFirstDoseInput();
     </script>
 }

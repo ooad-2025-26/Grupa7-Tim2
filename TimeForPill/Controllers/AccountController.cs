@@ -233,6 +233,12 @@ namespace TimeForPill.Controllers
                     nameof(RegisterViewModel.KontaktEmail),
                     "Email kontakt osobe je obavezan.");
             }
+            else if (IsSameEmail(model.Email, model.KontaktEmail))
+            {
+                ModelState.AddModelError(
+                    nameof(RegisterViewModel.KontaktEmail),
+                    "Email kontakt osobe ne moze biti isti kao email pacijenta.");
+            }
 
             if (string.IsNullOrWhiteSpace(model.KontaktTelefon))
             {
@@ -240,6 +246,14 @@ namespace TimeForPill.Controllers
                     nameof(RegisterViewModel.KontaktTelefon),
                     "Telefon kontakt osobe je obavezan.");
             }
+        }
+
+        private static bool IsSameEmail(string? email, string? contactEmail)
+        {
+            return string.Equals(
+                email?.Trim(),
+                contactEmail?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool MatchesSelectedRole(

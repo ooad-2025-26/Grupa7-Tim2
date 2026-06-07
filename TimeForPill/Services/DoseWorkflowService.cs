@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Net;
 using TimeForPill.Data;
 using TimeForPill.Models;
 
@@ -6,17 +8,23 @@ namespace TimeForPill.Services
 {
     public class DoseWorkflowService : IDoseWorkflowService
     {
+        private const string PublicAppUrl = "http://timeforpill.runasp.net";
+        private const int MaxConcurrentEmailSends = 5;
+
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
+        private readonly EmailSettings _emailSettings;
         private readonly ILogger<DoseWorkflowService> _logger;
 
         public DoseWorkflowService(
             ApplicationDbContext context,
             IEmailService emailService,
+            IOptions<EmailSettings> emailSettings,
             ILogger<DoseWorkflowService> logger)
         {
             _context = context;
             _emailService = emailService;
+            _emailSettings = emailSettings.Value;
             _logger = logger;
         }
 
@@ -39,7 +47,12 @@ namespace TimeForPill.Services
             foreach (var doza in newlyMissed)
             {
                 doza.Status = StatusDoze.Propusteno;
+                doza.VrijemeEvidentiranja ??= now;
             }
+
+            await IncrementDailyStatisticsAsync(
+                newlyMissed,
+                status: StatusDoze.Propusteno);
 
             var affectedTherapyIds = newlyMissed
                 .Select(d => d.TerapijaId)
@@ -75,14 +88,22 @@ namespace TimeForPill.Services
                 .Where(d =>
                     d.Status == StatusDoze.Cekanje &&
                     !d.EmailPodsjetnikPoslan &&
-                    d.VrijemePodsjetnika <= now &&
+                    (d.VrijemePodsjetnika <= now ||
+                        d.VrijemeUzimanja <= now.AddMinutes(5)) &&
                     (d.OriginalnoVrijemeUzimanja ?? d.VrijemeUzimanja) > now.AddHours(-1))
                 .OrderBy(d => d.VrijemeUzimanja)
                 .Take(25)
                 .ToListAsync();
 
+            var emailJobs = new List<DoseReminderEmail>();
             foreach (var doza in reminders)
             {
+                var expectedReminderTime = doza.VrijemeUzimanja.AddMinutes(-5);
+                if (doza.VrijemePodsjetnika != expectedReminderTime)
+                {
+                    doza.VrijemePodsjetnika = expectedReminderTime;
+                }
+
                 var pacijent = doza.Terapija?.Pacijent;
                 var email = pacijent?.Email;
                 if (string.IsNullOrWhiteSpace(email))
@@ -95,25 +116,15 @@ namespace TimeForPill.Services
                     doza.Terapija?.Naziv ??
                     "lijek";
 
-                try
-                {
-                    await _emailService.SendEmailAsync(
-                        email,
-                        $"Podsjetnik za lijek {naziv}",
-                        $"Vrijeme je za dozu lijeka {naziv}. Planirano vrijeme uzimanja: {doza.VrijemeUzimanja:dd.MM.yyyy HH:mm}.\n\n" +
-                        "Prijava u aplikaciju: https://timeforpill.runasp.net/Account/Login");
-
-                    doza.EmailPodsjetnikPoslan = true;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(
-                        ex,
-                        "Email podsjetnik nije poslan za dozu {DozaId}.",
-                        doza.Id);
-                }
+                emailJobs.Add(new DoseReminderEmail(
+                    doza,
+                    email,
+                    "Vrijeme je za terapiju",
+                    BuildDoseReminderBody(naziv, doza.VrijemeUzimanja),
+                    IsBodyHtml: true));
             }
 
+            await SendDoseReminderEmailsAsync(emailJobs);
             await _context.SaveChangesAsync();
         }
 
@@ -124,11 +135,13 @@ namespace TimeForPill.Services
                     .ThenInclude(t => t!.Pacijent)
                         .ThenInclude(p => p!.KontaktOsoba)
                 .Where(d =>
-                    d.Status != StatusDoze.Cekanje &&
+                    (d.Status != StatusDoze.Cekanje ||
+                        d.BrojOdgoda >= 2) &&
                     d.Terapija != null &&
                     d.Terapija.PacijentId != null)
                 .ToListAsync();
 
+            var contactEmailJobs = new List<ContactEmailNotification>();
             foreach (var patientDoses in completedDoses
                 .GroupBy(d => d.Terapija!.PacijentId!))
             {
@@ -140,32 +153,41 @@ namespace TimeForPill.Services
 
                 foreach (var doza in orderedDoses)
                 {
-                    if (doza.Status == StatusDoze.Propusteno)
+                    if (IsMissedForContactNotification(doza))
                     {
                         missedStreak.Add(doza);
+                        QueueContactNotificationIfNeeded(
+                            missedStreak,
+                            contactEmailJobs);
                         continue;
                     }
 
-                    await NotifyContactForMissedStreakAsync(missedStreak);
                     missedStreak.Clear();
                 }
-
-                await NotifyContactForMissedStreakAsync(missedStreak);
             }
 
+            await SendContactNotificationEmailsAsync(contactEmailJobs);
             await _context.SaveChangesAsync();
         }
 
-        private async Task NotifyContactForMissedStreakAsync(
-            IReadOnlyList<TerapijskaDoza> missedStreak)
+        private void QueueContactNotificationIfNeeded(
+            IReadOnlyList<TerapijskaDoza> missedStreak,
+            ICollection<ContactEmailNotification> emailJobs)
         {
-            if (missedStreak.Count < 3 ||
-                missedStreak.Take(3).All(d => d.KontaktObavijestPoslana))
+            var missedCount = missedStreak.Count;
+            if (missedCount <= 0 ||
+                missedCount % 3 != 0)
             {
                 return;
             }
 
-            var sample = missedStreak[0];
+            var markerDose = missedStreak[^1];
+            if (markerDose.KontaktObavijestPoslana)
+            {
+                return;
+            }
+
+            var sample = markerDose;
             var pacijent = sample.Terapija?.Pacijent;
             var kontaktEmail = pacijent?.KontaktOsoba?.Email;
             if (string.IsNullOrWhiteSpace(kontaktEmail))
@@ -184,24 +206,101 @@ namespace TimeForPill.Services
                 imePrezime = "Pacijent";
             }
 
-            try
-            {
-                await _emailService.SendEmailAsync(
-                    kontaktEmail,
-                    "TimeForPill obavijest o propustenoj terapiji",
-                    $"{imePrezime} je propustilo terapiju prevelik broj puta, obratiti paznju.");
+            emailJobs.Add(new ContactEmailNotification(
+                missedStreak.ToList(),
+                kontaktEmail,
+                "Upozorenje o terapiji",
+                $"Pacijent {imePrezime} je propustio {missedCount} uzastopnih doza terapije. Molimo provjerite njegovo stanje.",
+                sample.Terapija?.PacijentId));
+        }
 
-                foreach (var doza in missedStreak)
+        private async Task SendDoseReminderEmailsAsync(
+            IReadOnlyList<DoseReminderEmail> emailJobs)
+        {
+            if (emailJobs.Count == 0)
+            {
+                return;
+            }
+
+            using var throttler = new SemaphoreSlim(MaxConcurrentEmailSends);
+            var tasks = emailJobs.Select(async job =>
+            {
+                await throttler.WaitAsync();
+                try
+                {
+                    await _emailService.SendEmailAsync(
+                        job.To,
+                        job.Subject,
+                        job.Body,
+                        job.IsBodyHtml);
+
+                    return job;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Email podsjetnik nije poslan za dozu {DozaId}.",
+                        job.Doza.Id);
+
+                    return null;
+                }
+                finally
+                {
+                    throttler.Release();
+                }
+            });
+
+            var sentJobs = await Task.WhenAll(tasks);
+            foreach (var sentJob in sentJobs.Where(job => job != null))
+            {
+                sentJob!.Doza.EmailPodsjetnikPoslan = true;
+            }
+        }
+
+        private async Task SendContactNotificationEmailsAsync(
+            IReadOnlyList<ContactEmailNotification> emailJobs)
+        {
+            if (emailJobs.Count == 0)
+            {
+                return;
+            }
+
+            using var throttler = new SemaphoreSlim(MaxConcurrentEmailSends);
+            var tasks = emailJobs.Select(async job =>
+            {
+                await throttler.WaitAsync();
+                try
+                {
+                    await _emailService.SendEmailAsync(
+                        job.To,
+                        job.Subject,
+                        job.Body);
+
+                    return job;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Kontakt osoba nije obavijestena za pacijenta {PacijentId} nakon tri uzastopne propustene doze.",
+                        job.PacijentId);
+
+                    return null;
+                }
+                finally
+                {
+                    throttler.Release();
+                }
+            });
+
+            var sentJobs = await Task.WhenAll(tasks);
+            foreach (var sentJob in sentJobs.Where(job => job != null))
+            {
+                foreach (var doza in sentJob!.Doze)
                 {
                     doza.KontaktObavijestPoslana = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(
-                    ex,
-                    "Kontakt osoba nije obavijestena za pacijenta {PacijentId} nakon tri uzastopne propustene doze.",
-                    sample.Terapija?.PacijentId);
             }
         }
 
@@ -239,9 +338,86 @@ namespace TimeForPill.Services
             }
         }
 
+        private async Task IncrementDailyStatisticsAsync(
+            IReadOnlyList<TerapijskaDoza> doze,
+            StatusDoze status)
+        {
+            foreach (var group in doze
+                .Where(d => !string.IsNullOrWhiteSpace(d.Terapija?.PacijentId))
+                .GroupBy(d => new
+                {
+                    PacijentId = d.Terapija!.PacijentId!,
+                    Datum = GetOriginalDoseTime(d).Date
+                }))
+            {
+                var statistic = await _context.PacijentDnevneStatistike
+                    .FirstOrDefaultAsync(s =>
+                        s.PacijentId == group.Key.PacijentId &&
+                        s.Datum == group.Key.Datum);
+
+                if (statistic == null)
+                {
+                    statistic = new PacijentDnevnaStatistika
+                    {
+                        PacijentId = group.Key.PacijentId,
+                        Datum = group.Key.Datum
+                    };
+
+                    _context.PacijentDnevneStatistike.Add(statistic);
+                }
+
+                if (status == StatusDoze.Uzeto)
+                {
+                    statistic.BrojUzetih += group.Count();
+                }
+                else if (status == StatusDoze.Propusteno)
+                {
+                    statistic.BrojPropustenih += group.Count();
+                }
+            }
+        }
+
         private static DateTime GetOriginalDoseTime(TerapijskaDoza doza)
         {
             return doza.OriginalnoVrijemeUzimanja ?? doza.VrijemeUzimanja;
         }
+
+        private static bool IsMissedForContactNotification(TerapijskaDoza doza)
+        {
+            return doza.Status == StatusDoze.Propusteno ||
+                doza.BrojOdgoda >= 2;
+        }
+
+        private string GetLoginUrl()
+        {
+            return $"{PublicAppUrl}/Account/Login";
+        }
+
+        private string BuildDoseReminderBody(string naziv, DateTime vrijemeUzimanja)
+        {
+            var encodedNaziv = WebUtility.HtmlEncode(naziv);
+            var loginUrl = WebUtility.HtmlEncode(GetLoginUrl());
+
+            return
+                "<p>Za 5 minuta trebate uzeti lijek " +
+                $"<strong>{encodedNaziv}</strong>.</p>" +
+                "<p>Planirano vrijeme uzimanja: " +
+                $"<strong>{vrijemeUzimanja:dd.MM.yyyy HH:mm}</strong>.</p>" +
+                $"<p><a href=\"{loginUrl}\" target=\"_blank\" rel=\"noopener\">Kliknite ovdje za prijavu u TimeForPill</a></p>";
+        }
+
+        private sealed record DoseReminderEmail(
+            TerapijskaDoza Doza,
+            string To,
+            string Subject,
+            string Body,
+            bool IsBodyHtml);
+
+        private sealed record ContactEmailNotification(
+            IReadOnlyList<TerapijskaDoza> Doze,
+            string To,
+            string Subject,
+            string Body,
+            string? PacijentId);
     }
 }

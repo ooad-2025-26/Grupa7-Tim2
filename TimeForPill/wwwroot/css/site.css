@@ -542,6 +542,28 @@ a {
   gap: .75rem;
 }
 
+.home-therapy-list {
+  max-height: 330px;
+  overflow-y: auto;
+  padding-right: .25rem;
+}
+
+.admin-home-card {
+  display: flex;
+  flex-direction: column;
+  height: 268px;
+}
+
+.admin-management-card .button-stack {
+  margin-top: auto;
+}
+
+.admin-action-list {
+  max-height: 184px;
+  overflow-y: auto;
+  padding-right: .25rem;
+}
+
 .therapy-row {
   align-items: center;
   border: 1px solid var(--line);

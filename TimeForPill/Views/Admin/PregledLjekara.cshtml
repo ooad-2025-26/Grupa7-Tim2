@@ -32,6 +32,7 @@
                     <td>@ljekar.DatumRodjenja.ToString("dd.MM.yyyy")</td>
                     <td class="actions">
                         <a class="btn btn-outline-secondary btn-sm" asp-controller="Ljekars" asp-action="Edit" asp-route-id="@ljekar.Id">Uredi</a>
+                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Ljekars" asp-action="Details" asp-route-id="@ljekar.Id">Detalji</a>
                         <a class="btn btn-outline-danger btn-sm" asp-controller="Ljekars" asp-action="Delete" asp-route-id="@ljekar.Id">Obrisi</a>
                     </td>
                 </tr>

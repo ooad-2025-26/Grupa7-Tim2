@@ -15,10 +15,18 @@
     <form asp-action="ObnovaTerapije" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+        @if (!Model.Terapije.Any())
+        {
+            <div class="alert alert-warning">
+                Trenutno nemate aktivnih terapija za obnovu.
+            </div>
+        }
+
         <div class="form-grid">
             <div class="span-2">
                 <label asp-for="TerapijaId" class="form-label"></label>
                 <select asp-for="TerapijaId" class="form-select" id="therapySelect">
+                    <option value="">Odaberite aktivnu terapiju</option>
                     @foreach (var terapija in Model.Terapije)
                     {
                         <option value="@terapija.TerapijaId" data-remaining="@terapija.PreostaloDoza">
@@ -42,7 +50,14 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg mt-4">Posaljite zahtjev Ljekaru</button>
+        @if (Model.Terapije.Any())
+        {
+            <button type="submit" class="btn btn-primary btn-lg mt-4">Posaljite zahtjev Ljekaru</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary btn-lg mt-4" disabled>Posaljite zahtjev Ljekaru</button>
+        }
     </form>
 </section>
 

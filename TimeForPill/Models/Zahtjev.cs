@@ -17,6 +17,9 @@ namespace TimeForPill.Models
         [Display(Name = "Sadrzaj")]
         public string Sadrzaj { get; set; } = string.Empty;
 
+        [Display(Name = "Datum kreiranja")]
+        public DateTime DatumKreiranja { get; set; } = DateTime.Now;
+
         [Display(Name = "Terapija")]
         [ForeignKey(nameof(Terapija))]
         public int? TerapijaId { get; set; }

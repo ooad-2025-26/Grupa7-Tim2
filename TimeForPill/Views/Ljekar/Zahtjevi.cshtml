@@ -17,6 +17,7 @@
                 <th>Naziv</th>
                 <th>Pacijent</th>
                 <th>Lijek</th>
+                <th>Datum</th>
                 <th>Status</th>
                 <th></th>
             </tr>
@@ -28,6 +29,7 @@
                     <td>@zahtjev.Naziv</td>
                     <td>@zahtjev.Pacijent</td>
                     <td>@zahtjev.Lijek</td>
+                    <td>@zahtjev.DatumKreiranja.ToString("dd.MM.yyyy HH:mm")</td>
                     <td><span class="status-badge status-@zahtjev.Status.ToString().ToLower()">@zahtjev.Status</span></td>
                     <td class="actions">
                         <a class="btn btn-outline-secondary btn-sm" asp-action="ZahtjevDetalji" asp-route-id="@zahtjev.Id">Pregled</a>

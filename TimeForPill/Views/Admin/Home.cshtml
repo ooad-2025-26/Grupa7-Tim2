@@ -26,7 +26,7 @@
 </section>
 
 <section class="dashboard-two mt-4">
-    <article class="app-card">
+    <article class="app-card admin-home-card admin-management-card">
         <div class="section-row">
             <div>
                 <p class="eyebrow">Korisnici</p>
@@ -39,7 +39,7 @@
         </div>
     </article>
 
-    <article class="app-card">
+    <article class="app-card admin-home-card admin-activity-card">
         <div class="section-row">
             <div>
                 <p class="eyebrow">Zadnje akcije</p>
@@ -52,7 +52,7 @@
         }
         else
         {
-            <div class="action-list">
+            <div class="action-list admin-action-list">
                 @foreach (var akcija in Model.ZadnjeAkcije)
                 {
                     <span>@akcija</span>

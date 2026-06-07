@@ -93,7 +93,7 @@
     }
     else
     {
-        <div class="therapy-list">
+        <div class="therapy-list home-therapy-list">
             @foreach (var lijek in Model.DanasnjeTerapije)
             {
                 <div class="therapy-row">
@@ -296,13 +296,14 @@
 
                     const now = new Date();
                     const earliestAllowed = new Date(doseAt.getTime() - 15 * 60 * 1000);
+                    const confirmationThreshold = new Date(doseAt.getTime() - 5 * 60 * 1000);
                     if (now < earliestAllowed) {
                         event.preventDefault();
                         alert('Dozu mozete oznaciti kao uzetu tek 15 minuta prije zakazanog termina.');
                         return;
                     }
 
-                    if (now < doseAt) {
+                    if (now < confirmationThreshold) {
                         const confirmed = confirm('Do termina doze ima manje od 15 minuta. Da li stvarno zelite oznaciti dozu kao uzetu?');
                         if (!confirmed) {
                             event.preventDefault();

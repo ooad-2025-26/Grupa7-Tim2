@@ -72,6 +72,7 @@ using (var scope = app.Services.CreateScope())
         }
 
         BackfillMissingDoses(context);
+        BackfillDailyStatistics(context);
 
         var conn = context.Database.GetDbConnection();
 
@@ -157,6 +158,11 @@ static void BackfillMissingDoses(ApplicationDbContext context)
         }
 
         terapija.UkupanBrojDoza = totalDoses;
+        if (terapija.BrojDozaPoObnovi <= 0)
+        {
+            terapija.BrojDozaPoObnovi = totalDoses;
+        }
+
         terapija.IntervalSati = intervalHours;
         terapija.Kraj = start.AddHours(intervalHours * Math.Max(0, totalDoses - 1));
     }
@@ -165,4 +171,57 @@ static void BackfillMissingDoses(ApplicationDbContext context)
     {
         context.SaveChanges();
     }
+}
+
+static void BackfillDailyStatistics(ApplicationDbContext context)
+{
+    var completedDoses = context.TerapijskeDoze
+        .Include(d => d.Terapija)
+        .Where(d =>
+            d.Terapija != null &&
+            d.Terapija.PacijentId != null &&
+            (d.Status == StatusDoze.Uzeto ||
+                d.Status == StatusDoze.Propusteno))
+        .ToList();
+
+    foreach (var group in completedDoses
+        .GroupBy(d => new
+        {
+            PacijentId = d.Terapija!.PacijentId!,
+            Datum = GetDoseStatisticDate(d)
+        }))
+    {
+        var statistic = context.PacijentDnevneStatistike
+            .FirstOrDefault(s =>
+                s.PacijentId == group.Key.PacijentId &&
+                s.Datum == group.Key.Datum);
+
+        if (statistic == null)
+        {
+            statistic = new PacijentDnevnaStatistika
+            {
+                PacijentId = group.Key.PacijentId,
+                Datum = group.Key.Datum
+            };
+
+            context.PacijentDnevneStatistike.Add(statistic);
+        }
+
+        statistic.BrojUzetih = Math.Max(
+            statistic.BrojUzetih,
+            group.Count(d => d.Status == StatusDoze.Uzeto));
+        statistic.BrojPropustenih = Math.Max(
+            statistic.BrojPropustenih,
+            group.Count(d => d.Status == StatusDoze.Propusteno));
+    }
+
+    if (completedDoses.Count > 0)
+    {
+        context.SaveChanges();
+    }
+}
+
+static DateTime GetDoseStatisticDate(TerapijskaDoza doza)
+{
+    return (doza.OriginalnoVrijemeUzimanja ?? doza.VrijemeUzimanja).Date;
 }

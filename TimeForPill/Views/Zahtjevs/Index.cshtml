@@ -19,6 +19,7 @@
                 <th>Naziv</th>
                 <th>Status</th>
                 <th>Terapija</th>
+                <th>Datum</th>
                 <th>Sadrzaj</th>
                 <th class="text-end">Akcije</th>
             </tr>
@@ -30,6 +31,7 @@
                 <td><strong>@item.Naziv</strong></td>
                 <td>@item.Status</td>
                 <td>@(item.Terapija?.Naziv ?? "Nije odabrana")</td>
+                <td>@item.DatumKreiranja.ToString("dd.MM.yyyy HH:mm")</td>
                 <td>@item.Sadrzaj</td>
                 <td>
                     <div class="actions">

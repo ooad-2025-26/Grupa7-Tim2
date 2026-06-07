@@ -32,6 +32,7 @@
                     <td>@(pacijent.KontaktOsoba == null ? "-" : $"{pacijent.KontaktOsoba.Ime} {pacijent.KontaktOsoba.Prezime}")</td>
                     <td class="actions">
                         <a class="btn btn-outline-secondary btn-sm" asp-controller="Pacijents" asp-action="Edit" asp-route-id="@pacijent.Id">Uredi</a>
+                        <a class="btn btn-outline-secondary btn-sm" asp-controller="Pacijents" asp-action="Details" asp-route-id="@pacijent.Id">Detalji</a>
                         <a class="btn btn-outline-danger btn-sm" asp-controller="Pacijents" asp-action="Delete" asp-route-id="@pacijent.Id">Obrisi</a>
                     </td>
                 </tr>

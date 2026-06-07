@@ -20,8 +20,8 @@ namespace TimeForPill
             var zahtjevi = await _context.Zahtjevi
                 .Include(z => z.Terapija)
                 .AsNoTracking()
-                .OrderBy(z => z.Status)
-                .ThenBy(z => z.Naziv)
+                .OrderByDescending(z => z.DatumKreiranja)
+                .ThenByDescending(z => z.Id)
                 .ToListAsync();
 
             return View(zahtjevi);
@@ -45,7 +45,11 @@ namespace TimeForPill
         public async Task<IActionResult> Create()
         {
             await PopulateListsAsync();
-            return View(new Zahtjev { Status = StatusZahtjeva.Neobraden });
+            return View(new Zahtjev
+            {
+                Status = StatusZahtjeva.Neobraden,
+                DatumKreiranja = DateTime.Now
+            });
         }
 
         [HttpPost]
@@ -62,6 +66,7 @@ namespace TimeForPill
 
             try
             {
+                zahtjev.DatumKreiranja = DateTime.Now;
                 _context.Add(zahtjev);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,7 +98,7 @@ namespace TimeForPill
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Sadrzaj,TerapijaId,Status")] Zahtjev zahtjev)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Naziv,Sadrzaj,TerapijaId,Status,DatumKreiranja")] Zahtjev zahtjev)
         {
             if (id != zahtjev.Id)
             {

@@ -48,6 +48,7 @@ namespace TimeForPill.ViewModels
         public StatusDoze Status { get; set; }
         public string? Slika { get; set; }
         public string SljedecaDoza { get; set; } = "-";
+        public string PreostaloDoSljedeceDoze { get; set; } = "-";
     }
 
     public class MedicineCatalogOptionViewModel
@@ -79,6 +80,11 @@ namespace TimeForPill.ViewModels
         [Display(Name = "Uzimati svakih sati")]
         public int IntervalSati { get; set; } = 8;
 
+        [Display(Name = "Automatski odredi prvu dozu")]
+        public bool AutomatskiPocetak { get; set; } = true;
+
+        [Display(Name = "Vrijeme prve doze")]
+        [DataType(DataType.DateTime)]
         public DateTime Pocetak { get; set; } = DateTime.Now;
 
         public DateTime Kraj { get; set; } = DateTime.Now.AddDays(7);
@@ -199,6 +205,7 @@ namespace TimeForPill.ViewModels
         public string Naziv { get; set; } = string.Empty;
         public string Pacijent { get; set; } = string.Empty;
         public string Lijek { get; set; } = string.Empty;
+        public DateTime DatumKreiranja { get; set; }
         public StatusZahtjeva Status { get; set; }
     }
 

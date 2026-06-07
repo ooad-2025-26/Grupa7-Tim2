@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Net;
 using TimeForPill.Data;
 using TimeForPill.Models;
 using TimeForPill.Services;
@@ -34,17 +35,19 @@ namespace TimeForPill.Controllers
             "Nedjelja"
         };
 
-        private const int MaxDozaPoSatu = 2;
+        private const int MaxDozaPoTerminu = 2;
+        private const int VremenskiSlotMinuta = 30;
         private const int PrviDnevniSat = 6;
-        private const int ZadnjiDnevniSat = 22;
+        private const int ZadnjiNedozvoljeniSat = 23;
         private const int MinutaPrijeDozeZaUzimanje = 15;
         private const int MaxBrojOdgodaPoDozi = 2;
+        private const string PublicAppUrl = "http://timeforpill.runasp.net";
 
         private readonly ApplicationDbContext _context;
         private readonly IDoseWorkflowService _doseWorkflowService;
         private readonly IEmailService _emailService;
-        private readonly IWebHostEnvironment _env;
         private readonly EmailSettings _emailSettings;
+        private readonly IWebHostEnvironment _env;
         private readonly ILogger<PacijentController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -52,16 +55,16 @@ namespace TimeForPill.Controllers
             ApplicationDbContext context,
             IDoseWorkflowService doseWorkflowService,
             IEmailService emailService,
-            IWebHostEnvironment env,
             IOptions<EmailSettings> emailSettings,
+            IWebHostEnvironment env,
             ILogger<PacijentController> logger,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _doseWorkflowService = doseWorkflowService;
             _emailService = emailService;
-            _env = env;
             _emailSettings = emailSettings.Value;
+            _env = env;
             _logger = logger;
             _userManager = userManager;
         }
@@ -83,6 +86,23 @@ namespace TimeForPill.Controllers
             var todayDoses = doses
                 .Where(d => GetDoseBusinessDate(d) == today)
                 .ToList();
+            var activeTherapyIds = doses
+                .Where(d => d.Status == StatusDoze.Cekanje)
+                .Select(d => d.TerapijaId)
+                .Distinct()
+                .ToHashSet();
+            var activeTodayDoses = todayDoses
+                .Where(d => activeTherapyIds.Contains(d.TerapijaId))
+                .ToList();
+            var dailyStatistics = await GetDailyStatisticsAsync(
+                pacijent.Id,
+                today);
+            var brojUzetihDanas = Math.Max(
+                dailyStatistics?.BrojUzetih ?? 0,
+                todayDoses.Count(d => d.Status == StatusDoze.Uzeto));
+            var brojPropustenihDanas = Math.Max(
+                dailyStatistics?.BrojPropustenih ?? 0,
+                todayDoses.Count(d => d.Status == StatusDoze.Propusteno));
 
             var currentDose = doses
                 .Where(d =>
@@ -100,7 +120,7 @@ namespace TimeForPill.Controllers
                 .OrderBy(d => d.VrijemeUzimanja)
                 .FirstOrDefault();
 
-            var groupedToday = todayDoses
+            var groupedToday = activeTodayDoses
                 .Where(d => d.Terapija != null)
                 .GroupBy(d => d.Terapija!)
                 .Select(g => ToMedicineListItem(g.Key, g.ToList()))
@@ -110,16 +130,17 @@ namespace TimeForPill.Controllers
             var viewModel = new PatientDashboardViewModel
             {
                 Ime = pacijent.Ime,
-                BrojLijekovaDanas = todayDoses
+                BrojLijekovaDanas = activeTodayDoses
                     .Select(d => d.TerapijaId)
                     .Distinct()
                     .Count(),
-                BrojUzetihDanas =
-                    todayDoses.Count(d => d.Status == StatusDoze.Uzeto),
-                BrojPropustenihDanas =
-                    todayDoses.Count(d => d.Status == StatusDoze.Propusteno),
+                BrojUzetihDanas = brojUzetihDanas,
+                BrojPropustenihDanas = brojPropustenihDanas,
                 ProgresDoSljedecegLijeka =
-                    CalculateTakenProgress(todayDoses),
+                    CalculateTakenProgress(
+                        brojUzetihDanas,
+                        brojPropustenihDanas,
+                        activeTodayDoses.Count(d => d.Status == StatusDoze.Cekanje)),
                 SljedeciLijekNaziv =
                     GetDoseMedicineName(nextDose),
                 SljedeciLijekVrijeme =
@@ -166,6 +187,23 @@ namespace TimeForPill.Controllers
             var todayDoses = doses
                 .Where(d => GetDoseBusinessDate(d) == today)
                 .ToList();
+            var activeTherapyIds = doses
+                .Where(d => d.Status == StatusDoze.Cekanje)
+                .Select(d => d.TerapijaId)
+                .Distinct()
+                .ToHashSet();
+            var activeTodayDoses = todayDoses
+                .Where(d => activeTherapyIds.Contains(d.TerapijaId))
+                .ToList();
+            var dailyStatistics = await GetDailyStatisticsAsync(
+                pacijent.Id,
+                today);
+            var brojUzetihDanas = Math.Max(
+                dailyStatistics?.BrojUzetih ?? 0,
+                todayDoses.Count(d => d.Status == StatusDoze.Uzeto));
+            var brojPropustenihDanas = Math.Max(
+                dailyStatistics?.BrojPropustenih ?? 0,
+                todayDoses.Count(d => d.Status == StatusDoze.Propusteno));
 
             var nextDose = doses
                 .Where(d =>
@@ -176,16 +214,17 @@ namespace TimeForPill.Controllers
 
             return Json(new
             {
-                brojLijekovaDanas = todayDoses
+                brojLijekovaDanas = activeTodayDoses
                     .Select(d => d.TerapijaId)
                     .Distinct()
                     .Count(),
-                brojUzetihDanas =
-                    todayDoses.Count(d => d.Status == StatusDoze.Uzeto),
-                brojPropustenihDanas =
-                    todayDoses.Count(d => d.Status == StatusDoze.Propusteno),
+                brojUzetihDanas = brojUzetihDanas,
+                brojPropustenihDanas = brojPropustenihDanas,
                 progresDoSljedecegLijeka =
-                    CalculateTakenProgress(todayDoses),
+                    CalculateTakenProgress(
+                        brojUzetihDanas,
+                        brojPropustenihDanas,
+                        activeTodayDoses.Count(d => d.Status == StatusDoze.Cekanje)),
                 sljedeciLijekNaziv = GetDoseMedicineName(nextDose),
                 sljedeciLijekVrijeme =
                     nextDose?.VrijemeUzimanja.ToString("HH:mm") ?? "-",
@@ -277,7 +316,13 @@ namespace TimeForPill.Controllers
 
             if (id == null)
             {
-                var newModel = new MedicineFormViewModel();
+                var firstDose = GetFirstDoseCandidate(DateTime.Now);
+                var newModel = new MedicineFormViewModel
+                {
+                    AutomatskiPocetak = true,
+                    Pocetak = firstDose,
+                    Kraj = firstDose
+                };
                 await PopulateMedicineCatalogAsync(newModel);
                 return View(newModel);
             }
@@ -294,6 +339,13 @@ namespace TimeForPill.Controllers
                 return NotFound();
             }
 
+            var firstDoseTime = await _context.TerapijskeDoze
+                .AsNoTracking()
+                .Where(d => d.TerapijaId == terapija.Id)
+                .OrderBy(d => d.VrijemeUzimanja)
+                .Select(d => (DateTime?)d.VrijemeUzimanja)
+                .FirstOrDefaultAsync();
+
             var model = new MedicineFormViewModel
             {
                 TerapijaId = terapija.Id,
@@ -302,7 +354,8 @@ namespace TimeForPill.Controllers
                 Kategorija = terapija.Lijek?.Kategorija ?? "Terapija",
                 UkupanBrojDoza = terapija.UkupanBrojDoza,
                 IntervalSati = terapija.IntervalSati,
-                Pocetak = terapija.Pocetak,
+                AutomatskiPocetak = false,
+                Pocetak = firstDoseTime ?? terapija.Pocetak,
                 Kraj = terapija.Kraj,
                 PostojecaSlika = terapija.Lijek?.Slika
             };
@@ -322,6 +375,11 @@ namespace TimeForPill.Controllers
             }
 
             var selectedLijek = await GetSelectedCatalogMedicineAsync(model);
+            if (model.AutomatskiPocetak)
+            {
+                model.Pocetak = GetFirstDoseCandidate(DateTime.Now);
+            }
+
             if (selectedLijek == null)
             {
                 ModelState.AddModelError(
@@ -333,6 +391,25 @@ namespace TimeForPill.Controllers
                 model.Naziv = selectedLijek.Naziv;
                 model.Kategorija = selectedLijek.Kategorija;
                 model.PostojecaSlika = selectedLijek.Slika;
+
+                var activeTherapyExists = await IsMedicineActiveForPatientAsync(
+                    pacijent.Id,
+                    selectedLijek.Id,
+                    model.TerapijaId);
+                if (activeTherapyExists)
+                {
+                    ModelState.AddModelError(
+                        nameof(MedicineFormViewModel.LijekId),
+                        $"Vec imate aktivnu terapiju za lijek {selectedLijek.Naziv}. Postojecu terapiju mozete samo azurirati iz ekrana Moji lijekovi.");
+                }
+            }
+
+            if (!model.AutomatskiPocetak &&
+                model.Pocetak < DateTime.Now.AddMinutes(-1))
+            {
+                ModelState.AddModelError(
+                    nameof(MedicineFormViewModel.Pocetak),
+                    "Vrijeme prve doze ne moze biti u proslosti.");
             }
 
             if (!ModelState.IsValid)
@@ -361,6 +438,15 @@ namespace TimeForPill.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Terapija i pojedinacne doze su sacuvane.";
                 return RedirectToAction(nameof(MojiLijekovi));
+            }
+            catch (DoseScheduleException ex)
+            {
+                ModelState.AddModelError(
+                    nameof(MedicineFormViewModel.Pocetak),
+                    ex.Message);
+
+                await PopulateMedicineCatalogAsync(model);
+                return View(model);
             }
             catch (DbUpdateException)
             {
@@ -447,27 +533,32 @@ namespace TimeForPill.Controllers
                 Naziv = $"Obnova terapije - {nazivLijeka}",
                 Sadrzaj = sadrzaj,
                 TerapijaId = terapija.Id,
-                Status = StatusZahtjeva.Neobraden
+                Status = StatusZahtjeva.Neobraden,
+                DatumKreiranja = DateTime.Now
             };
 
             _context.Zahtjevi.Add(zahtjev);
             await _context.SaveChangesAsync();
 
-            var doktorEmail = pacijent.Ljekar?.Email;
-            if (string.IsNullOrWhiteSpace(doktorEmail))
-            {
-                doktorEmail = _emailSettings.DoctorEmail;
-            }
-
             try
             {
-                await _emailService.SendEmailAsync(
-                    doktorEmail,
-                    zahtjev.Naziv,
-                    sadrzaj);
+                var doktorEmail = pacijent.Ljekar?.Email;
+                if (!string.IsNullOrWhiteSpace(doktorEmail))
+                {
+                    await _emailService.SendEmailAsync(
+                        doktorEmail,
+                        "Pacijent zeli obnovu lijeka",
+                        BuildDoctorRenewalEmailBody(
+                            zahtjev.Id,
+                            pacijent,
+                            nazivLijeka,
+                            model.PreostaloDoza,
+                            model.Napomena),
+                        isBodyHtml: true);
+                }
 
                 TempData["Success"] =
-                    "Zahtjev je sacuvan i poslan ljekaru.";
+                    "Zahtjev za obnovu lijeka poslan.";
             }
             catch (Exception ex)
             {
@@ -476,7 +567,7 @@ namespace TimeForPill.Controllers
                     "Zahtjev je sacuvan, ali email nije poslan.");
 
                 TempData["Success"] =
-                    "Zahtjev je sacuvan. Email nije poslan jer SMTP nije dostupan.";
+                    "Zahtjev za obnovu lijeka poslan.";
             }
 
             return RedirectToAction(nameof(ObnovaTerapije));
@@ -502,12 +593,12 @@ namespace TimeForPill.Controllers
                 Ime = pacijent.Ime,
                 Prezime = pacijent.Prezime,
                 DatumRodjenja = pacijent.DatumRodjenja,
-                Email = pacijent.Email ?? _emailSettings.PatientEmail,
+                Email = pacijent.Email ?? string.Empty,
                 PrikaziKontaktOsobu = true,
                 KontaktIme = pacijent.KontaktOsoba?.Ime ?? "Kontakt",
                 KontaktPrezime = pacijent.KontaktOsoba?.Prezime ?? "Osoba",
                 KontaktEmail =
-                    pacijent.KontaktOsoba?.Email ?? _emailSettings.ContactEmail,
+                    pacijent.KontaktOsoba?.Email ?? string.Empty,
                 KontaktTelefon =
                     pacijent.KontaktOsoba?.BrojTelefona ?? "061000000"
             });
@@ -519,6 +610,13 @@ namespace TimeForPill.Controllers
         {
             model.PrikaziKontaktOsobu = true;
             model.Uloga = KorisnickaUloga.Pacijent;
+
+            if (IsSameEmail(model.Email, model.KontaktEmail))
+            {
+                ModelState.AddModelError(
+                    nameof(ProfileViewModel.KontaktEmail),
+                    "Email kontakt osobe ne moze biti isti kao email pacijenta.");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -565,6 +663,16 @@ namespace TimeForPill.Controllers
 
             var startSedmice = GetStartOfWeek(DateTime.Today);
             var krajSedmice = startSedmice.AddDays(7);
+            var aktivneTerapijeIds = await _context.TerapijskeDoze
+                .AsNoTracking()
+                .Where(d =>
+                    d.Terapija != null &&
+                    d.Terapija.PacijentId == pacijent.Id &&
+                    d.Status == StatusDoze.Cekanje)
+                .Select(d => d.TerapijaId)
+                .Distinct()
+                .ToListAsync();
+
             var doze = await _context.TerapijskeDoze
                 .Include(d => d.Terapija)
                     .ThenInclude(t => t!.Lijek)
@@ -572,6 +680,7 @@ namespace TimeForPill.Controllers
                 .Where(d =>
                     d.Terapija != null &&
                     d.Terapija.PacijentId == pacijent.Id &&
+                    aktivneTerapijeIds.Contains(d.TerapijaId) &&
                     d.VrijemeUzimanja >= startSedmice &&
                     d.VrijemeUzimanja < krajSedmice)
                 .OrderBy(d => d.VrijemeUzimanja)
@@ -620,23 +729,19 @@ namespace TimeForPill.Controllers
                 _ => today
             };
 
-            var doze = await _context.TerapijskeDoze
+            var statistics = await _context.PacijentDnevneStatistike
                 .AsNoTracking()
-                .Where(d =>
-                    d.Terapija != null &&
-                    d.Terapija.PacijentId == pacijent.Id)
+                .Where(s =>
+                    s.PacijentId == pacijent.Id &&
+                    s.Datum >= start &&
+                    s.Datum <= today)
                 .ToListAsync();
-            doze = doze
-                .Where(d =>
-                    GetDoseBusinessDate(d) >= start &&
-                    GetDoseBusinessDate(d) <= today)
-                .ToList();
 
             var model = new HistoryViewModel
             {
                 Period = period,
-                Uzeto = doze.Count(d => d.Status == StatusDoze.Uzeto),
-                NijeUzeto = doze.Count(d => d.Status == StatusDoze.Propusteno)
+                Uzeto = statistics.Sum(s => s.BrojUzetih),
+                NijeUzeto = statistics.Sum(s => s.BrojPropustenih)
             };
 
             return View(model);
@@ -685,6 +790,7 @@ namespace TimeForPill.Controllers
 
             doza.Status = StatusDoze.Uzeto;
             doza.VrijemeEvidentiranja = now;
+            await IncrementDailyStatisticAsync(doza, StatusDoze.Uzeto);
             await _context.SaveChangesAsync();
             await UpdateTerapijaStatusAsync(doza.TerapijaId);
             await _context.SaveChangesAsync();
@@ -731,6 +837,7 @@ namespace TimeForPill.Controllers
             {
                 doza.Status = StatusDoze.Propusteno;
                 doza.VrijemeEvidentiranja = DateTime.Now;
+                await IncrementDailyStatisticAsync(doza, StatusDoze.Propusteno);
                 await _context.SaveChangesAsync();
                 await UpdateTerapijaStatusAsync(doza.TerapijaId);
 
@@ -831,10 +938,11 @@ namespace TimeForPill.Controllers
                 pacijentId,
                 excludedTerapijaId: null);
             var schedule = GenerateDoseSchedule(
-                GetFirstDoseCandidate(DateTime.Now),
+                GetFirstDoseCandidateFromModel(model),
                 model.UkupanBrojDoza,
                 model.IntervalSati,
-                occupiedDoseTimes);
+                occupiedDoseTimes,
+                model.AutomatskiPocetak);
             var start = schedule.First();
             var end = schedule.Last();
 
@@ -845,6 +953,7 @@ namespace TimeForPill.Controllers
                 Kraj = end,
                 DnevnaDoza = CalculateLegacyDailyDose(model.IntervalSati),
                 UkupanBrojDoza = model.UkupanBrojDoza,
+                BrojDozaPoObnovi = model.UkupanBrojDoza,
                 IntervalSati = model.IntervalSati,
                 Status = StatusTerapije.Cekanje,
                 PacijentId = pacijentId,
@@ -884,10 +993,11 @@ namespace TimeForPill.Controllers
                 pacijentId,
                 terapija.Id);
             var schedule = GenerateDoseSchedule(
-                GetFirstDoseCandidate(DateTime.Now),
+                GetFirstDoseCandidateFromModel(model),
                 model.UkupanBrojDoza,
                 model.IntervalSati,
-                occupiedDoseTimes);
+                occupiedDoseTimes,
+                model.AutomatskiPocetak);
             var start = schedule.First();
             var end = schedule.Last();
 
@@ -896,6 +1006,7 @@ namespace TimeForPill.Controllers
             terapija.Kraj = end;
             terapija.DnevnaDoza = CalculateLegacyDailyDose(model.IntervalSati);
             terapija.UkupanBrojDoza = model.UkupanBrojDoza;
+            terapija.BrojDozaPoObnovi = model.UkupanBrojDoza;
             terapija.IntervalSati = model.IntervalSati;
             terapija.Status = StatusTerapije.Cekanje;
             terapija.LijekId = lijek.Id;
@@ -944,15 +1055,25 @@ namespace TimeForPill.Controllers
             DateTime firstCandidate,
             int totalDoses,
             int intervalHours,
-            IEnumerable<DateTime> occupiedDoseTimes)
+            IEnumerable<DateTime> occupiedDoseTimes,
+            bool allowAutoReschedule)
         {
+            if (!allowAutoReschedule)
+            {
+                return GenerateExactDoseSchedule(
+                    firstCandidate,
+                    totalDoses,
+                    intervalHours,
+                    occupiedDoseTimes);
+            }
+
             var schedule = new List<DateTime>();
             var occupancy = occupiedDoseTimes
-                .Select(ToHourSlot)
+                .Select(ToDoseSlot)
                 .GroupBy(slot => slot)
                 .ToDictionary(group => group.Key, group => group.Count());
 
-            var candidate = MoveToAllowedDoseHour(firstCandidate);
+            var candidate = MoveToAllowedDoseTime(firstCandidate);
 
             for (var index = 0; index < totalDoses; index++)
             {
@@ -962,7 +1083,7 @@ namespace TimeForPill.Controllers
                 var scheduledAt = FindNextAvailableDoseSlot(
                     idealTime,
                     occupancy);
-                var slot = ToHourSlot(scheduledAt);
+                var slot = ToDoseSlot(scheduledAt);
 
                 schedule.Add(scheduledAt);
                 occupancy[slot] = GetOccupancyCount(occupancy, slot) + 1;
@@ -971,22 +1092,84 @@ namespace TimeForPill.Controllers
             return schedule;
         }
 
+        private static IReadOnlyList<DateTime> GenerateExactDoseSchedule(
+            DateTime firstCandidate,
+            int totalDoses,
+            int intervalHours,
+            IEnumerable<DateTime> occupiedDoseTimes)
+        {
+            var schedule = new List<DateTime>();
+            var occupancy = occupiedDoseTimes
+                .Select(NormalizeDoseTime)
+                .GroupBy(time => time)
+                .ToDictionary(group => group.Key, group => group.Count());
+            var current = NormalizeDoseTime(firstCandidate);
+
+            for (var index = 0; index < totalDoses; index++)
+            {
+                if (index > 0)
+                {
+                    current = GetNextExactAllowedDoseTime(
+                        current,
+                        intervalHours);
+                }
+
+                if (!IsAllowedExactDoseTime(current))
+                {
+                    throw new DoseScheduleException(
+                        $"Odabrano vrijeme {current:dd.MM.yyyy HH:mm} je u periodu kada se terapije ne zakazuju. Odaberite termin izmedju 06:00 i 22:59.");
+                }
+
+                var currentOccupancy = GetOccupancyCount(occupancy, current);
+                if (currentOccupancy >= MaxDozaPoTerminu)
+                {
+                    throw new DoseScheduleException(
+                        $"Termin {current:dd.MM.yyyy HH:mm} vec ima dvije zakazane doze. Odaberite drugo vrijeme pocetka terapije.");
+                }
+
+                schedule.Add(current);
+                occupancy[current] = currentOccupancy + 1;
+            }
+
+            return schedule;
+        }
+
+        private static DateTime GetNextExactAllowedDoseTime(
+            DateTime previous,
+            int intervalHours)
+        {
+            var current = previous.AddHours(intervalHours);
+            for (var attempt = 0; attempt < 24 * 366; attempt++)
+            {
+                if (IsAllowedExactDoseTime(current))
+                {
+                    return current;
+                }
+
+                current = current.AddHours(intervalHours);
+            }
+
+            throw new DoseScheduleException(
+                "Nije pronadjen dozvoljen termin za terapiju. Promijenite pocetak terapije ili interval uzimanja.");
+        }
+
         private static DateTime FindNextAvailableDoseSlot(
             DateTime candidate,
             IDictionary<DateTime, int> occupancy)
         {
-            var current = MoveToAllowedDoseHour(candidate);
+            var current = MoveToAllowedDoseTime(candidate);
 
-            for (var attempt = 0; attempt < 24 * 366; attempt++)
+            for (var attempt = 0; attempt < 2 * 24 * 366; attempt++)
             {
-                var slot = ToHourSlot(current);
-                if (IsAllowedDoseHour(slot) &&
-                    GetOccupancyCount(occupancy, slot) < MaxDozaPoSatu)
+                var slot = ToDoseSlot(current);
+                if (IsAllowedDoseTime(slot) &&
+                    GetOccupancyCount(occupancy, slot) < MaxDozaPoTerminu)
                 {
                     return slot;
                 }
 
-                current = MoveToAllowedDoseHour(slot.AddHours(1));
+                current = MoveToAllowedDoseTime(
+                    slot.AddMinutes(VremenskiSlotMinuta));
             }
 
             throw new InvalidOperationException(
@@ -995,15 +1178,21 @@ namespace TimeForPill.Controllers
 
         private static DateTime GetFirstDoseCandidate(DateTime now)
         {
-            var nextHour = new DateTime(
-                now.Year,
-                now.Month,
-                now.Day,
-                now.Hour,
-                0,
-                0).AddHours(1);
+            var nextSlot = ToDoseSlot(now)
+                .AddMinutes(VremenskiSlotMinuta);
 
-            return MoveToAllowedDoseHour(nextHour);
+            return MoveToAllowedDoseTime(nextSlot);
+        }
+
+        private static DateTime GetFirstDoseCandidateFromModel(
+            MedicineFormViewModel model)
+        {
+            if (model.AutomatskiPocetak)
+            {
+                return GetFirstDoseCandidate(DateTime.Now);
+            }
+
+            return model.Pocetak;
         }
 
         private static int GetOccupancyCount(
@@ -1015,15 +1204,15 @@ namespace TimeForPill.Controllers
                 : 0;
         }
 
-        private static DateTime MoveToAllowedDoseHour(DateTime candidate)
+        private static DateTime MoveToAllowedDoseTime(DateTime candidate)
         {
-            var slot = ToHourSlot(candidate);
+            var slot = ToDoseSlot(candidate);
             if (slot.Hour < PrviDnevniSat)
             {
                 return slot.Date.AddHours(PrviDnevniSat);
             }
 
-            if (slot.Hour > ZadnjiDnevniSat)
+            if (slot.Hour >= ZadnjiNedozvoljeniSat)
             {
                 return slot.Date.AddDays(1).AddHours(PrviDnevniSat);
             }
@@ -1031,20 +1220,41 @@ namespace TimeForPill.Controllers
             return slot;
         }
 
-        private static bool IsAllowedDoseHour(DateTime candidate)
+        private static bool IsAllowedDoseTime(DateTime candidate)
         {
             return candidate.Hour >= PrviDnevniSat &&
-                candidate.Hour <= ZadnjiDnevniSat;
+                candidate.Hour < ZadnjiNedozvoljeniSat;
         }
 
-        private static DateTime ToHourSlot(DateTime value)
+        private static bool IsAllowedExactDoseTime(DateTime candidate)
+        {
+            return candidate.Hour >= PrviDnevniSat &&
+                candidate.Hour < ZadnjiNedozvoljeniSat;
+        }
+
+        private static DateTime NormalizeDoseTime(DateTime value)
         {
             return new DateTime(
                 value.Year,
                 value.Month,
                 value.Day,
                 value.Hour,
-                0,
+                value.Minute,
+                0);
+        }
+
+        private static DateTime ToDoseSlot(DateTime value)
+        {
+            var minute = value.Minute < VremenskiSlotMinuta
+                ? 0
+                : VremenskiSlotMinuta;
+
+            return new DateTime(
+                value.Year,
+                value.Month,
+                value.Day,
+                value.Hour,
+                minute,
                 0);
         }
 
@@ -1068,6 +1278,7 @@ namespace TimeForPill.Controllers
             return new RenewTherapyViewModel
             {
                 Terapije = terapije
+                    .Where(t => pendingCounts.GetValueOrDefault(t.Id) > 0)
                     .Select(t => new TherapyOptionViewModel
                     {
                         TerapijaId = t.Id,
@@ -1117,6 +1328,47 @@ namespace TimeForPill.Controllers
             return await _context.Lijekovi
                 .AsNoTracking()
                 .FirstOrDefaultAsync(l => l.Id == model.LijekId.Value);
+        }
+
+        private async Task<bool> IsMedicineActiveForPatientAsync(
+            string pacijentId,
+            int lijekId,
+            int? excludedTerapijaId)
+        {
+            return await _context.TerapijskeDoze
+                .AsNoTracking()
+                .AnyAsync(d =>
+                    d.Terapija != null &&
+                    d.Terapija.PacijentId == pacijentId &&
+                    d.Terapija.LijekId == lijekId &&
+                    d.Status == StatusDoze.Cekanje &&
+                    (!excludedTerapijaId.HasValue ||
+                        d.TerapijaId != excludedTerapijaId.Value));
+        }
+
+        private string BuildDoctorRenewalEmailBody(
+            int zahtjevId,
+            Pacijent pacijent,
+            string nazivLijeka,
+            int preostaloDoza,
+            string? napomena)
+        {
+            var requestUrl =
+                $"{PublicAppUrl}/Ljekar/ZahtjevDetalji/{zahtjevId}";
+            var encodedUrl = WebUtility.HtmlEncode(requestUrl);
+            var encodedPatient = WebUtility.HtmlEncode(
+                $"{pacijent.Ime} {pacijent.Prezime}".Trim());
+            var encodedMedicine = WebUtility.HtmlEncode(nazivLijeka);
+            var encodedNote = WebUtility.HtmlEncode(
+                string.IsNullOrWhiteSpace(napomena)
+                    ? "Nema dodatne napomene."
+                    : napomena);
+
+            return
+                $"<p>Pacijent <strong>{encodedPatient}</strong> zeli obnovu lijeka <strong>{encodedMedicine}</strong>.</p>" +
+                $"<p>Preostalo doza: <strong>{preostaloDoza}</strong></p>" +
+                $"<p>Napomena: {encodedNote}</p>" +
+                $"<p><a href=\"{encodedUrl}\" target=\"_blank\" rel=\"noopener\">Otvori zahtjev u TimeForPill aplikaciji</a></p>";
         }
 
         private async Task<string?> TrySaveImageAsync(IFormFile? slikaFile)
@@ -1183,7 +1435,10 @@ namespace TimeForPill.Controllers
                 Kraj = terapija.Kraj,
                 Status = status,
                 Slika = terapija.Lijek?.Slika,
-                SljedecaDoza = next?.VrijemeUzimanja.ToString("dd.MM. HH:mm") ?? "-"
+                SljedecaDoza = next?.VrijemeUzimanja.ToString("HH:mm") ?? "-",
+                PreostaloDoSljedeceDoze = next == null
+                    ? "-"
+                    : FormatRemaining(DateTime.Now, next.VrijemeUzimanja)
             };
         }
 
@@ -1235,17 +1490,75 @@ namespace TimeForPill.Controllers
             return (doza.OriginalnoVrijemeUzimanja ?? doza.VrijemeUzimanja).Date;
         }
 
-        private static int CalculateTakenProgress(
-            IReadOnlyList<TerapijskaDoza> todayDoses)
+        private static bool IsSameEmail(string? email, string? contactEmail)
         {
-            if (todayDoses.Count == 0)
+            return string.Equals(
+                email?.Trim(),
+                contactEmail?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+        }
+
+        private async Task<PacijentDnevnaStatistika?> GetDailyStatisticsAsync(
+            string pacijentId,
+            DateTime datum)
+        {
+            return await _context.PacijentDnevneStatistike
+                .AsNoTracking()
+                .FirstOrDefaultAsync(s =>
+                    s.PacijentId == pacijentId &&
+                    s.Datum == datum.Date);
+        }
+
+        private async Task IncrementDailyStatisticAsync(
+            TerapijskaDoza doza,
+            StatusDoze status)
+        {
+            var pacijentId = doza.Terapija?.PacijentId;
+            if (string.IsNullOrWhiteSpace(pacijentId))
+            {
+                return;
+            }
+
+            var datum = GetDoseBusinessDate(doza);
+            var statistic = await _context.PacijentDnevneStatistike
+                .FirstOrDefaultAsync(s =>
+                    s.PacijentId == pacijentId &&
+                    s.Datum == datum);
+
+            if (statistic == null)
+            {
+                statistic = new PacijentDnevnaStatistika
+                {
+                    PacijentId = pacijentId,
+                    Datum = datum
+                };
+
+                _context.PacijentDnevneStatistike.Add(statistic);
+            }
+
+            if (status == StatusDoze.Uzeto)
+            {
+                statistic.BrojUzetih++;
+            }
+            else if (status == StatusDoze.Propusteno)
+            {
+                statistic.BrojPropustenih++;
+            }
+        }
+
+        private static int CalculateTakenProgress(
+            int brojUzetih,
+            int brojPropustenih,
+            int brojCekajucih)
+        {
+            var total = brojUzetih + brojPropustenih + brojCekajucih;
+            if (total == 0)
             {
                 return 0;
             }
 
             return (int)Math.Round(
-                (double)todayDoses.Count(d => d.Status == StatusDoze.Uzeto) /
-                todayDoses.Count * 100);
+                (double)brojUzetih / total * 100);
         }
 
         private static DateTime CalculateTherapyEnd(
@@ -1279,6 +1592,14 @@ namespace TimeForPill.Controllers
         {
             var diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
             return date.AddDays(-diff).Date;
+        }
+
+        private sealed class DoseScheduleException : Exception
+        {
+            public DoseScheduleException(string message)
+                : base(message)
+            {
+            }
         }
     }
 }

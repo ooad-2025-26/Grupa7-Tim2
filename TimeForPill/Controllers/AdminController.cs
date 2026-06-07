@@ -35,7 +35,7 @@ namespace TimeForPill.Controllers
                 .Where(a => a.AdministratorId == administrator.Id)
                 .OrderByDescending(a => a.DatumAkcije)
                 .ThenByDescending(a => a.Id)
-                .Take(5)
+                .Take(10)
                 .ToListAsync();
 
             var model = new AdminDashboardViewModel

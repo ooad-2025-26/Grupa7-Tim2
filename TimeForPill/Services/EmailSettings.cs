@@ -2,6 +2,9 @@ namespace TimeForPill.Services
 {
     public class EmailSettings
     {
+        public const string PublicAppUrl = "http://timeforpill.runasp.net";
+        private const string PublicAppHost = "timeforpill.runasp.net";
+
         public string Host { get; set; } = string.Empty;
         public string SmtpServer { get; set; } = string.Empty;
         public int Port { get; set; } = 587;
@@ -12,7 +15,7 @@ namespace TimeForPill.Services
         public string From { get; set; } = "noreply@timeforpill.local";
         public string SenderName { get; set; } = "TimeForPill";
         public string SenderEmail { get; set; } = string.Empty;
-        public string AppUrl { get; set; } = "http://timeforpill.runasp.net";
+        public string AppUrl { get; set; } = PublicAppUrl;
 
         public string EffectiveHost =>
             FirstConfigured(SmtpServer, Host);
@@ -28,13 +31,19 @@ namespace TimeForPill.Services
             get
             {
                 var appUrl = string.IsNullOrWhiteSpace(AppUrl)
-                    ? "http://timeforpill.runasp.net"
+                    ? PublicAppUrl
                     : AppUrl.Trim();
 
                 if (!appUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
                     !appUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 {
                     appUrl = "http://" + appUrl;
+                }
+
+                if (Uri.TryCreate(appUrl, UriKind.Absolute, out var uri) &&
+                    string.Equals(uri.Host, PublicAppHost, StringComparison.OrdinalIgnoreCase))
+                {
+                    return PublicAppUrl;
                 }
 
                 return appUrl.TrimEnd('/');

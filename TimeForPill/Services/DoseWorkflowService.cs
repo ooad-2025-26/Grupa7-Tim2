@@ -8,7 +8,6 @@ namespace TimeForPill.Services
 {
     public class DoseWorkflowService : IDoseWorkflowService
     {
-        private const string PublicAppUrl = "http://timeforpill.runasp.net";
         private const int MaxConcurrentEmailSends = 5;
 
         private readonly ApplicationDbContext _context;
@@ -390,7 +389,7 @@ namespace TimeForPill.Services
 
         private string GetLoginUrl()
         {
-            return $"{PublicAppUrl}/Account/Login";
+            return $"{EmailSettings.PublicAppUrl}/Account/Login";
         }
 
         private string BuildDoseReminderBody(string naziv, DateTime vrijemeUzimanja)

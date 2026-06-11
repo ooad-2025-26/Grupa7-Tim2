@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Net;
 using TimeForPill.Data;
 using TimeForPill.Models;
 using TimeForPill.Services;
@@ -394,12 +395,13 @@ namespace TimeForPill.Controllers
         private async Task SendDoctorApprovedEmailAsync(Ljekar ljekar)
         {
             var loginUrl = BuildAppUrl("/Account/Login");
+            var encodedLoginUrl = WebUtility.HtmlEncode(loginUrl);
             var body =
                 $"""
                 <p>Postovani/a {ljekar.Ime} {ljekar.Prezime},</p>
                 <p>Administrator je odobrio vas TimeForPill nalog.</p>
                 <p>Sada se mozete prijaviti u aplikaciju.</p>
-                <p><a href="{loginUrl}">Otvorite TimeForPill login</a></p>
+                <p><a href="{encodedLoginUrl}" target="_blank" rel="noopener">Otvorite TimeForPill login</a></p>
                 """;
 
             await _emailService.SendEmailAsync(

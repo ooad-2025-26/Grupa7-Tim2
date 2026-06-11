@@ -41,7 +41,6 @@ namespace TimeForPill.Controllers
         private const int ZadnjiNedozvoljeniSat = 23;
         private const int MinutaPrijeDozeZaUzimanje = 15;
         private const int MaxBrojOdgodaPoDozi = 2;
-        private const string PublicAppUrl = "http://timeforpill.runasp.net";
 
         private readonly ApplicationDbContext _context;
         private readonly IDoseWorkflowService _doseWorkflowService;
@@ -1636,7 +1635,7 @@ namespace TimeForPill.Controllers
             string? napomena)
         {
             var requestUrl =
-                $"{PublicAppUrl}/Ljekar/ZahtjevDetalji/{zahtjevId}";
+                $"{EmailSettings.PublicAppUrl}/Ljekar/ZahtjevDetalji/{zahtjevId}";
             var encodedUrl = WebUtility.HtmlEncode(requestUrl);
             var encodedPatient = WebUtility.HtmlEncode(
                 $"{pacijent.Ime} {pacijent.Prezime}".Trim());

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Net;
 using TimeForPill.Data;
 using TimeForPill.Models;
 using TimeForPill.Services;
@@ -305,12 +306,13 @@ namespace TimeForPill.Controllers
                     nameof(ConfirmEmail),
                     "Account",
                     new { userId = user.Id, token }) ?? string.Empty);
+            var encodedConfirmUrl = WebUtility.HtmlEncode(confirmUrl);
 
             var body =
                 $"""
                 <p>Postovani/a {user.Ime} {user.Prezime},</p>
                 <p>Potvrdite email adresu kako biste mogli koristiti TimeForPill aplikaciju.</p>
-                <p><a href="{confirmUrl}">Potvrdite email adresu</a></p>
+                <p><a href="{encodedConfirmUrl}" target="_blank" rel="noopener">Potvrdite email adresu</a></p>
                 """;
 
             try
@@ -352,14 +354,16 @@ namespace TimeForPill.Controllers
 
             var loginUrl = BuildAppUrl("/Account/Login");
             var requestsUrl = BuildAppUrl("/Admin/ZahtjeviNaloga");
+            var encodedLoginUrl = WebUtility.HtmlEncode(loginUrl);
+            var encodedRequestsUrl = WebUtility.HtmlEncode(requestsUrl);
             var body =
                 $"""
                 <p>Novi ljekar trazi potvrdu naloga.</p>
                 <p><strong>{ljekar.Ime} {ljekar.Prezime}</strong></p>
                 <p>Email: {ljekar.Email}</p>
                 <p>Specijalizacija: {ljekar.Specijalizacija}</p>
-                <p><a href="{loginUrl}">Otvorite TimeForPill login</a></p>
-                <p><a href="{requestsUrl}">Otvorite zahtjeve za potvrdu naloga</a></p>
+                <p><a href="{encodedLoginUrl}" target="_blank" rel="noopener">Otvorite TimeForPill login</a></p>
+                <p><a href="{encodedRequestsUrl}" target="_blank" rel="noopener">Otvorite zahtjeve za potvrdu naloga</a></p>
                 """;
 
             foreach (var email in adminEmails.Distinct(StringComparer.OrdinalIgnoreCase))

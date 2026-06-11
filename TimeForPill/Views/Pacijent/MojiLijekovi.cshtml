@@ -63,6 +63,7 @@ else
                     </dl>
                     <div class="button-row">
                         <a class="btn btn-outline-secondary" asp-action="LijekForma" asp-route-id="@lijek.TerapijaId">Azuriraj terapiju</a>
+                        <a class="btn btn-outline-secondary" asp-action="PrijaviNuspojavu" asp-route-id="@lijek.TerapijaId">Nuspojave</a>
                         <form asp-action="ObrisiLijek" method="post">
                             <input type="hidden" name="id" value="@lijek.TerapijaId" />
                             <button type="submit" class="btn btn-outline-danger">Obrisi terapiju</button>

@@ -1,12 +1,12 @@
 @model AdminDashboardViewModel
 @{
-    ViewData["Title"] = "Administrator Home";
+    ViewData["Title"] = "Administrator Pocetna";
 }
 
 <section class="page-headline">
     <div>
         <p class="eyebrow">Administrator</p>
-        <h1>Home</h1>
+        <h1>Dobro dosli, @Model.Ime</h1>
     </div>
 </section>
 
@@ -30,12 +30,35 @@
         <div class="section-row">
             <div>
                 <p class="eyebrow">Korisnici</p>
-                <h2>Upravljanje nalogom</h2>
+                <h2>Upravljanje nalozima</h2>
+            </div>
+            <div class="request-bell" aria-label="Broj zahtjeva za potvrdu naloga">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 21h4"></path>
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"></path>
+                </svg>
+                <span>@Model.BrojZahtjevaZaPotvrdu</span>
             </div>
         </div>
-        <div class="button-stack">
-            <a class="btn btn-primary" asp-action="PregledPacijenata">Pregled pacijenata</a>
-            <a class="btn btn-outline-secondary" asp-action="PregledLjekara">Pregled ljekara</a>
+        <div class="request-home-layout">
+            @if (Model.ZadnjiZahtjevZaPotvrdu == null)
+            {
+                <div class="request-summary">
+                    <p class="muted-text mb-0">Nema zahtjeva za potvrdu naloga.</p>
+                </div>
+            }
+            else
+            {
+                <a class="request-summary request-summary-link"
+                   asp-action="ZahtjevNalogaDetalji"
+                   asp-route-id="@Model.ZadnjiZahtjevZaPotvrdu.Id">
+                    <small>Zadnji zahtjev za potvrdu naloga</small>
+                    <strong>@Model.ZadnjiZahtjevZaPotvrdu.ImePrezime</strong>
+                    <span>@Model.ZadnjiZahtjevZaPotvrdu.Uloga - @Model.ZadnjiZahtjevZaPotvrdu.Specijalizacija</span>
+                    <span>@Model.ZadnjiZahtjevZaPotvrdu.Email</span>
+                </a>
+            }
+            <a class="btn btn-primary request-main-button" asp-action="ZahtjeviNaloga">Zahtjevi</a>
         </div>
     </article>
 

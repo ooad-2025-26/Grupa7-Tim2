@@ -1,6 +1,11 @@
 @model IReadOnlyList<Ljekar>
 @{
     ViewData["Title"] = "Pregled ljekara";
+    var specijalizacije = Model
+        .Select(l => l.Specijalizacija.ToString())
+        .Distinct()
+        .OrderBy(s => s)
+        .ToList();
 }
 
 <section class="page-headline">
@@ -12,23 +17,49 @@
 </section>
 
 <section class="table-shell">
-    <table class="table responsive-table">
+    <div class="admin-patient-toolbar" aria-label="Filteri ljekara">
+        <label class="admin-patient-control">
+            <span class="admin-patient-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            </span>
+            <input id="doctorSearch" type="search" placeholder="Pretraži ljekare..." autocomplete="off" />
+        </label>
+
+        <label class="admin-patient-control">
+            <span class="admin-patient-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 3v5a4 4 0 0 0 8 0V3"></path><path d="M5 3h3"></path><path d="M16 3h3"></path><path d="M12 12v3a4 4 0 0 0 8 0v-1"></path><circle cx="20" cy="13" r="2"></circle></svg>
+            </span>
+            <select id="specializationFilter">
+                <option value="">Sve specijalizacije</option>
+                @foreach (var specijalizacija in specijalizacije)
+                {
+                    <option value="@specijalizacija">@specijalizacija</option>
+                }
+            </select>
+        </label>
+    </div>
+
+    <table class="table responsive-table" data-admin-doctors-table>
         <thead>
             <tr>
                 <th>Ljekar</th>
                 <th>Email</th>
                 <th>Specijalizacija</th>
                 <th>Datum rodjenja</th>
-                <th></th>
+                <th class="text-end">Akcija</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var ljekar in Model)
             {
-                <tr>
+                var imePrezime = $"{ljekar.Ime} {ljekar.Prezime}";
+                var specijalizacija = ljekar.Specijalizacija.ToString();
+                <tr data-doctor-row
+                    data-specialization="@specijalizacija"
+                    data-search="@($"{imePrezime} {ljekar.Email} {specijalizacija} {ljekar.DatumRodjenja:dd.MM.yyyy}")">
                     <td>@ljekar.Ime @ljekar.Prezime</td>
                     <td>@ljekar.Email</td>
-                    <td>@ljekar.Specijalizacija</td>
+                    <td>@specijalizacija</td>
                     <td>@ljekar.DatumRodjenja.ToString("dd.MM.yyyy")</td>
                     <td class="actions">
                         <a class="btn btn-outline-secondary btn-sm" asp-controller="Ljekars" asp-action="Edit" asp-route-id="@ljekar.Id">Uredi</a>
@@ -37,6 +68,30 @@
                     </td>
                 </tr>
             }
+            <tr id="doctorsEmptyRow" hidden>
+                <td colspan="5" class="text-center text-muted py-4">Nema ljekara za odabrane filtere.</td>
+            </tr>
         </tbody>
     </table>
+
+    <div class="admin-patient-footer" aria-label="Paginacija ljekara">
+        <div class="admin-patient-page-size">
+            <span>Prikaži</span>
+            <select id="doctorPageSize" aria-label="Broj ljekara po stranici">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>od <span id="doctorResultCount">@Model.Count</span> rezultata</span>
+        </div>
+
+        <div class="admin-patient-pagination">
+            <button type="button" data-doctor-page="first" aria-label="Prva stranica">«</button>
+            <button type="button" data-doctor-page="prev" aria-label="Prethodna stranica">‹</button>
+            <span id="doctorCurrentPage">1</span>
+            <button type="button" data-doctor-page="next" aria-label="Sljedeca stranica">›</button>
+            <button type="button" data-doctor-page="last" aria-label="Zadnja stranica">»</button>
+        </div>
+    </div>
 </section>

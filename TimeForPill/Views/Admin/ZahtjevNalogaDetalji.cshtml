@@ -1,0 +1,38 @@
+@model AccountApprovalRequestViewModel
+
+@{
+    ViewData["Title"] = "Detalji zahtjeva naloga";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Zahtjev za registraciju</p>
+        <h1>@Model.ImePrezime</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="ZahtjeviNaloga">Nazad</a>
+</section>
+
+<section class="details-shell">
+    <dl class="row mb-0">
+        <dt class="col-sm-3">Ime i prezime</dt>
+        <dd class="col-sm-9">@Model.ImePrezime</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Uloga</dt>
+        <dd class="col-sm-9">@Model.Uloga</dd>
+
+        <dt class="col-sm-3">Specijalizacija</dt>
+        <dd class="col-sm-9">@Model.Specijalizacija</dd>
+    </dl>
+
+    <div class="button-row mt-4">
+        <form asp-action="PotvrdiNalog" asp-route-id="@Model.Id" method="post" class="m-0">
+            <button type="submit" class="btn btn-primary">Potvrdi zahtjev</button>
+        </form>
+        <form asp-action="OdbijNalog" asp-route-id="@Model.Id" method="post" class="m-0">
+            <button type="submit" class="btn btn-outline-danger">Odbij zahtjev</button>
+        </form>
+    </div>
+</section>

@@ -1,12 +1,12 @@
 @model DoctorDashboardViewModel
 @{
-    ViewData["Title"] = "Ljekar Home";
+    ViewData["Title"] = "Ljekar Pocetna";
 }
 
 <section class="page-headline">
     <div>
         <p class="eyebrow">Ljekar</p>
-        <h1>Home</h1>
+        <h1>Dobro dosli, @Model.Ime</h1>
     </div>
     <a class="btn btn-primary" asp-action="Zahtjevi">Svi zahtjevi</a>
 </section>
@@ -18,12 +18,12 @@
     </article>
 
     <article class="stat-card patient-stat-green">
-        <small>Obrađeni zahtjevi</small>
+        <small>Obradjeni zahtjevi</small>
         <strong>@Model.BrojObradjenihZahtjeva</strong>
     </article>
 
     <article class="stat-card patient-stat-red">
-        <small>Čekaju obradu</small>
+        <small>Cekaju obradu</small>
         <strong>@Model.BrojNeobradjenihZahtjeva</strong>
     </article>
 </section>
@@ -32,7 +32,7 @@
     <div class="section-row">
         <div>
             <p class="eyebrow">Pregled aktivnosti</p>
-            <h2>Nedavno obrađeni zahtjevi</h2>
+            <h2>Nedavno obradjeni zahtjevi</h2>
         </div>
     </div>
 

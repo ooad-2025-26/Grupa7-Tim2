@@ -1,0 +1,56 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Moj profil";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Administrator</p>
+        <h1>Moj profil</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Home">Nazad</a>
+</section>
+
+<section class="form-shell">
+    <form asp-action="Profil" method="post">
+        <input type="hidden" asp-for="KorisnikId" />
+        <input type="hidden" asp-for="Uloga" />
+        <input type="hidden" asp-for="PrikaziKontaktOsobu" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="form-grid">
+            <div>
+                <label asp-for="Ime" class="form-label"></label>
+                <input asp-for="Ime" class="form-control" />
+                <span asp-validation-for="Ime" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Prezime" class="form-label"></label>
+                <input asp-for="Prezime" class="form-control" />
+                <span asp-validation-for="Prezime" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="DatumRodjenja" class="form-label"></label>
+                <input asp-for="DatumRodjenja" class="form-control" />
+                <span asp-validation-for="DatumRodjenja" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Spol" class="form-label"></label>
+                <select asp-for="Spol" asp-items="Html.GetEnumSelectList<Spol>()" class="form-select"></select>
+                <span asp-validation-for="Spol" class="text-danger"></span>
+            </div>
+            <div class="span-2">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Sacuvaj profil</button>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

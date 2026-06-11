@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Lijekovi";
+    var lijekovi = Model.ToList();
 }
 
 <div class="page-header">
@@ -13,7 +14,16 @@
 </div>
 
 <div class="table-shell table-responsive">
-    <table class="table">
+    <div class="admin-patient-toolbar" aria-label="Filteri lijekova">
+        <label class="admin-patient-control">
+            <span class="admin-patient-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            </span>
+            <input id="medicineSearch" type="search" placeholder="Pretraži lijekove..." autocomplete="off" />
+        </label>
+    </div>
+
+    <table class="table" data-admin-medicines-table>
         <thead>
             <tr>
                 <th>Slika</th>
@@ -23,9 +33,10 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in lijekovi)
         {
-            <tr>
+            <tr data-medicine-row
+                data-search="@($"{item.Naziv} {item.Kategorija}")">
                 <td>
                     @if (!string.IsNullOrWhiteSpace(item.Slika))
                     {
@@ -47,6 +58,30 @@
                 </td>
             </tr>
         }
+        <tr id="medicinesEmptyRow" hidden>
+            <td colspan="4" class="text-center text-muted py-4">Nema lijekova za odabranu pretragu.</td>
+        </tr>
         </tbody>
     </table>
+
+    <div class="admin-patient-footer" aria-label="Paginacija lijekova">
+        <div class="admin-patient-page-size">
+            <span>Prikaži</span>
+            <select id="medicinePageSize" aria-label="Broj lijekova po stranici">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>od <span id="medicineResultCount">@lijekovi.Count</span> rezultata</span>
+        </div>
+
+        <div class="admin-patient-pagination">
+            <button type="button" data-medicine-page="first" aria-label="Prva stranica">«</button>
+            <button type="button" data-medicine-page="prev" aria-label="Prethodna stranica">‹</button>
+            <span id="medicineCurrentPage">1</span>
+            <button type="button" data-medicine-page="next" aria-label="Sljedeca stranica">›</button>
+            <button type="button" data-medicine-page="last" aria-label="Zadnja stranica">»</button>
+        </div>
+    </div>
 </div>

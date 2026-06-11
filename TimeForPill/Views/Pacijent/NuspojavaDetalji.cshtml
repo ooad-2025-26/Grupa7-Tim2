@@ -1,0 +1,44 @@
+@model SideEffectListItemViewModel
+@{
+    ViewData["Title"] = "Detalji nuspojave";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Nuspojava</p>
+        <h1>@Model.NazivLijeka</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Nuspojave">Nazad</a>
+</section>
+
+<section class="details-shell">
+    <div class="side-effect-detail">
+        <div class="medicine-image side-effect-image">
+            @if (!string.IsNullOrWhiteSpace(Model.Slika))
+            {
+                <img src="@Model.Slika" alt="@Model.NazivLijeka" />
+            }
+            else
+            {
+                <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
+            }
+        </div>
+        <div>
+            <p class="eyebrow">@Model.Kategorija</p>
+            <h2>Nuspojava na lijek @Model.NazivLijeka</h2>
+            <p class="muted-text">Prijavljeno @Model.DatumPrijave.ToString("dd.MM.yyyy HH:mm")</p>
+        </div>
+    </div>
+
+    <div class="side-effect-text">
+        @Model.Opis
+    </div>
+
+    <div class="button-row mt-4">
+        <form asp-action="ObrisiNuspojavu" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-outline-danger">Obrisi</button>
+        </form>
+        <a class="btn btn-outline-secondary" asp-action="Nuspojave">Nazad na listu</a>
+    </div>
+</section>

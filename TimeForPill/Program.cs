@@ -73,6 +73,7 @@ using (var scope = app.Services.CreateScope())
 
         BackfillMissingDoses(context);
         BackfillDailyStatistics(context);
+        await SeedDefaultAdministratorAsync(services);
 
         var conn = context.Database.GetDbConnection();
 
@@ -224,4 +225,88 @@ static void BackfillDailyStatistics(ApplicationDbContext context)
 static DateTime GetDoseStatisticDate(TerapijskaDoza doza)
 {
     return (doza.OriginalnoVrijemeUzimanja ?? doza.VrijemeUzimanja).Date;
+}
+
+static async Task SeedDefaultAdministratorAsync(IServiceProvider services)
+{
+    const string email = "ebosnjakov2@etf.unsa.ba";
+    const string password = "Admin123";
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var existingUser = await userManager.FindByEmailAsync(email);
+
+    if (existingUser == null)
+    {
+        var administrator = new Administrator
+        {
+            Ime = "Eldar",
+            Prezime = "Bosnjakovic",
+            Email = email,
+            UserName = email,
+            EmailConfirmed = true,
+            Spol = Spol.Musko,
+            DatumRodjenja = new DateTime(2005, 2, 21),
+            datumImenovanja = DateTime.Today
+        };
+
+        var createResult = await userManager.CreateAsync(
+            administrator,
+            password);
+        if (!createResult.Succeeded)
+        {
+            throw new InvalidOperationException(
+                "Default administrator nije kreiran: " +
+                string.Join("; ", createResult.Errors.Select(e => e.Description)));
+        }
+
+        return;
+    }
+
+    if (existingUser is not Administrator admin)
+    {
+        logger.LogWarning(
+            "Default administrator nije kreiran jer email {Email} vec pripada korisniku drugog tipa.",
+            email);
+        return;
+    }
+
+    admin.Ime = "Eldar";
+    admin.Prezime = "Bosnjakovic";
+    admin.Email = email;
+    admin.UserName = email;
+    admin.EmailConfirmed = true;
+    admin.Spol = Spol.Musko;
+    admin.DatumRodjenja = new DateTime(2005, 2, 21);
+    if (admin.datumImenovanja == default)
+    {
+        admin.datumImenovanja = DateTime.Today;
+    }
+
+    var updateResult = await userManager.UpdateAsync(admin);
+    if (!updateResult.Succeeded)
+    {
+        throw new InvalidOperationException(
+            "Default administrator nije azuriran: " +
+            string.Join("; ", updateResult.Errors.Select(e => e.Description)));
+    }
+
+    if (await userManager.HasPasswordAsync(admin))
+    {
+        var removeResult = await userManager.RemovePasswordAsync(admin);
+        if (!removeResult.Succeeded)
+        {
+            throw new InvalidOperationException(
+                "Lozinka default administratora nije uklonjena: " +
+                string.Join("; ", removeResult.Errors.Select(e => e.Description)));
+        }
+    }
+
+    var passwordResult = await userManager.AddPasswordAsync(admin, password);
+    if (!passwordResult.Succeeded)
+    {
+        throw new InvalidOperationException(
+            "Lozinka default administratora nije postavljena: " +
+            string.Join("; ", passwordResult.Errors.Select(e => e.Description)));
+    }
 }

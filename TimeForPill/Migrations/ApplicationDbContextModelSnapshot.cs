@@ -180,6 +180,11 @@ namespace TimeForPill.Migrations
                     b.Property<DateTime>("DatumAkcije")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("RacunEmail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("RacunId")
                         .IsRequired()
                         .HasMaxLength(450)
@@ -381,6 +386,88 @@ namespace TimeForPill.Migrations
                     b.HasIndex("TerapijaId");
 
                     b.ToTable("Notifikacije", (string)null);
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.Nuspojava", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BezNuspojava")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DatumPrijave")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Kategorija")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<int?>("LijekId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NazivLijeka")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Opis")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("PacijentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Slika")
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<int?>("TerapijaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LijekId");
+
+                    b.HasIndex("PacijentId");
+
+                    b.HasIndex("TerapijaId");
+
+                    b.ToTable("Nuspojave", (string)null);
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.PacijentDnevnaStatistika", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrojPropustenih")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BrojUzetih")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Datum")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PacijentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PacijentId", "Datum")
+                        .IsUnique();
+
+                    b.ToTable("PacijentDnevneStatistike", (string)null);
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Terapija", b =>
@@ -653,6 +740,42 @@ namespace TimeForPill.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Terapija");
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.Nuspojava", b =>
+                {
+                    b.HasOne("TimeForPill.Models.Lijek", "Lijek")
+                        .WithMany()
+                        .HasForeignKey("LijekId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("TimeForPill.Models.Pacijent", "Pacijent")
+                        .WithMany()
+                        .HasForeignKey("PacijentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimeForPill.Models.Terapija", "Terapija")
+                        .WithMany()
+                        .HasForeignKey("TerapijaId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Lijek");
+
+                    b.Navigation("Pacijent");
+
+                    b.Navigation("Terapija");
+                });
+
+            modelBuilder.Entity("TimeForPill.Models.PacijentDnevnaStatistika", b =>
+                {
+                    b.HasOne("TimeForPill.Models.Pacijent", "Pacijent")
+                        .WithMany()
+                        .HasForeignKey("PacijentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pacijent");
                 });
 
             modelBuilder.Entity("TimeForPill.Models.Terapija", b =>

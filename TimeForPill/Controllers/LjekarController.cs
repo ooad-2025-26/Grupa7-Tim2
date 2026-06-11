@@ -44,10 +44,13 @@ namespace TimeForPill.Controllers
 
             var zahtjevi = await GetLjekarZahtjevi(ljekar.Id)
                 .AsNoTracking()
+                .Where(z => z.DatumKreiranja >= GetStartOfCurrentYear() &&
+                    z.DatumKreiranja < GetStartOfNextYear())
                 .ToListAsync();
 
             var model = new DoctorDashboardViewModel
             {
+                Ime = ljekar.Ime,
                 BrojZahtjeva = zahtjevi.Count,
                 BrojNeobradjenihZahtjeva =
                     zahtjevi.Count(z => z.Status == StatusZahtjeva.Neobraden),
@@ -75,6 +78,8 @@ namespace TimeForPill.Controllers
 
             var model = await GetLjekarZahtjevi(ljekar.Id)
                 .AsNoTracking()
+                .Where(z => z.DatumKreiranja >= GetStartOfCurrentYear() &&
+                    z.DatumKreiranja < GetStartOfNextYear())
                 .OrderByDescending(z => z.DatumKreiranja)
                 .ThenByDescending(z => z.Id)
                 .Select(z => ToRequestListItem(z))
@@ -198,6 +203,52 @@ namespace TimeForPill.Controllers
                     })
                     .Where(l => l.CekajuceDoze > 0)
                     .ToList()
+            };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> PacijentNuspojave(string id)
+        {
+            var ljekar = await GetCurrentLjekarAsync();
+            if (ljekar == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var pacijent = await _context.Pacijenti
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p =>
+                    p.Id == id &&
+                    p.LjekarId == ljekar.Id);
+            if (pacijent == null)
+            {
+                return NotFound();
+            }
+
+            var nuspojave = await _context.Nuspojave
+                .AsNoTracking()
+                .Where(n =>
+                    n.PacijentId == pacijent.Id &&
+                    !n.BezNuspojava)
+                .OrderByDescending(n => n.DatumPrijave)
+                .ThenByDescending(n => n.Id)
+                .Select(n => new SideEffectListItemViewModel
+                {
+                    Id = n.Id,
+                    NazivLijeka = n.NazivLijeka,
+                    Kategorija = n.Kategorija,
+                    Slika = n.Slika,
+                    Opis = n.Opis ?? string.Empty,
+                    DatumPrijave = n.DatumPrijave
+                })
+                .ToListAsync();
+
+            var model = new DoctorPatientSideEffectsViewModel
+            {
+                PacijentId = pacijent.Id,
+                Pacijent = $"{pacijent.Ime} {pacijent.Prezime}",
+                Nuspojave = nuspojave
             };
 
             return View(model);
@@ -636,6 +687,17 @@ namespace TimeForPill.Controllers
                     .StartsWith(
                         "Doza koje se dodaju obnovom:",
                         StringComparison.OrdinalIgnoreCase)));
+        }
+
+        private static DateTime GetStartOfCurrentYear()
+        {
+            var today = DateTime.Today;
+            return new DateTime(today.Year, 1, 1);
+        }
+
+        private static DateTime GetStartOfNextYear()
+        {
+            return GetStartOfCurrentYear().AddYears(1);
         }
     }
 }

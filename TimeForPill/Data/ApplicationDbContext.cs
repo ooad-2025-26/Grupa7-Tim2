@@ -24,6 +24,7 @@ namespace TimeForPill.Data
         public DbSet<AdminAkcija> AdminAkcije { get; set; }
         public DbSet<TerapijskaDoza> TerapijskeDoze { get; set; }
         public DbSet<PacijentDnevnaStatistika> PacijentDnevneStatistike { get; set; }
+        public DbSet<Nuspojava> Nuspojave { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +46,7 @@ namespace TimeForPill.Data
             modelBuilder.Entity<AdminAkcija>().ToTable("AdminAkcije");
             modelBuilder.Entity<TerapijskaDoza>().ToTable("TerapijskeDoze");
             modelBuilder.Entity<PacijentDnevnaStatistika>().ToTable("PacijentDnevneStatistike");
+            modelBuilder.Entity<Nuspojava>().ToTable("Nuspojave");
 
             modelBuilder.Entity<Pacijent>()
                 .HasOne(p => p.KontaktOsoba)
@@ -97,6 +99,24 @@ namespace TimeForPill.Data
             modelBuilder.Entity<PacijentDnevnaStatistika>()
                 .HasIndex(s => new { s.PacijentId, s.Datum })
                 .IsUnique();
+
+            modelBuilder.Entity<Nuspojava>()
+                .HasOne(n => n.Pacijent)
+                .WithMany()
+                .HasForeignKey(n => n.PacijentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Nuspojava>()
+                .HasOne(n => n.Terapija)
+                .WithMany()
+                .HasForeignKey(n => n.TerapijaId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Nuspojava>()
+                .HasOne(n => n.Lijek)
+                .WithMany()
+                .HasForeignKey(n => n.LijekId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Korisnik)

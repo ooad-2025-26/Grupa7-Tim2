@@ -11,29 +11,64 @@
 </section>
 
 <section class="table-shell">
-    <table class="table responsive-table">
+    <div class="admin-patient-toolbar" aria-label="Filteri pacijenata">
+        <label class="admin-patient-control">
+            <span class="admin-patient-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            </span>
+            <input id="doctorPatientSearch" type="search" placeholder="Pretrazi pacijente..." autocomplete="off" />
+        </label>
+    </div>
+
+    <table class="table responsive-table" data-doctor-patients-table>
         <thead>
             <tr>
                 <th>Pacijent</th>
                 <th>Email</th>
                 <th>Aktivnih lijekova</th>
                 <th>Pending doza</th>
-                <th></th>
+                <th class="text-end">Akcija</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var pacijent in Model)
             {
-                <tr>
+                <tr data-doctor-patient-row
+                    data-search="@($"{pacijent.ImePrezime} {pacijent.Email}")">
                     <td>@pacijent.ImePrezime</td>
                     <td>@pacijent.Email</td>
                     <td>@pacijent.BrojAktivnihLijekova</td>
                     <td>@pacijent.BrojCekajucihDoza</td>
                     <td class="actions">
                         <a class="btn btn-outline-secondary btn-sm" asp-action="PacijentLijekovi" asp-route-id="@pacijent.PacijentId">Pregled lijekova</a>
+                        <a class="btn btn-outline-secondary btn-sm" asp-action="PacijentNuspojave" asp-route-id="@pacijent.PacijentId">Pregled nuspojava</a>
                     </td>
                 </tr>
             }
+            <tr id="doctorPatientsEmptyRow" hidden>
+                <td colspan="5" class="text-center text-muted py-4">Nema pacijenata za odabranu pretragu.</td>
+            </tr>
         </tbody>
     </table>
+
+    <div class="admin-patient-footer" aria-label="Paginacija pacijenata">
+        <div class="admin-patient-page-size">
+            <span>Prikazi</span>
+            <select id="doctorPatientPageSize" aria-label="Broj pacijenata po stranici">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>od <span id="doctorPatientResultCount">@Model.Count</span> rezultata</span>
+        </div>
+
+        <div class="admin-patient-pagination">
+            <button type="button" data-doctor-patient-page="first" aria-label="Prva stranica">&laquo;</button>
+            <button type="button" data-doctor-patient-page="prev" aria-label="Prethodna stranica">&lsaquo;</button>
+            <span id="doctorPatientCurrentPage">1</span>
+            <button type="button" data-doctor-patient-page="next" aria-label="Sljedeca stranica">&rsaquo;</button>
+            <button type="button" data-doctor-patient-page="last" aria-label="Zadnja stranica">&raquo;</button>
+        </div>
+    </div>
 </section>

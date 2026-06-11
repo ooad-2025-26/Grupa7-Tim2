@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using TimeForPill.Data;
 using TimeForPill.Models;
+using TimeForPill.Services;
 using TimeForPill.ViewModels;
 
 namespace TimeForPill.Controllers
@@ -12,17 +14,30 @@ namespace TimeForPill.Controllers
     {
         private const string LoginError =
             "Netacna lozinka ili email, pokusajte ponovo";
+        private const string AccountPendingMessage =
+            "Nalog ceka potvrdu administratora.";
+        private const string EmailConfirmationMessage =
+            "Potvrdite email adresu putem linka koji smo poslali na vas email.";
 
         private readonly ApplicationDbContext _context;
+        private readonly EmailSettings _emailSettings;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
             ApplicationDbContext context,
+            IOptions<EmailSettings> emailSettings,
+            IEmailService emailService,
+            ILogger<AccountController> logger,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _emailSettings = emailSettings.Value;
+            _emailService = emailService;
+            _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -73,6 +88,14 @@ namespace TimeForPill.Controllers
                 return View(model);
             }
 
+            if (!user.EmailConfirmed && user is not Administrator)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    user is Pacijent ? EmailConfirmationMessage : AccountPendingMessage);
+                return View(model);
+            }
+
             await _signInManager.SignInAsync(user, model.RememberMe);
 
             if (!string.IsNullOrWhiteSpace(model.ReturnUrl) &&
@@ -107,6 +130,13 @@ namespace TimeForPill.Controllers
                     "Specijalizacija je obavezna za ljekara.");
             }
 
+            if (model.Uloga == KorisnickaUloga.Administrator)
+            {
+                ModelState.AddModelError(
+                    nameof(RegisterViewModel.Uloga),
+                    "Administrator se ne moze registrovati kroz javnu registraciju.");
+            }
+
             if (model.Uloga == KorisnickaUloga.Pacijent)
             {
                 ValidatePatientContact(model);
@@ -120,7 +150,7 @@ namespace TimeForPill.Controllers
             var user = await BuildUserAsync(model);
             user.UserName = model.Email;
             user.Email = model.Email;
-            user.EmailConfirmed = true;
+            user.EmailConfirmed = model.Uloga == KorisnickaUloga.Administrator;
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -133,8 +163,63 @@ namespace TimeForPill.Controllers
                 return View(model);
             }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            return RedirectToRoleHome(user);
+            if (user.EmailConfirmed)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToRoleHome(user);
+            }
+
+            if (user is Pacijent)
+            {
+                if (await SendPatientConfirmationEmailAsync(user))
+                {
+                    TempData["Success"] =
+                        "Registracija je sacuvana. Provjerite email i potvrdite nalog prije prijave.";
+                }
+            }
+            else if (user is Ljekar ljekar)
+            {
+                await NotifyAdminsAboutDoctorRequestAsync(ljekar);
+                TempData["Success"] =
+                    "Zahtjev za registraciju ljekara je poslan administratoru.";
+            }
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(
+            string? userId,
+            string? token)
+        {
+            if (string.IsNullOrWhiteSpace(userId) ||
+                string.IsNullOrWhiteSpace(token))
+            {
+                TempData["Error"] = "Link za potvrdu emaila nije ispravan.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                TempData["Error"] = "Korisnik nije pronadjen.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            if (user is not Pacijent)
+            {
+                TempData["Error"] =
+                    "Ovaj link je namijenjen samo potvrdi emaila pacijenta.";
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            TempData[result.Succeeded ? "Success" : "Error"] = result.Succeeded
+                ? "Email je potvrdjen. Sada se mozete prijaviti."
+                : "Email nije potvrdjen. Link je istekao ili nije ispravan.";
+
+            return RedirectToAction(nameof(Login));
         }
 
         [Authorize]
@@ -209,6 +294,103 @@ namespace TimeForPill.Controllers
                 .ThenBy(l => l.Id)
                 .Select(l => l.Id)
                 .FirstOrDefault();
+        }
+
+        private async Task<bool> SendPatientConfirmationEmailAsync(
+            ApplicationUser user)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmUrl = BuildAppUrl(
+                Url.Action(
+                    nameof(ConfirmEmail),
+                    "Account",
+                    new { userId = user.Id, token }) ?? string.Empty);
+
+            var body =
+                $"""
+                <p>Postovani/a {user.Ime} {user.Prezime},</p>
+                <p>Potvrdite email adresu kako biste mogli koristiti TimeForPill aplikaciju.</p>
+                <p><a href="{confirmUrl}">Potvrdite email adresu</a></p>
+                """;
+
+            try
+            {
+                await _emailService.SendEmailAsync(
+                    user.Email ?? string.Empty,
+                    "TimeForPill potvrda email adrese",
+                    body,
+                    isBodyHtml: true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Email potvrda nije poslana korisniku {UserId}.",
+                    user.Id);
+
+                TempData["Error"] =
+                    "Nalog je kreiran, ali email za potvrdu nije poslan. Provjerite SMTP postavke.";
+
+                return false;
+            }
+        }
+
+        private async Task NotifyAdminsAboutDoctorRequestAsync(Ljekar ljekar)
+        {
+            var adminEmails = await _context.Administratori
+                .AsNoTracking()
+                .Where(a => a.EmailConfirmed && a.Email != null)
+                .Select(a => a.Email!)
+                .ToListAsync();
+
+            if (!adminEmails.Any())
+            {
+                return;
+            }
+
+            var loginUrl = BuildAppUrl("/Account/Login");
+            var requestsUrl = BuildAppUrl("/Admin/ZahtjeviNaloga");
+            var body =
+                $"""
+                <p>Novi ljekar trazi potvrdu naloga.</p>
+                <p><strong>{ljekar.Ime} {ljekar.Prezime}</strong></p>
+                <p>Email: {ljekar.Email}</p>
+                <p>Specijalizacija: {ljekar.Specijalizacija}</p>
+                <p><a href="{loginUrl}">Otvorite TimeForPill login</a></p>
+                <p><a href="{requestsUrl}">Otvorite zahtjeve za potvrdu naloga</a></p>
+                """;
+
+            foreach (var email in adminEmails.Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    await _emailService.SendEmailAsync(
+                        email,
+                        "TimeForPill zahtjev za potvrdu naloga ljekara",
+                        body,
+                        isBodyHtml: true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(
+                        ex,
+                        "Email administratoru nije poslan za zahtjev ljekara {LjekarId}.",
+                        ljekar.Id);
+                }
+            }
+        }
+
+        private string BuildAppUrl(string relativeUrl)
+        {
+            if (relativeUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                relativeUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                return relativeUrl;
+            }
+
+            return $"{_emailSettings.EffectiveAppUrl}/{relativeUrl.TrimStart('/')}";
         }
 
         private void ValidatePatientContact(RegisterViewModel model)

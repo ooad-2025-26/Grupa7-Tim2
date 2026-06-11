@@ -21,7 +21,10 @@
         <div class="form-grid">
             <div class="span-2">
                 <label asp-for="Uloga" class="form-label"></label>
-                <select asp-for="Uloga" asp-items="Html.GetEnumSelectList<KorisnickaUloga>()" class="form-select" id="roleSelect"></select>
+                <select asp-for="Uloga" class="form-select" id="roleSelect">
+                    <option value="0">Pacijent</option>
+                    <option value="1">Ljekar</option>
+                </select>
             </div>
 
             <div>
@@ -119,8 +122,7 @@
         const emailInput = document.getElementById('Email');
         const roleEmailDefaults = {
             '0': 'pacijent@gmail.com',
-            '1': 'ljekar@gmail.com',
-            '2': 'administrator@gmail.com'
+            '1': 'ljekar@gmail.com'
         };
 
         function syncRoleFields() {

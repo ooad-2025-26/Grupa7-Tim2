@@ -5,6 +5,30 @@
     var currentUser = User.Identity?.IsAuthenticated == true
         ? await UserManager.GetUserAsync(User)
         : null;
+    var routeController = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var routeAction = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    var adminHomeActive = routeController == "Admin" && routeAction == "Home";
+    var adminPatientsActive = (routeController == "Admin" && routeAction == "PregledPacijenata")
+        || routeController == "Pacijents";
+    var adminDoctorsActive = (routeController == "Admin" && routeAction == "PregledLjekara")
+        || routeController == "Ljekars";
+    var adminProfileActive = routeController == "Admin" && routeAction == "Profil";
+    var catalogActive = routeController == "Lijeks";
+    var patientHomeActive = routeController == "Pacijent" && routeAction == "Home";
+    var patientMedicinesActive = routeController == "Pacijent" &&
+        (routeAction == "MojiLijekovi" || routeAction == "LijekForma");
+    var patientRenewalActive = routeController == "Pacijent" && routeAction == "ObnovaTerapije";
+    var patientScheduleActive = routeController == "Pacijent" && routeAction == "Raspored";
+    var patientHistoryActive = routeController == "Pacijent" && routeAction == "Historija";
+    var patientSideEffectsActive = routeController == "Pacijent" &&
+        (routeAction == "Nuspojave" || routeAction == "NuspojavaDetalji" || routeAction == "PrijaviNuspojavu");
+    var patientProfileActive = routeController == "Pacijent" && routeAction == "Profil";
+    var doctorHomeActive = routeController == "Ljekar" && routeAction == "Home";
+    var doctorRequestsActive = routeController == "Ljekar" &&
+        (routeAction == "Zahtjevi" || routeAction == "ZahtjevDetalji");
+    var doctorPatientsActive = routeController == "Ljekar" &&
+        (routeAction == "MojiPacijenti" || routeAction == "PacijentLijekovi" || routeAction == "PacijentNuspojave");
+    var doctorProfileActive = routeController == "Ljekar" && routeAction == "Profil";
 }
 
 <!DOCTYPE html>
@@ -33,27 +57,29 @@
                         <ul class="navbar-nav ms-auto gap-lg-1 align-items-lg-center">
                             @if (currentUser is Pacijent)
                             {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="Home">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="MojiLijekovi">Moji lijekovi</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="ObnovaTerapije">Obnova terapije</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="Raspored">Raspored</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="Historija">Historija</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Pacijent" asp-action="Profil">Moj profil</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientHomeActive ? "active" : "")" asp-controller="Pacijent" asp-action="Home">Početna</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientMedicinesActive ? "active" : "")" asp-controller="Pacijent" asp-action="MojiLijekovi">Moji lijekovi</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientRenewalActive ? "active" : "")" asp-controller="Pacijent" asp-action="ObnovaTerapije">Obnova terapije</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientScheduleActive ? "active" : "")" asp-controller="Pacijent" asp-action="Raspored">Raspored</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientHistoryActive ? "active" : "")" asp-controller="Pacijent" asp-action="Historija">Historija</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientSideEffectsActive ? "active" : "")" asp-controller="Pacijent" asp-action="Nuspojave">Nuspojave</a></li>
+                                <li class="nav-item"><a class="nav-link @(patientProfileActive ? "active" : "")" asp-controller="Pacijent" asp-action="Profil">Moj profil</a></li>
                             }
                             else if (currentUser is Ljekar)
                             {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Ljekar" asp-action="Home">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Ljekar" asp-action="Zahtjevi">Zahtjevi</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Ljekar" asp-action="MojiPacijenti">Moji pacijenti</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Lijeks" asp-action="Index">Katalog lijekova</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Ljekar" asp-action="Profil">Moj profil</a></li>
+                                <li class="nav-item"><a class="nav-link @(doctorHomeActive ? "active" : "")" asp-controller="Ljekar" asp-action="Home">Početna</a></li>
+                                <li class="nav-item"><a class="nav-link @(doctorRequestsActive ? "active" : "")" asp-controller="Ljekar" asp-action="Zahtjevi">Zahtjevi</a></li>
+                                <li class="nav-item"><a class="nav-link @(doctorPatientsActive ? "active" : "")" asp-controller="Ljekar" asp-action="MojiPacijenti">Moji pacijenti</a></li>
+                                <li class="nav-item"><a class="nav-link @(catalogActive ? "active" : "")" asp-controller="Lijeks" asp-action="Index">Katalog lijekova</a></li>
+                                <li class="nav-item"><a class="nav-link @(doctorProfileActive ? "active" : "")" asp-controller="Ljekar" asp-action="Profil">Moj profil</a></li>
                             }
                             else if (currentUser is Administrator)
                             {
-                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Home">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="PregledPacijenata">Pregled pacijenata</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="PregledLjekara">Pregled ljekara</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Lijeks" asp-action="Index">Katalog lijekova</a></li>
+                                <li class="nav-item"><a class="nav-link @(adminHomeActive ? "active" : "")" asp-controller="Admin" asp-action="Home">Početna</a></li>
+                                <li class="nav-item"><a class="nav-link @(adminPatientsActive ? "active" : "")" asp-controller="Admin" asp-action="PregledPacijenata">Pregled pacijenata</a></li>
+                                <li class="nav-item"><a class="nav-link @(adminDoctorsActive ? "active" : "")" asp-controller="Admin" asp-action="PregledLjekara">Pregled ljekara</a></li>
+                                <li class="nav-item"><a class="nav-link @(catalogActive ? "active" : "")" asp-controller="Lijeks" asp-action="Index">Katalog lijekova</a></li>
+                                <li class="nav-item"><a class="nav-link @(adminProfileActive ? "active" : "")" asp-controller="Admin" asp-action="Profil">Moj profil</a></li>
                             }
                             else
                             {

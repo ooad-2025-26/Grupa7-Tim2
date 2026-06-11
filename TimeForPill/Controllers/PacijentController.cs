@@ -796,6 +796,13 @@ namespace TimeForPill.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Jedna doza je oznacena kao uzeta.";
+            if (await ShouldAskForSideEffectsAsync(doza.TerapijaId, pacijent.Id))
+            {
+                return RedirectToAction(
+                    nameof(PrijaviNuspojavu),
+                    new { id = doza.TerapijaId, zavrsena = true });
+            }
+
             return RedirectToAction(nameof(Home));
         }
 
@@ -891,6 +898,195 @@ namespace TimeForPill.Controllers
             TempData["Success"] =
                 "Samo ova doza je odgodjena za 30 minuta.";
             return RedirectToAction(nameof(Home));
+        }
+
+        public async Task<IActionResult> Nuspojave()
+        {
+            var pacijent = await GetCurrentPacijentAsync();
+            if (pacijent == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = await _context.Nuspojave
+                .AsNoTracking()
+                .Where(n =>
+                    n.PacijentId == pacijent.Id &&
+                    !n.BezNuspojava)
+                .OrderByDescending(n => n.DatumPrijave)
+                .ThenByDescending(n => n.Id)
+                .Select(n => new SideEffectListItemViewModel
+                {
+                    Id = n.Id,
+                    NazivLijeka = n.NazivLijeka,
+                    Kategorija = n.Kategorija,
+                    Slika = n.Slika,
+                    Opis = n.Opis ?? string.Empty,
+                    DatumPrijave = n.DatumPrijave
+                })
+                .ToListAsync();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> PrijaviNuspojavu(
+            int id,
+            bool zavrsena = false)
+        {
+            var pacijent = await GetCurrentPacijentAsync();
+            if (pacijent == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = await BuildSideEffectFormAsync(
+                id,
+                pacijent.Id,
+                zavrsena);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PrijaviNuspojavu(
+            SideEffectFormViewModel model)
+        {
+            var pacijent = await GetCurrentPacijentAsync();
+            if (pacijent == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (!model.TerapijaId.HasValue)
+            {
+                return NotFound();
+            }
+
+            var terapija = await _context.Terapije
+                .Include(t => t.Lijek)
+                .FirstOrDefaultAsync(t =>
+                    t.Id == model.TerapijaId.Value &&
+                    t.PacijentId == pacijent.Id);
+            if (terapija == null)
+            {
+                return NotFound();
+            }
+
+            PopulateSideEffectMedicineData(model, terapija);
+
+            if (model.ZavrsenaTerapija && model.ImaNuspojave == null)
+            {
+                ModelState.AddModelError(
+                    nameof(SideEffectFormViewModel.ImaNuspojave),
+                    "Odaberite da li ste imali nuspojave.");
+            }
+
+            var shouldSaveSideEffect =
+                !model.ZavrsenaTerapija || model.ImaNuspojave == true;
+            if (shouldSaveSideEffect &&
+                string.IsNullOrWhiteSpace(model.Opis))
+            {
+                ModelState.AddModelError(
+                    nameof(SideEffectFormViewModel.Opis),
+                    "Upisite opis nuspojave.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (model.ZavrsenaTerapija &&
+                model.ImaNuspojave == false)
+            {
+                await SaveNoSideEffectsAnswerAsync(pacijent.Id, terapija);
+                TempData["Success"] =
+                    "Zabiljezeno je da niste imali nuspojave za ovu terapiju.";
+                return RedirectToAction(nameof(MojiLijekovi));
+            }
+
+            _context.Nuspojave.Add(new Nuspojava
+            {
+                PacijentId = pacijent.Id,
+                TerapijaId = terapija.Id,
+                LijekId = terapija.LijekId,
+                NazivLijeka = model.NazivLijeka,
+                Kategorija = model.Kategorija,
+                Slika = model.Slika,
+                Opis = model.Opis?.Trim(),
+                BezNuspojava = false,
+                DatumPrijave = DateTime.Now
+            });
+
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Nuspojava je sacuvana.";
+
+            return RedirectToAction(nameof(Nuspojave));
+        }
+
+        public async Task<IActionResult> NuspojavaDetalji(int id)
+        {
+            var pacijent = await GetCurrentPacijentAsync();
+            if (pacijent == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = await _context.Nuspojave
+                .AsNoTracking()
+                .Where(n =>
+                    n.Id == id &&
+                    n.PacijentId == pacijent.Id &&
+                    !n.BezNuspojava)
+                .Select(n => new SideEffectListItemViewModel
+                {
+                    Id = n.Id,
+                    NazivLijeka = n.NazivLijeka,
+                    Kategorija = n.Kategorija,
+                    Slika = n.Slika,
+                    Opis = n.Opis ?? string.Empty,
+                    DatumPrijave = n.DatumPrijave
+                })
+                .FirstOrDefaultAsync();
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ObrisiNuspojavu(int id)
+        {
+            var pacijent = await GetCurrentPacijentAsync();
+            if (pacijent == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var nuspojava = await _context.Nuspojave
+                .FirstOrDefaultAsync(n =>
+                    n.Id == id &&
+                    n.PacijentId == pacijent.Id);
+            if (nuspojava == null)
+            {
+                return NotFound();
+            }
+
+            _context.Nuspojave.Remove(nuspojava);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Nuspojava je obrisana.";
+            return RedirectToAction(nameof(Nuspojave));
         }
 
         private async Task<Pacijent?> GetCurrentPacijentAsync()
@@ -1344,6 +1540,92 @@ namespace TimeForPill.Controllers
                     d.Status == StatusDoze.Cekanje &&
                     (!excludedTerapijaId.HasValue ||
                         d.TerapijaId != excludedTerapijaId.Value));
+        }
+
+        private async Task<bool> ShouldAskForSideEffectsAsync(
+            int terapijaId,
+            string pacijentId)
+        {
+            var allDosesTaken = await _context.TerapijskeDoze
+                .AsNoTracking()
+                .Where(d => d.TerapijaId == terapijaId)
+                .AllAsync(d => d.Status == StatusDoze.Uzeto);
+            if (!allDosesTaken)
+            {
+                return false;
+            }
+
+            return !await _context.Nuspojave
+                .AsNoTracking()
+                .AnyAsync(n =>
+                    n.PacijentId == pacijentId &&
+                    n.TerapijaId == terapijaId);
+        }
+
+        private async Task<SideEffectFormViewModel?> BuildSideEffectFormAsync(
+            int terapijaId,
+            string pacijentId,
+            bool zavrsenaTerapija)
+        {
+            var terapija = await _context.Terapije
+                .Include(t => t.Lijek)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t =>
+                    t.Id == terapijaId &&
+                    t.PacijentId == pacijentId);
+            if (terapija == null)
+            {
+                return null;
+            }
+
+            var model = new SideEffectFormViewModel
+            {
+                TerapijaId = terapija.Id,
+                ZavrsenaTerapija = zavrsenaTerapija
+            };
+
+            PopulateSideEffectMedicineData(model, terapija);
+            return model;
+        }
+
+        private static void PopulateSideEffectMedicineData(
+            SideEffectFormViewModel model,
+            Terapija terapija)
+        {
+            model.TerapijaId = terapija.Id;
+            model.LijekId = terapija.LijekId;
+            model.NazivLijeka = terapija.Lijek?.Naziv ?? terapija.Naziv;
+            model.Kategorija = terapija.Lijek?.Kategorija ?? "Terapija";
+            model.Slika = terapija.Lijek?.Slika;
+        }
+
+        private async Task SaveNoSideEffectsAnswerAsync(
+            string pacijentId,
+            Terapija terapija)
+        {
+            var existingAnswer = await _context.Nuspojave
+                .FirstOrDefaultAsync(n =>
+                    n.PacijentId == pacijentId &&
+                    n.TerapijaId == terapija.Id &&
+                    n.BezNuspojava);
+            if (existingAnswer != null)
+            {
+                return;
+            }
+
+            _context.Nuspojave.Add(new Nuspojava
+            {
+                PacijentId = pacijentId,
+                TerapijaId = terapija.Id,
+                LijekId = terapija.LijekId,
+                NazivLijeka = terapija.Lijek?.Naziv ?? terapija.Naziv,
+                Kategorija = terapija.Lijek?.Kategorija ?? "Terapija",
+                Slika = terapija.Lijek?.Slika,
+                BezNuspojava = true,
+                DatumPrijave = DateTime.Now
+            });
+
+            await _context.SaveChangesAsync();
         }
 
         private string BuildDoctorRenewalEmailBody(

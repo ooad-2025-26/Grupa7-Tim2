@@ -6,11 +6,15 @@ namespace TimeForPill.Models
     public abstract class ApplicationUser : IdentityUser
     {
         [Required(ErrorMessage = "Ime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Ime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2,
             ErrorMessage = "Ime mora imati izmedju 2 i 50 karaktera.")]
         public string Ime { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Prezime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Prezime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2,
             ErrorMessage = "Prezime mora imati izmedju 2 i 50 karaktera.")]
         public string Prezime { get; set; } = string.Empty;

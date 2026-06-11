@@ -1,0 +1,86 @@
+@model DoctorPatientSideEffectsViewModel
+@{
+    ViewData["Title"] = "Nuspojave pacijenta";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Ljekar</p>
+        <h1>Nuspojave - @Model.Pacijent</h1>
+    </div>
+    <div class="page-headline-actions">
+        @if (Model.Nuspojave.Any())
+        {
+            <label class="admin-patient-control compact-search">
+                <span class="admin-patient-control-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                </span>
+                <input id="doctorSideEffectSearch" type="search" placeholder="Pretrazi nuspojave..." autocomplete="off" />
+            </label>
+        }
+        <a class="btn btn-outline-secondary" asp-action="MojiPacijenti">Nazad</a>
+    </div>
+</section>
+
+@if (!Model.Nuspojave.Any())
+{
+    <section class="empty-state">
+        <h2>Nema prijavljenih nuspojava</h2>
+        <p class="muted-text">Pacijent jos nije prijavio nuspojave za svoje terapije.</p>
+    </section>
+}
+else
+{
+    <section class="side-effect-grid" data-doctor-side-effects-list>
+        @foreach (var nuspojava in Model.Nuspojave)
+        {
+            <article class="side-effect-card"
+                     data-doctor-side-effect-card
+                     data-search="@($"{nuspojava.NazivLijeka} {nuspojava.Kategorija} {nuspojava.Opis}")">
+                <div class="medicine-image side-effect-image">
+                    @if (!string.IsNullOrWhiteSpace(nuspojava.Slika))
+                    {
+                        <img src="@nuspojava.Slika" alt="@nuspojava.NazivLijeka" />
+                    }
+                    else
+                    {
+                        <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
+                    }
+                </div>
+                <div>
+                    <p class="eyebrow">@nuspojava.Kategorija</p>
+                    <h2>@nuspojava.NazivLijeka</h2>
+                    <p class="muted-text">@nuspojava.DatumPrijave.ToString("dd.MM.yyyy HH:mm")</p>
+                    <div class="side-effect-text">@nuspojava.Opis</div>
+                </div>
+            </article>
+        }
+    </section>
+
+    <section class="table-shell mt-3">
+        <div id="doctorSideEffectsEmptyRow" class="text-center text-muted py-4" hidden>
+            Nema nuspojava za odabranu pretragu.
+        </div>
+
+        <div class="admin-patient-footer" aria-label="Paginacija nuspojava pacijenta">
+            <div class="admin-patient-page-size">
+                <span>Prikazi</span>
+                <select id="doctorSideEffectPageSize" aria-label="Broj nuspojava po stranici">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span>od <span id="doctorSideEffectResultCount">@Model.Nuspojave.Count</span> rezultata</span>
+            </div>
+
+            <div class="admin-patient-pagination">
+                <button type="button" data-doctor-side-effect-page="first" aria-label="Prva stranica">&laquo;</button>
+                <button type="button" data-doctor-side-effect-page="prev" aria-label="Prethodna stranica">&lsaquo;</button>
+                <span id="doctorSideEffectCurrentPage">1</span>
+                <button type="button" data-doctor-side-effect-page="next" aria-label="Sljedeca stranica">&rsaquo;</button>
+                <button type="button" data-doctor-side-effect-page="last" aria-label="Zadnja stranica">&raquo;</button>
+            </div>
+        </div>
+    </section>
+}

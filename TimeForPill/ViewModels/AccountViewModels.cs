@@ -36,10 +36,14 @@ namespace TimeForPill.ViewModels
         public KorisnickaUloga Uloga { get; set; } = KorisnickaUloga.Pacijent;
 
         [Required(ErrorMessage = "Ime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Ime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2)]
         public string Ime { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Prezime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Prezime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2)]
         public string Prezime { get; set; } = string.Empty;
 
@@ -70,9 +74,13 @@ namespace TimeForPill.ViewModels
         public Specijalizacija? Specijalizacija { get; set; }
 
         [Display(Name = "Ime kontakt osobe")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Ime smije sadrzavati samo slova")]
         public string KontaktIme { get; set; } = "Kontakt";
 
         [Display(Name = "Prezime kontakt osobe")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Prezime smije sadrzavati samo slova")]
         public string KontaktPrezime { get; set; } = "Osoba";
 
         [EmailAddress(ErrorMessage = "Unesite ispravnu email adresu kontakt osobe.")]

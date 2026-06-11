@@ -59,6 +59,31 @@ namespace TimeForPill.ViewModels
         public string? Slika { get; set; }
     }
 
+    public class SideEffectFormViewModel
+    {
+        public int? TerapijaId { get; set; }
+        public int? LijekId { get; set; }
+        public string NazivLijeka { get; set; } = string.Empty;
+        public string Kategorija { get; set; } = string.Empty;
+        public string? Slika { get; set; }
+        public bool ZavrsenaTerapija { get; set; }
+        public bool? ImaNuspojave { get; set; }
+
+        [StringLength(2000, ErrorMessage = "Opis nuspojave moze imati najvise 2000 karaktera.")]
+        [Display(Name = "Opis nuspojave")]
+        public string? Opis { get; set; }
+    }
+
+    public class SideEffectListItemViewModel
+    {
+        public int Id { get; set; }
+        public string NazivLijeka { get; set; } = string.Empty;
+        public string Kategorija { get; set; } = string.Empty;
+        public string? Slika { get; set; }
+        public string Opis { get; set; } = string.Empty;
+        public DateTime DatumPrijave { get; set; }
+    }
+
     public class MedicineFormViewModel
     {
         public int? TerapijaId { get; set; }
@@ -128,10 +153,14 @@ namespace TimeForPill.ViewModels
         public KorisnickaUloga Uloga { get; set; }
 
         [Required(ErrorMessage = "Ime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Ime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2)]
         public string Ime { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Prezime je obavezno.")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Prezime smije sadrzavati samo slova")]
         [StringLength(50, MinimumLength = 2)]
         public string Prezime { get; set; } = string.Empty;
 
@@ -139,6 +168,9 @@ namespace TimeForPill.ViewModels
         [DataType(DataType.Date)]
         [Display(Name = "Datum rodjenja")]
         public DateTime DatumRodjenja { get; set; }
+
+        [Display(Name = "Spol")]
+        public Spol Spol { get; set; }
 
         [Required(ErrorMessage = "Email je obavezan.")]
         [EmailAddress(ErrorMessage = "Unesite ispravnu email adresu.")]
@@ -150,9 +182,13 @@ namespace TimeForPill.ViewModels
         public bool PrikaziKontaktOsobu { get; set; }
 
         [Display(Name = "Ime kontakt osobe")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Ime smije sadrzavati samo slova")]
         public string KontaktIme { get; set; } = string.Empty;
 
         [Display(Name = "Prezime kontakt osobe")]
+        [RegularExpression(@"^[A-Za-zČĆŽŠĐčćžšđ]+$",
+            ErrorMessage = "Prezime smije sadrzavati samo slova")]
         public string KontaktPrezime { get; set; } = string.Empty;
 
         [EmailAddress(ErrorMessage = "Unesite ispravnu email adresu kontakt osobe.")]
@@ -192,6 +228,7 @@ namespace TimeForPill.ViewModels
 
     public class DoctorDashboardViewModel
     {
+        public string Ime { get; set; } = string.Empty;
         public int BrojZahtjeva { get; set; }
         public int BrojObradjenihZahtjeva { get; set; }
         public int BrojNeobradjenihZahtjeva { get; set; }
@@ -216,10 +253,25 @@ namespace TimeForPill.ViewModels
 
     public class AdminDashboardViewModel
     {
+        public string Ime { get; set; } = string.Empty;
         public int BrojPacijenata { get; set; }
         public int BrojLjekara { get; set; }
         public int BrojIzvrsenihAkcija { get; set; }
+        public int BrojZahtjevaZaPotvrdu { get; set; }
+        public AccountApprovalRequestViewModel? ZadnjiZahtjevZaPotvrdu { get; set; }
         public IReadOnlyList<string> ZadnjeAkcije { get; set; } = Array.Empty<string>();
+    }
+
+    public class AccountApprovalRequestViewModel
+    {
+        public string Id { get; set; } = string.Empty;
+        public string ImePrezime { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Uloga { get; set; } = string.Empty;
+        public string Specijalizacija { get; set; } = "-";
+        public string Status { get; set; } = "Neobraden";
+        public DateTime? Datum { get; set; }
+        public bool MozePregled { get; set; } = true;
     }
 
     public class DoctorPatientListItemViewModel
@@ -249,5 +301,13 @@ namespace TimeForPill.ViewModels
         public int CekajuceDoze { get; set; }
         public string SljedecaDoza { get; set; } = "-";
         public string Period { get; set; } = string.Empty;
+    }
+
+    public class DoctorPatientSideEffectsViewModel
+    {
+        public string PacijentId { get; set; } = string.Empty;
+        public string Pacijent { get; set; } = string.Empty;
+        public IReadOnlyList<SideEffectListItemViewModel> Nuspojave { get; set; } =
+            Array.Empty<SideEffectListItemViewModel>();
     }
 }

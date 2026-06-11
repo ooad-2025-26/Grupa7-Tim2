@@ -1,0 +1,90 @@
+@model IReadOnlyList<SideEffectListItemViewModel>
+@{
+    ViewData["Title"] = "Nuspojave";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Pacijent</p>
+        <h1>Nuspojave</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Moji lijekovi</a>
+</section>
+
+<section class="table-shell">
+    <div class="admin-patient-toolbar" aria-label="Filteri nuspojava">
+        <label class="admin-patient-control">
+            <span class="admin-patient-control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            </span>
+            <input id="sideEffectSearch" type="search" placeholder="Pretrazi po lijeku..." autocomplete="off" />
+        </label>
+    </div>
+
+    <table class="table responsive-table" data-side-effects-table>
+        <thead>
+            <tr>
+                <th>Lijek</th>
+                <th>Kategorija</th>
+                <th>Datum prijave</th>
+                <th class="text-end">Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nuspojava in Model)
+            {
+                <tr data-side-effect-row
+                    data-search="@($"{nuspojava.NazivLijeka} {nuspojava.Kategorija} {nuspojava.Opis}")">
+                    <td>
+                        <div class="medicine-inline">
+                            <span class="medicine-thumb">
+                                @if (!string.IsNullOrWhiteSpace(nuspojava.Slika))
+                                {
+                                    <img src="@nuspojava.Slika" alt="@nuspojava.NazivLijeka" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
+                                }
+                            </span>
+                            <strong>Nuspojava na lijek @nuspojava.NazivLijeka</strong>
+                        </div>
+                    </td>
+                    <td>@nuspojava.Kategorija</td>
+                    <td>@nuspojava.DatumPrijave.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td class="actions">
+                        <a class="btn btn-outline-secondary btn-sm" asp-action="NuspojavaDetalji" asp-route-id="@nuspojava.Id">Pregledaj</a>
+                        <form asp-action="ObrisiNuspojavu" method="post">
+                            <input type="hidden" name="id" value="@nuspojava.Id" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Obrisi</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            <tr id="sideEffectsEmptyRow" hidden>
+                <td colspan="4" class="text-center text-muted py-4">Nema prijavljenih nuspojava za odabranu pretragu.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="admin-patient-footer" aria-label="Paginacija nuspojava">
+        <div class="admin-patient-page-size">
+            <span>Prikazi</span>
+            <select id="sideEffectPageSize" aria-label="Broj nuspojava po stranici">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>od <span id="sideEffectResultCount">@Model.Count</span> rezultata</span>
+        </div>
+
+        <div class="admin-patient-pagination">
+            <button type="button" data-side-effect-page="first" aria-label="Prva stranica">&laquo;</button>
+            <button type="button" data-side-effect-page="prev" aria-label="Prethodna stranica">&lsaquo;</button>
+            <span id="sideEffectCurrentPage">1</span>
+            <button type="button" data-side-effect-page="next" aria-label="Sljedeca stranica">&rsaquo;</button>
+            <button type="button" data-side-effect-page="last" aria-label="Zadnja stranica">&raquo;</button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,95 @@
+@model SideEffectFormViewModel
+@{
+    ViewData["Title"] = Model.ZavrsenaTerapija
+        ? "Provjera nuspojava"
+        : "Prijava nuspojave";
+}
+
+<section class="page-headline">
+    <div>
+        <p class="eyebrow">Pacijent</p>
+        <h1>@(Model.ZavrsenaTerapija ? "Da li ste imali nuspojave?" : "Prijava nuspojave")</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Nazad</a>
+</section>
+
+<section class="form-shell">
+    <div class="side-effect-medicine">
+        <div class="medicine-image side-effect-image">
+            @if (!string.IsNullOrWhiteSpace(Model.Slika))
+            {
+                <img src="@Model.Slika" alt="@Model.NazivLijeka" />
+            }
+            else
+            {
+                <img src="~/images/generic-medicine.jpg" asp-append-version="true" alt="Genericki lijek" />
+            }
+        </div>
+        <div>
+            <p class="eyebrow">@Model.Kategorija</p>
+            <h2>@Model.NazivLijeka</h2>
+        </div>
+    </div>
+
+    <form asp-action="PrijaviNuspojavu" method="post" class="app-form side-effect-form">
+        <input type="hidden" asp-for="TerapijaId" />
+        <input type="hidden" asp-for="LijekId" />
+        <input type="hidden" asp-for="NazivLijeka" />
+        <input type="hidden" asp-for="Kategorija" />
+        <input type="hidden" asp-for="Slika" />
+        <input type="hidden" asp-for="ZavrsenaTerapija" />
+
+        @if (Model.ZavrsenaTerapija)
+        {
+            <div class="form-group">
+                <label>Da li ste imali nuspojave?</label>
+                <div class="side-effect-choice" data-side-effect-choice>
+                    <label>
+                        <input asp-for="ImaNuspojave" type="radio" value="true" />
+                        Da
+                    </label>
+                    <label>
+                        <input asp-for="ImaNuspojave" type="radio" value="false" />
+                        Ne
+                    </label>
+                </div>
+                <span asp-validation-for="ImaNuspojave" class="text-danger"></span>
+            </div>
+        }
+
+        <div class="form-group side-effect-description-field" data-side-effect-description>
+            <textarea asp-for="Opis" rows="8" class="side-effect-textarea" placeholder="Opisite nuspojave koje ste primijetili..."></textarea>
+            <span asp-validation-for="Opis" class="text-danger"></span>
+        </div>
+
+        <div class="button-row">
+            <button type="submit" class="btn btn-primary">Sacuvaj nuspojavu</button>
+            <a class="btn btn-outline-secondary" asp-action="MojiLijekovi">Odustani</a>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const description = document.querySelector("[data-side-effect-description]");
+            const choices = document.querySelectorAll("[data-side-effect-choice] input");
+            if (!description || choices.length === 0) {
+                return;
+            }
+
+            function updateDescriptionVisibility() {
+                const selected = Array.from(choices).find(function (choice) {
+                    return choice.checked;
+                });
+                description.hidden = selected && selected.value === "false";
+            }
+
+            choices.forEach(function (choice) {
+                choice.addEventListener("change", updateDescriptionVisibility);
+            });
+            updateDescriptionVisibility();
+        })();
+    </script>
+}

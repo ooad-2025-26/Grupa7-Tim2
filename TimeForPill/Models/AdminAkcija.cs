@@ -31,6 +31,9 @@ namespace TimeForPill.Models
         [StringLength(120)]
         public string RacunNaziv { get; set; } = string.Empty;
 
+        [StringLength(256)]
+        public string RacunEmail { get; set; } = string.Empty;
+
         public DateTime DatumAkcije { get; set; } = DateTime.Now;
     }
 }

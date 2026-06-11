@@ -44,9 +44,9 @@ Login ekran podrzava izbor uloge prije prijave. Za testiranje se mogu koristiti 
 
 | Uloga | Email | Lozinka |
 | --- | --- | --- |
-| Administrator | ehamidovic1@etf.unsa.ba | Administrator123 |
-| Ljekar | ahakanovic1@etf.unsa.ba | Ljekar123 |
-| Pacijent | ebosnjakov2@etf.unsa.ba | Pacijent123 |
+| Administrator | ebosnjakov2@etf.unsa.ba | Admin123 |
+| Ljekar | doktortfp@gmail.com | Doktor123 |
+| Pacijent | ehamidovic1@etf.unsa.ba | Pacijent123 |
 
 Napomena: ako ovi nalozi ne postoje u bazi, potrebno ih je kreirati kroz ekran za registraciju ili administratorski panel. Lozinka mora imati najmanje 6 karaktera, veliko slovo, malo slovo i broj.
 
